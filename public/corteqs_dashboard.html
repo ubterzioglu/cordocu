@@ -135,6 +135,7 @@
   <button class="nav-btn" onclick="showTab('features')">Feature'lar</button>
   <button class="nav-btn" onclick="showTab('revenue')">Gelir Modeli</button>
   <button class="nav-btn" onclick="showTab('docs')">Dökümanlar</button>
+  <button class="nav-btn" onclick="showTab('takip')">Takip Tablosu</button>
   <button class="nav-btn" onclick="showTab('projectstatus')">Project Status</button>
 </div>
 
@@ -648,6 +649,105 @@ Break it down into:
 
 Then convert everything into a structured product backlog.
 Be brutally honest and think like a product scaling globally.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="takip">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#e8e8f0;">Görev Takip Tablosu</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">Tüm görevler ve durumları</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid #2a2a38;">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="background:#1e1e28;border-bottom:1px solid #2a2a38;">
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Ay</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Görev</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Durum</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Atanan</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Başlangıç</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Bitiş</th>
+            <th style="padding:12px 16px;text-align:left;color:#666;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">Açıklama</th>
+          </tr>
+        </thead>
+        <tbody id="takipBody">
+          <!-- Nisan 2025 -->
+          <tr style="background:#1a1a24;">
+            <td colspan="7" style="padding:8px 16px;font-size:11px;font-weight:700;color:#7c6dfa;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #2a2a38;">Nisan 2025</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Canid Berry, Serim</td>
+            <td style="padding:12px 16px;"><span style="background:#7c6dfa22;color:#7c6dfa;border:1px solid #7c6dfa44;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Yapıldı</span></td>
+            <td style="padding:12px 16px;color:#ccc;">Faruk Karabağ</td>
+            <td style="padding:12px 16px;color:#888;">04/07/2025</td>
+            <td style="padding:12px 16px;color:#888;">08/07/2025</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Lovable Plan</td>
+            <td style="padding:12px 16px;"><span style="background:#2dd4a022;color:#2dd4a0;border:1px solid #2dd4a044;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Devam Ediyor</span></td>
+            <td style="padding:12px 16px;color:#ccc;">Faruk Karabağ</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;max-width:260px;">Lovable ile dashboard seçeneklerini yenileme (planlı)</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Launcher Page</td>
+            <td style="padding:12px 16px;"><span style="background:#f5a62322;color:#f5a623;border:1px solid #f5a62344;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Bekliyor</span></td>
+            <td style="padding:12px 16px;color:#ccc;">Faruk Karabağ</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Cafe Marka Entegrasyonu Priştine</td>
+            <td style="padding:12px 16px;"><span style="background:#f5a62322;color:#f5a623;border:1px solid #f5a62344;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Bekliyor</span></td>
+            <td style="padding:12px 16px;color:#ccc;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Coffee Marka Entegrasyonu</td>
+            <td style="padding:12px 16px;"><span style="background:#f5a62322;color:#f5a623;border:1px solid #f5a62344;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Bekliyor</span></td>
+            <td style="padding:12px 16px;color:#ccc;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+          </tr>
+          <!-- Hazır Linkler -->
+          <tr style="background:#1a1a24;">
+            <td colspan="7" style="padding:8px 16px;font-size:11px;font-weight:700;color:#2dd4a0;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #2a2a38;border-top:1px solid #2a2a38;">Hazır Linkler</td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Görev / Ekip Dökümanı</td>
+            <td style="padding:12px 16px;"><span style="background:#2dd4a022;color:#2dd4a0;border:1px solid #2dd4a044;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Aktif</span></td>
+            <td style="padding:12px 16px;color:#ccc;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;"><a href="https://docs.google.com/spreadsheets/d/1iBU6P27-fEgvxOU0-lr84zM7Y7PXqn2A6yoPRGp_KTk/edit" target="_blank" style="color:#7c6dfa;text-decoration:none;font-size:12px;">docs.google.com ↗</a></td>
+          </tr>
+          <tr class="takip-row" style="border-bottom:1px solid #1e1e28;">
+            <td style="padding:12px 16px;color:#888;"></td>
+            <td style="padding:12px 16px;color:#e8e8f0;font-weight:500;">Lovable Proje</td>
+            <td style="padding:12px 16px;"><span style="background:#2dd4a022;color:#2dd4a0;border:1px solid #2dd4a044;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;">Aktif</span></td>
+            <td style="padding:12px 16px;color:#ccc;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;color:#888;">—</td>
+            <td style="padding:12px 16px;"><a href="https://lovable.dev/projects/05c49c32-31cc-4117-bfde-5c2b4bf472a1" target="_blank" style="color:#7c6dfa;text-decoration:none;font-size:12px;">lovable.dev ↗</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
