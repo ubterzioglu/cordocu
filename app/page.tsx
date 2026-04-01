@@ -1,9 +1,19 @@
-import { supabase } from '@/lib/supabase'
-
 export default async function HomePage() {
-  // Örnek: Supabase bağlantı testi
-  const { error } = await supabase.from('_test').select('*').limit(1).maybeSingle()
-  const connected = !error || error.code === 'PGRST116' || error.message?.includes('does not exist')
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  let connected = false
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const res = await fetch(`${supabaseUrl}/rest/v1/`, {
+        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+        cache: 'no-store',
+      })
+      connected = res.status < 500
+    } catch {
+      connected = false
+    }
+  }
 
   const pages = [
     {
