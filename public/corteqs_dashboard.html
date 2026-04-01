@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CorteQS</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #0f0f13; color: #e8e8f0; min-height: 100vh; }
+
+  .header { background: #18181f; border-bottom: 1px solid #2a2a38; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .logo span { color: #7c6dfa; }
+  .tagline { font-size: 12px; color: #666; margin-top: 2px; }
+  .version-badge { background: #7c6dfa22; color: #7c6dfa; border: 1px solid #7c6dfa44; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+  .nav { background: #18181f; border-bottom: 1px solid #2a2a38; padding: 0 32px; display: flex; gap: 4px; overflow-x: auto; }
+  .nav-btn { padding: 12px 16px; font-size: 13px; color: #888; background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.15s; }
+  .nav-btn:hover { color: #ccc; }
+  .nav-btn.active { color: #7c6dfa; border-bottom-color: #7c6dfa; font-weight: 500; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ---- GENEL BAKIŞ ---- */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .kpi-card { background: #18181f; border: 1px solid #2a2a38; border-radius: 12px; padding: 16px 20px; }
+  .kpi-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 700; }
+  .kpi-sub { font-size: 11px; color: #666; margin-top: 4px; }
+  .kpi-card.purple .kpi-value { color: #7c6dfa; }
+  .kpi-card.teal .kpi-value { color: #2dd4a0; }
+  .kpi-card.amber .kpi-value { color: #f5a623; }
+  .kpi-card.coral .kpi-value { color: #f06b4a; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media(max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  .card { background: #18181f; border: 1px solid #2a2a38; border-radius: 12px; padding: 20px; }
+  .card-title { font-size: 13px; font-weight: 600; color: #aaa; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
+  .tl-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-dot.done { background: #2dd4a0; }
+  .tl-dot.pending { background: #7c6dfa; }
+  .tl-dot.future { background: #444; }
+  .tl-text { font-size: 13px; color: #ccc; line-height: 1.5; }
+  .tl-date { font-size: 11px; color: #666; margin-top: 2px; }
+
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin: 3px 3px 3px 0; }
+  .tag.purple { background: #7c6dfa22; color: #7c6dfa; border: 1px solid #7c6dfa33; }
+  .tag.teal { background: #2dd4a022; color: #2dd4a0; border: 1px solid #2dd4a033; }
+  .tag.amber { background: #f5a62322; color: #f5a623; border: 1px solid #f5a62333; }
+  .tag.coral { background: #f06b4a22; color: #f06b4a; border: 1px solid #f06b4a33; }
+  .tag.gray { background: #ffffff11; color: #aaa; border: 1px solid #ffffff22; }
+
+  /* ---- DOMAIN ---- */
+  .domain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .domain-card { background: #18181f; border: 1px solid #2a2a38; border-radius: 12px; padding: 20px; }
+  .domain-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .domain-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .domain-name { font-size: 15px; font-weight: 600; }
+  .domain-owner { font-size: 11px; color: #666; margin-top: 1px; }
+  .kpi-list { margin-top: 10px; }
+  .kpi-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #ffffff08; font-size: 12px; color: #bbb; }
+  .kpi-item:last-child { border-bottom: none; }
+  .kpi-item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .d-purple .domain-icon { background: #7c6dfa22; }
+  .d-purple .kpi-item::before { background: #7c6dfa; }
+  .d-teal .domain-icon { background: #2dd4a022; }
+  .d-teal .kpi-item::before { background: #2dd4a0; }
+  .d-amber .domain-icon { background: #f5a62322; }
+  .d-amber .kpi-item::before { background: #f5a623; }
+  .d-coral .domain-icon { background: #f06b4a22; }
+  .d-coral .kpi-item::before { background: #f06b4a; }
+  .d-blue .domain-icon { background: #4a9eff22; }
+  .d-blue .kpi-item::before { background: #4a9eff; }
+  .d-pink .domain-icon { background: #f06faa22; }
+  .d-pink .kpi-item::before { background: #f06faa; }
+
+  /* ---- FEATURES ---- */
+  .feat-section { margin-bottom: 24px; }
+  .feat-section-title { font-size: 12px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .feat-section-title::after { content: ''; flex: 1; height: 1px; background: #2a2a38; }
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .feat-item { background: #18181f; border: 1px solid #2a2a38; border-radius: 10px; padding: 14px; }
+  .feat-item-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .feat-item-desc { font-size: 11px; color: #666; line-height: 1.5; }
+  .v-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-bottom: 6px; }
+  .v1 { background: #2dd4a022; color: #2dd4a0; }
+  .v2 { background: #7c6dfa22; color: #7c6dfa; }
+  .v3 { background: #f5a62322; color: #f5a623; }
+
+  /* ---- GELİR ---- */
+  .rev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .rev-card { background: #18181f; border: 1px solid #2a2a38; border-radius: 12px; padding: 20px; }
+  .rev-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .rev-desc { font-size: 12px; color: #888; line-height: 1.6; }
+  .rev-amount { font-size: 18px; font-weight: 700; margin-top: 10px; }
+
+  /* ---- KARARLAR ---- */
+  .decision-list { display: flex; flex-direction: column; gap: 10px; }
+  .decision-item { background: #18181f; border: 1px solid #2a2a38; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; }
+  .d-num { width: 24px; height: 24px; border-radius: 50%; background: #7c6dfa22; color: #7c6dfa; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .d-text { font-size: 13px; color: #ccc; line-height: 1.6; }
+  .d-who { font-size: 11px; color: #7c6dfa; margin-top: 3px; font-weight: 500; }
+
+  .team-grid { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .team-card { background: #18181f; border: 1px solid #2a2a38; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .av-purple { background: #7c6dfa33; color: #7c6dfa; }
+  .av-teal { background: #2dd4a033; color: #2dd4a0; }
+  .team-name { font-size: 14px; font-weight: 600; }
+  .team-role { font-size: 11px; color: #666; }
+
+  hr-divider { display: block; height: 1px; background: #2a2a38; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Corte<span>QS</span></div>
+    <div class="tagline">Diaspora Network Platform</div>
+  </div>
+  <div class="version-badge">MVP v2.0</div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showTab('overview')">Genel Bakış</button>
+  <button class="nav-btn" onclick="showTab('decisions')">Kararlar</button>
+  <button class="nav-btn" onclick="showTab('domains')">Domain Ownership</button>
+  <button class="nav-btn" onclick="showTab('features')">Feature'lar</button>
+  <button class="nav-btn" onclick="showTab('revenue')">Gelir Modeli</button>
+  <button class="nav-btn" onclick="showTab('docs')">Dökümanlar</button>
+</div>
+
+<!-- GENEL BAKIŞ -->
+<div class="section active" id="overview">
+  <div class="container">
+    <div class="kpi-grid">
+      <div class="kpi-card purple">
+        <div class="kpi-label">Aşama</div>
+        <div class="kpi-value">MVP</div>
+        <div class="kpi-sub">v2.0 hazırlanıyor</div>
+      </div>
+      <div class="kpi-card teal">
+        <div class="kpi-label">Core Team</div>
+        <div class="kpi-value">2</div>
+        <div class="kpi-sub">Burak + Barış</div>
+      </div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Hedef Pazar</div>
+        <div class="kpi-value">Diaspora</div>
+        <div class="kpi-sub">Global Türk toplulukları</div>
+      </div>
+      <div class="kpi-card coral">
+        <div class="kpi-label">Yaklaşım</div>
+        <div class="kpi-value">Gen-Z</div>
+        <div class="kpi-sub">Liberal global yönelim</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Yol Haritası</div>
+        <div class="timeline-item">
+          <div class="tl-dot done"></div>
+          <div>
+            <div class="tl-text">Brainstorming & Notion kurulumu</div>
+            <div class="tl-date">Tamamlandı</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot done"></div>
+          <div>
+            <div class="tl-text">Lovable prototipi + Ambassador mantığı</div>
+            <div class="tl-date">Tamamlandı</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot pending"></div>
+          <div>
+            <div class="tl-text">MVP v2.0 dökümanları karşılıklı gönderilecek</div>
+            <div class="tl-date">17 Mart 2026</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot pending"></div>
+          <div>
+            <div class="tl-text">Barış 2 döküman + Lovable'ı birleştirip nihai döküman</div>
+            <div class="tl-date">19 Mart 2026</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot future"></div>
+          <div>
+            <div class="tl-text">MVP çıkışı (2–3 toplantı sonra)</div>
+            <div class="tl-date">Yakında</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-dot future"></div>
+          <div>
+            <div class="tl-text">Yatırım sonrası ölçekleme</div>
+            <div class="tl-date">V3 aşaması</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Temel Fikirler</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag purple">City Ambassador</span>
+          <span class="tag teal">WhatsApp Bot</span>
+          <span class="tag amber">Hoşgeldin Paketi</span>
+          <span class="tag coral">Jukebox</span>
+          <span class="tag purple">Hospital Booking</span>
+          <span class="tag teal">Event Sponsorship</span>
+          <span class="tag amber">Blog Yarışması</span>
+          <span class="tag coral">Cap Table</span>
+          <span class="tag purple">Admin Dashboard</span>
+          <span class="tag teal">Haber Modülü</span>
+          <span class="tag amber">İş İlanları</span>
+          <span class="tag gray">Dubai Business Council</span>
+          <span class="tag gray">SEO / Blog</span>
+          <span class="tag gray">Mass Migration DB</span>
+          <span class="tag gray">AitWin Danışman</span>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="card-title">Core Team</div>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="avatar av-purple">BU</div>
+              <div>
+                <div class="team-name">Burak</div>
+                <div class="team-role">Co-Founder</div>
+              </div>
+            </div>
+            <div class="team-card">
+              <div class="avatar av-teal">BA</div>
+              <div>
+                <div class="team-name">Barış</div>
+                <div class="team-role">Co-Founder</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Büyüme Aşamaları</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; text-align: center;">
+        <div style="padding: 14px; background: #2dd4a011; border-radius: 10px; border: 1px solid #2dd4a033;">
+          <div style="font-size: 11px; color: #2dd4a0; font-weight: 600; margin-bottom: 4px;">1</div>
+          <div style="font-size: 13px; font-weight: 600; color: #2dd4a0;">Fikir</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">İnovasyon</div>
+        </div>
+        <div style="padding: 14px; background: #7c6dfa11; border-radius: 10px; border: 1px solid #7c6dfa33;">
+          <div style="font-size: 11px; color: #7c6dfa; font-weight: 600; margin-bottom: 4px;">2</div>
+          <div style="font-size: 13px; font-weight: 600; color: #7c6dfa;">Teknoloji</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">MVP + Optimizasyon</div>
+        </div>
+        <div style="padding: 14px; background: #f5a62311; border-radius: 10px; border: 1px solid #f5a62333;">
+          <div style="font-size: 11px; color: #f5a623; font-weight: 600; margin-bottom: 4px;">3</div>
+          <div style="font-size: 13px; font-weight: 600; color: #f5a623;">Traction</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">Marketing</div>
+        </div>
+        <div style="padding: 14px; background: #f06b4a11; border-radius: 10px; border: 1px solid #f06b4a33;">
+          <div style="font-size: 11px; color: #f06b4a; font-weight: 600; margin-bottom: 4px;">4</div>
+          <div style="font-size: 13px; font-weight: 600; color: #f06b4a;">Tutundurma</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">UI/UX · Referral · Revenue Share</div>
+        </div>
+        <div style="padding: 14px; background: #4a9eff11; border-radius: 10px; border: 1px solid #4a9eff33;">
+          <div style="font-size: 11px; color: #4a9eff; font-weight: 600; margin-bottom: 4px;">5</div>
+          <div style="font-size: 13px; font-weight: 600; color: #4a9eff;">Ölçekleme</div>
+          <div style="font-size: 11px; color: #666; margin-top: 4px;">Yatırım</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KARARLAR -->
+<div class="section" id="decisions">
+  <div class="container">
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title">Ana Kararlar</div>
+      <div class="decision-list">
+        <div class="decision-item">
+          <div class="d-num">1</div>
+          <div>
+            <div class="d-text">MVP v2.0 dökümanları 17 Marta kadar karşılıklı gönderilecek.</div>
+            <div class="d-who">Burak + Barış</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">2</div>
+          <div>
+            <div class="d-text">19'unda Barış 2 dökümanı + Lovable projesini birleştirip nihai dökümanı oluşturacak.</div>
+            <div class="d-who">Barış</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">3</div>
+          <div>
+            <div class="d-text">2–3 toplantı sonra MVP çıkartabiliriz.</div>
+            <div class="d-who">Tüm ekip</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">4</div>
+          <div>
+            <div class="d-text">Startup business 0-100 standartlarını incele ve araştır: tohum, pre-seed, seed... Onepager hazırlanacak.</div>
+            <div class="d-who">Barış</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">5</div>
+          <div>
+            <div class="d-text">Şirket kurulumu için iki seçenek değerlendirildi: Dubai veya Delaware.</div>
+            <div class="d-who">Burak</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">6</div>
+          <div>
+            <div class="d-text">QS sitesini Barış inceleyecek. Danışmana danışmanlık modeli: mikrosite + AitWin + chatbot.</div>
+            <div class="d-who">Barış</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">7</div>
+          <div>
+            <div class="d-text">Dubai Business Council üzerinden 1000–2000 işletme bulunacak.</div>
+            <div class="d-who">Burak</div>
+          </div>
+        </div>
+        <div class="decision-item">
+          <div class="d-num">8</div>
+          <div>
+            <div class="d-text">Domain ownership + KPI yapısı kurulacak. 2 Nisan Perşembe toplantısında konuşulacak.</div>
+            <div class="d-who">Tüm ekip · 2 Nisan 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Bağlantılar / Networking</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <span class="tag purple">Sertaç Yay (Almanya — Barış)</span>
+        <span class="tag teal">Hüseyin İnan Çolak (LinkedIn)</span>
+        <span class="tag amber">Orhan Dijvar Ekinci (LinkedIn)</span>
+        <span class="tag gray">Dubai Business Council (Burak)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DOMAINS -->
+<div class="section" id="domains">
+  <div class="container">
+    <p style="font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.6;">"Sahiplendirmeyi organizasyon şemasına göre değil, <strong style="color: #ccc;">sistem akışına</strong> göre yapmazsan dağılır."</p>
+    <div class="domain-grid">
+      <div class="domain-card d-purple">
+        <div class="domain-header">
+          <div class="domain-icon">📦</div>
+          <div>
+            <div class="domain-name">Supply Domain</div>
+            <div class="domain-owner">Owner: Head of Supply / BD Lead</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Advisor · İşletme · Partner</div>
+        <div class="kpi-list">
+          <div class="kpi-item">Haftalık onboard edilen advisor sayısı</div>
+          <div class="kpi-item">Aktif advisor oranı (%)</div>
+          <div class="kpi-item">Partner (venue/business) sayısı</div>
+          <div class="kpi-item">İlk işlem yapan advisor oranı (%)</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">HubSpot</span><span class="tag gray">Notion</span><span class="tag gray">Typeform</span>
+        </div>
+      </div>
+
+      <div class="domain-card d-teal">
+        <div class="domain-header">
+          <div class="domain-icon">🌐</div>
+          <div>
+            <div class="domain-name">Demand Domain</div>
+            <div class="domain-owner">Owner: Growth / Community Lead</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Kullanıcılar · Community · Ambassador'lar</div>
+        <div class="kpi-list">
+          <div class="kpi-item">Weekly active users (WAU)</div>
+          <div class="kpi-item">Yeni kullanıcı (#)</div>
+          <div class="kpi-item">Ambassador output</div>
+          <div class="kpi-item">Community engagement (%)</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">Meta Ads</span><span class="tag gray">LinkedIn</span><span class="tag gray">WhatsApp</span>
+        </div>
+      </div>
+
+      <div class="domain-card d-amber">
+        <div class="domain-header">
+          <div class="domain-icon">💳</div>
+          <div>
+            <div class="domain-name">Transaction Domain</div>
+            <div class="domain-owner">Owner: Revenue / Monetization Lead</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Booking · Ödeme · Komisyon · Revenue Share</div>
+        <div class="kpi-list">
+          <div class="kpi-item">GMV (toplam işlem hacmi)</div>
+          <div class="kpi-item">Net revenue</div>
+          <div class="kpi-item">Take rate (%)</div>
+          <div class="kpi-item">Conversion rate (%)</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">Stripe</span><span class="tag gray">Google Sheets</span><span class="tag gray">Notion</span>
+        </div>
+      </div>
+
+      <div class="domain-card d-coral">
+        <div class="domain-header">
+          <div class="domain-icon">🎨</div>
+          <div>
+            <div class="domain-name">Experience Domain</div>
+            <div class="domain-owner">Owner: Product Manager</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Dashboardlar · User Flow · Feature'lar</div>
+        <div class="kpi-list">
+          <div class="kpi-item">Feature adoption (%)</div>
+          <div class="kpi-item">Drop-off rate</div>
+          <div class="kpi-item">Activation rate</div>
+          <div class="kpi-item">Time-to-value</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">Linear</span><span class="tag gray">Figma</span><span class="tag gray">Notion</span>
+        </div>
+      </div>
+
+      <div class="domain-card d-blue">
+        <div class="domain-header">
+          <div class="domain-icon">⚙️</div>
+          <div>
+            <div class="domain-name">Platform Core</div>
+            <div class="domain-owner">Owner: CTO</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Backend · API · Infra</div>
+        <div class="kpi-list">
+          <div class="kpi-item">Uptime (%)</div>
+          <div class="kpi-item">API latency</div>
+          <div class="kpi-item">Bug rate</div>
+          <div class="kpi-item">Deploy frequency</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">AWS</span><span class="tag gray">GitHub</span><span class="tag gray">Cursor</span>
+        </div>
+      </div>
+
+      <div class="domain-card d-pink">
+        <div class="domain-header">
+          <div class="domain-icon">🎧</div>
+          <div>
+            <div class="domain-name">Support & CRM</div>
+            <div class="domain-owner">Owner: Customer Success Lead</div>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">User Support · Retention · CRM</div>
+        <div class="kpi-list">
+          <div class="kpi-item">Response time</div>
+          <div class="kpi-item">Resolution time</div>
+          <div class="kpi-item">Retention rate</div>
+          <div class="kpi-item">NPS</div>
+        </div>
+        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
+          <span class="tag gray">Intercom</span><span class="tag gray">HubSpot</span><span class="tag gray">Notion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="section" id="features">
+  <div class="container">
+    <div class="feat-section">
+      <div class="feat-section-title">V1 — Must Have</div>
+      <div class="feat-grid">
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Kullanıcı Profili</div><div class="feat-item-desc">Kayıt, giriş, temel profil ve navigasyon</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Hizmet Talebi</div><div class="feat-item-desc">Bireysel kullanıcı profilinden hizmet talebi</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Admin Dashboard</div><div class="feat-item-desc">Platform yönetim paneli</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Haberler</div><div class="feat-item-desc">Diasporaya özel haber modülü</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">İşletme Listesi</div><div class="feat-item-desc">Restoran, market, yerel işletmeler</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Etkinlikler</div><div class="feat-item-desc">Etkinlik oluşturma, filtreleme, harita</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Danışman Modülü</div><div class="feat-item-desc">Claiming, olanaklar, teklif alma</div></div>
+        <div class="feat-item"><span class="v-badge v1">V1</span><div class="feat-item-name">Hospital Booking</div><div class="feat-item-desc">Sağlık randevu sistemi</div></div>
+      </div>
+    </div>
+
+    <div class="feat-section">
+      <div class="feat-section-title">V2 — Growth</div>
+      <div class="feat-grid">
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">WhatsApp Bot</div><div class="feat-item-desc">Platform bildirimleri + birebir chatbot</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">City Ambassador</div><div class="feat-item-desc">Blogger/vlogger şehir elçileri sistemi</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">Hoşgeldin Paketi</div><div class="feat-item-desc">Banka, kart, uçak, transfer, indirimler</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">İş İlanları</div><div class="feat-item-desc">İşletme + havuz bazlı iş fırsatları</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">Blog Yarışması</div><div class="feat-item-desc">SEO + blogger topluluk oluşturma</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">Jukebox</div><div class="feat-item-desc">İşletmelere müzik/istek sistemi</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">İndirim Kuponları</div><div class="feat-item-desc">Restoran/market etkileşim kuponu</div></div>
+        <div class="feat-item"><span class="v-badge v2">V2</span><div class="feat-item-name">WA Grup Kategorizasyon</div><div class="feat-item-desc">WhatsApp grupları düzenleme altyapısı</div></div>
+      </div>
+    </div>
+
+    <div class="feat-section">
+      <div class="feat-section-title">V3 — Scale</div>
+      <div class="feat-grid">
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">Event Sponsor Mgmt</div><div class="feat-item-desc">Tüm diaspora etkinliklerine sponsor altyapısı</div></div>
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">Etkileşim Havuzu</div><div class="feat-item-desc">All2Gather / OdtuGather entegrasyonu</div></div>
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">Çok Diaspora Desteği</div><div class="feat-item-desc">Türkçe ötesi diaspora genişlemesi</div></div>
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">Notetaker Entegrasyonu</div><div class="feat-item-desc">Online toplantı altyapısı + sponsorlu notlar</div></div>
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">Jukebox — Ayrı App</div><div class="feat-item-desc">İşletme müzik sistemi bağımsız uygulama</div></div>
+        <div class="feat-item"><span class="v-badge v3">V3</span><div class="feat-item-name">TV / Radyo Entegrasyonu</div><div class="feat-item-desc">Grey zone / Gen-Z medya kanalları</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GELİR MODELİ -->
+<div class="section" id="revenue">
+  <div class="container">
+    <div class="rev-grid">
+      <div class="rev-card">
+        <div style="color: #2dd4a0; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Bireysel Danışman</div>
+        <div class="rev-title">Claiming & Olanaklar</div>
+        <div class="rev-desc">Danışmanlar profil oluştururur, kullanıcılar teklif alır. Komisyon veya abonelik.</div>
+        <div class="rev-amount" style="color: #2dd4a0;">Komisyon %</div>
+      </div>
+      <div class="rev-card">
+        <div style="color: #7c6dfa; font-size: 13px; font-weight: 600; margin-bottom: 6px;">İşletme Aboneliği</div>
+        <div class="rev-title">Restoran / Market / Hizmet</div>
+        <div class="rev-desc">İşletmeler platforma kaydolur, indirim çeki + iş ilanı + kupon özellikleri.</div>
+        <div class="rev-amount" style="color: #7c6dfa;">Aylık SaaS</div>
+      </div>
+      <div class="rev-card">
+        <div style="color: #f5a623; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Etkinlik Sponsorluğu</div>
+        <div class="rev-title">Featured + Davetiye + Notetaker</div>
+        <div class="rev-desc">Etkinlik ilanları öne çıkarma, davetiye sistemi, toplantı altyapısından pay.</div>
+        <div class="rev-amount" style="color: #f5a623;">Featured + Rev Share</div>
+      </div>
+      <div class="rev-card">
+        <div style="color: #f06b4a; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Hoşgeldin Paketi</div>
+        <div class="rev-title">Banka · Araç Kiralama · Transfer</div>
+        <div class="rev-desc">Sponsorlu ürünler: banka kartı, e-devlet uygulaması, uçak bileti affiliate.</div>
+        <div class="rev-amount" style="color: #f06b4a;">Affiliate + Sponsor</div>
+      </div>
+      <div class="rev-card">
+        <div style="color: #4a9eff; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Kuruluşlar & Vakıflar</div>
+        <div class="rev-title">Konsolosluk · Dernek · Vakıf</div>
+        <div class="rev-desc">Etkinlik yönetimi, bağış/aidat modülü, üyelik arayüzü.</div>
+        <div class="rev-amount" style="color: #4a9eff;">Abonelik + İşlem</div>
+      </div>
+      <div class="rev-card">
+        <div style="color: #f06faa; font-size: 13px; font-weight: 600; margin-bottom: 6px;">Blogger / Vlogger</div>
+        <div class="rev-title">City Ambassador Programı</div>
+        <div class="rev-desc">İçerik üreticileri şehir elçisi olur, trafik ve büyüme sağlar, revenue share alır.</div>
+        <div class="rev-amount" style="color: #f06faa;">Revenue Share</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Operasyon Ritmi</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div>
+          <div style="font-size: 12px; color: #7c6dfa; font-weight: 600; margin-bottom: 8px;">📅 Haftalık</div>
+          <div style="font-size: 13px; color: #bbb; line-height: 1.8;">Her owner → 10 dk KPI update<br>Blokajlar → hızlı çözüm<br>KPI review</div>
+        </div>
+        <div>
+          <div style="font-size: 12px; color: #2dd4a0; font-weight: 600; margin-bottom: 8px;">📆 Aylık</div>
+          <div style="font-size: 13px; color: #bbb; line-height: 1.8;">Ne çalıştı / ne çalışmadı<br>Yeni deneyler<br>Revenue review</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DÖKÜMANLAR -->
+<div class="section" id="docs">
+  <div class="container">
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title">Dökümanlar & Linkler</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a href="https://drive.google.com/drive/u/0/folders/1WAvBnJvh9E2jEt23aohe8P4UpbVBjVGi" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #f5a623;">📁</span> Ana Google Drive Klasörü
+        </a>
+        <a href="https://docs.google.com/document/d/1zOeZCRetchpm3S0b_eyZCabGvQsWRVBT/edit" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #4a9eff;">📄</span> BA tarafından hazırlanan MVP Dökümanı
+        </a>
+        <a href="https://docs.google.com/document/d/13sJqSbpow5r3zWym8FMzw-vVFc8bud-P/edit" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #2dd4a0;">📄</span> Şehir Elçileri Mantığı Dökümanı
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1iBU6P27-fEgvxOU0-lr84zM7Y7PXqn2A6yoPRGp_KTk/edit" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #7c6dfa;">📊</span> Ekip / Görev / Ücret / Hisse Taslak Dosyası
+        </a>
+        <a href="https://lovable.dev/projects/05c49c32-31cc-4117-bfde-5c2b4bf472a1?magic_link=mc_631ca0be-0d0a-4b8c-b067-13fecd638031" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #f06b4a;">🔗</span> Lovable Proje Linki
+        </a>
+        <a href="https://diasporanet-connect.lovable.app/" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #f06faa;">🌐</span> diasporanet-connect.lovable.app
+        </a>
+        <a href="https://www.qualtronsinclair.com/qs-networks" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #888;">🔗</span> QS Networks
+        </a>
+        <a href="https://tuerkischeaerzte.de/" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #888;">🔗</span> tuerkischeaerzte.de
+        </a>
+        <a href="https://www.almanya101.de/index.html" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #ffffff06; border: 1px solid #2a2a38; border-radius: 8px; text-decoration: none; color: #ccc; font-size: 13px;">
+          <span style="color: #888;">🔗</span> almanya101.de
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Audit Prompt (GPT / Claude)</div>
+      <div style="background: #0a0a10; border: 1px solid #2a2a38; border-radius: 8px; padding: 14px; font-size: 12px; color: #aaa; font-family: monospace; line-height: 1.8; white-space: pre-wrap;">You are a senior product architect and startup CTO.
+Analyze the following MVP platform (CorteQS) as a complete system.
+Break it down into:
+1. All user types (personas)
+2. All features (grouped by category)
+3. Missing features (critical gaps)
+4. Revenue models (existing + potential)
+5. Commission structures
+6. Subscription tiers
+7. Dashboard structures (for each user type)
+8. Backend requirements (APIs, database models)
+9. UX/UI issues and improvements
+10. Feature prioritization by versions (V1/V2/V3)
+
+Then convert everything into a structured product backlog.
+Be brutally honest and think like a product scaling globally.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
