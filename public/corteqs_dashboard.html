@@ -129,7 +129,8 @@
 </div>
 
 <div class="nav">
-  <button class="nav-btn active" onclick="showTab('overview')">Genel Bakış</button>
+  <button class="nav-btn active" onclick="showTab('neden')">Neden?</button>
+  <button class="nav-btn" onclick="showTab('overview')">Genel Bakış</button>
   <button class="nav-btn" onclick="showTab('decisions')">Kararlar</button>
   <button class="nav-btn" onclick="showTab('domains')">Domain Ownership</button>
   <button class="nav-btn" onclick="showTab('features')">Feature'lar</button>
@@ -142,7 +143,52 @@
 </div>
 
 <!-- GENEL BAKIŞ -->
-<div class="section active" id="overview">
+<div class="section active" id="neden">
+  <div class="container">
+    <div style="max-width:680px;margin:40px auto;">
+      <div style="text-align:center;margin-bottom:40px;">
+        <div style="font-size:32px;font-weight:800;color:#e8e8f0;letter-spacing:-1px;margin-bottom:10px;">Bu Sayfa Neden Var?</div>
+        <div style="font-size:14px;color:#666;line-height:1.7;">CorteQS iç operasyon ve ürün yönetim merkezi</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">🧠</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Prompt Sonuçlarının Görsel Takibi</div><div style="font-size:13px;color:#888;line-height:1.6;">Oluşturulan tüm prompt çıktılarını dağınık dosyalar yerine tek bir yerden, görsel ve yapılandırılmış şekilde takip etmek için.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">🔗</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Döküman Linklerine Kolay Ulaşım</div><div style="font-size:13px;color:#888;line-height:1.6;">Drive, Notion, Lovable ve diğer tüm proje dökümanlarına tek tıkla erişim. Farklı platformlar arasında kaybolmadan.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">📋</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Taslakların Rahatlıkla Oluşturulması</div><div style="font-size:13px;color:#888;line-height:1.6;">Toplantılarda konuşulan fikirleri, kararları ve planları anında taslağa dönüştürüp paylaşmak için hızlı bir çalışma alanı.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">📝</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Karışık Notların Düzenli Listelenmesi</div><div style="font-size:13px;color:#888;line-height:1.6;">WhatsApp, Notion ve farklı platformlara saçılan toplantı notlarını temiz, tarihli ve okunabilir bir formatta bir araya getirmek için.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">✅</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Görev ve Karar Takibi</div><div style="font-size:13px;color:#888;line-height:1.6;">Kim ne yapacak, ne zaman bitecek, hangi karar alındı — bunları gerçek zamanlı takip etmek ve hesap verebilirliği artırmak için.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">📊</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Ürün ve Gelir Modelinin Şeffaf Yönetimi</div><div style="font-size:13px;color:#888;line-height:1.6;">Feature'lar, revenue akışları, domain ownership ve KPI'lar — tüm ürün kararlarını tek bir panelden görüp yönetmek için.</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;background:#18181f;border:1px solid #2a2a38;border-radius:12px;padding:18px 20px;">
+          <span style="font-size:20px;flex-shrink:0;">🚀</span>
+          <div><div style="font-size:14px;font-weight:600;color:#e8e8f0;margin-bottom:4px;">Ve Daha Fazlası…</div><div style="font-size:13px;color:#888;line-height:1.6;">Platform büyüdükçe bu sayfa da büyüyecek. Yatırımcı sunumundan operasyon ritmine, sprint planlamasından audit raporuna kadar her şey burada olacak.</div></div>
+        </div>
+      </div>
+      <div style="margin-top:32px;text-align:center;padding:20px;background:#7c6dfa11;border:1px solid #7c6dfa33;border-radius:12px;">
+        <div style="font-size:13px;color:#7c6dfa;font-weight:600;">CorteQS · İç Operasyon Merkezi</div>
+        <div style="font-size:12px;color:#666;margin-top:4px;">Yukarıdaki sekmeleri kullanarak gezinmeye başlayabilirsiniz.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="overview">
   <div class="container">
     <div class="kpi-grid">
       <div class="kpi-card purple">
