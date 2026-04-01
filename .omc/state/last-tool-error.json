@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"ls C:/.temp_private/cordocu/node_modules/.bin/next 2>&1\",\"description\":\"Check if next is installed\"}",
+  "error": "Exit code 2\nls: cannot access 'C:/.temp_private/cordocu/node_modules/.bin/next': No such file or directory",
+  "timestamp": "2026-04-01T20:55:27.561Z",
+  "retry_count": 1
+}
