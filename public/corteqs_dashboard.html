@@ -135,6 +135,7 @@
   <button class="nav-btn" onclick="showTab('features')">Feature'lar</button>
   <button class="nav-btn" onclick="showTab('revenue')">Gelir Modeli</button>
   <button class="nav-btn" onclick="showTab('docs')">Dökümanlar</button>
+  <button class="nav-btn" onclick="showTab('audit')">Audit</button>
   <button class="nav-btn" onclick="showTab('takip')">Takip Tablosu</button>
   <button class="nav-btn" onclick="showTab('projectstatus')">Project Status</button>
 </div>
@@ -367,128 +368,199 @@
 <!-- DOMAINS -->
 <div class="section" id="domains">
   <div class="container">
-    <p style="font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.6;">"Sahiplendirmeyi organizasyon şemasına göre değil, <strong style="color: #ccc;">sistem akışına</strong> göre yapmazsan dağılır."</p>
-    <div class="domain-grid">
-      <div class="domain-card d-purple">
-        <div class="domain-header">
-          <div class="domain-icon">📦</div>
-          <div>
-            <div class="domain-name">Supply Domain</div>
-            <div class="domain-owner">Owner: Head of Supply / BD Lead</div>
-          </div>
-        </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Advisor · İşletme · Partner</div>
-        <div class="kpi-list">
-          <div class="kpi-item">Haftalık onboard edilen advisor sayısı</div>
-          <div class="kpi-item">Aktif advisor oranı (%)</div>
-          <div class="kpi-item">Partner (venue/business) sayısı</div>
-          <div class="kpi-item">İlk işlem yapan advisor oranı (%)</div>
-        </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">HubSpot</span><span class="tag gray">Notion</span><span class="tag gray">Typeform</span>
-        </div>
-      </div>
 
-      <div class="domain-card d-teal">
-        <div class="domain-header">
-          <div class="domain-icon">🌐</div>
-          <div>
-            <div class="domain-name">Demand Domain</div>
-            <div class="domain-owner">Owner: Growth / Community Lead</div>
-          </div>
-        </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Kullanıcılar · Community · Ambassador'lar</div>
-        <div class="kpi-list">
-          <div class="kpi-item">Weekly active users (WAU)</div>
-          <div class="kpi-item">Yeni kullanıcı (#)</div>
-          <div class="kpi-item">Ambassador output</div>
-          <div class="kpi-item">Community engagement (%)</div>
-        </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">Meta Ads</span><span class="tag gray">LinkedIn</span><span class="tag gray">WhatsApp</span>
-        </div>
-      </div>
+    <!-- KART 1: Giriş -->
+    <div class="card" style="margin-bottom:16px;border-left:3px solid #7c6dfa;">
+      <div style="font-size:16px;font-weight:700;color:#e8e8f0;margin-bottom:10px;">Domain Ownership Modeli</div>
+      <p style="font-size:13px;color:#aaa;line-height:1.8;margin-bottom:12px;">"<strong style="color:#ccc;">Sahiplendirmeyi organizasyon şemasına göre değil, sistem akışına göre yapmazsan dağılır.</strong>"</p>
+      <p style="font-size:13px;color:#888;line-height:1.7;">Yani kişi bazlı değil → <strong style="color:#7c6dfa;">domain (alan) bazlı ownership</strong> kurman gerekiyor. Her domain'in tek bir owner'ı vardır — ekip olabilir ama sorumluluk tektir. Owner; KPI'lardan, backlog'dan, geliştirme önceliğinden ve büyümeden sorumludur. <em>Her işi yapmaktan veya teknik implementasyondan değil.</em></p>
+    </div>
 
-      <div class="domain-card d-amber">
-        <div class="domain-header">
-          <div class="domain-icon">💳</div>
-          <div>
-            <div class="domain-name">Transaction Domain</div>
-            <div class="domain-owner">Owner: Revenue / Monetization Lead</div>
+    <!-- KART 2: 6 Domain -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">1 — Domain Haritası</div>
+      <div class="domain-grid">
+        <div class="domain-card d-purple">
+          <div class="domain-header"><div class="domain-icon">📦</div><div><div class="domain-name">Supply Domain</div><div class="domain-owner">Owner: Head of Supply / BD Lead</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">Advisor · İşletme · Partner</div>
+          <div class="kpi-list">
+            <div class="kpi-item">Haftalık onboard edilen advisor sayısı</div>
+            <div class="kpi-item">Aktif advisor oranı (%)</div>
+            <div class="kpi-item">Partner (venue/business) sayısı</div>
+            <div class="kpi-item">İlk işlem yapan advisor oranı (%)</div>
           </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">HubSpot</span><span class="tag gray">Notion</span><span class="tag gray">Typeform</span></div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Booking · Ödeme · Komisyon · Revenue Share</div>
-        <div class="kpi-list">
-          <div class="kpi-item">GMV (toplam işlem hacmi)</div>
-          <div class="kpi-item">Net revenue</div>
-          <div class="kpi-item">Take rate (%)</div>
-          <div class="kpi-item">Conversion rate (%)</div>
-        </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">Stripe</span><span class="tag gray">Google Sheets</span><span class="tag gray">Notion</span>
-        </div>
-      </div>
-
-      <div class="domain-card d-coral">
-        <div class="domain-header">
-          <div class="domain-icon">🎨</div>
-          <div>
-            <div class="domain-name">Experience Domain</div>
-            <div class="domain-owner">Owner: Product Manager</div>
+        <div class="domain-card d-teal">
+          <div class="domain-header"><div class="domain-icon">🌐</div><div><div class="domain-name">Demand Domain</div><div class="domain-owner">Owner: Growth / Community Lead</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">Kullanıcılar · Community · Ambassador'lar</div>
+          <div class="kpi-list">
+            <div class="kpi-item">Weekly active users (WAU)</div>
+            <div class="kpi-item">Yeni kullanıcı (#)</div>
+            <div class="kpi-item">Ambassador output</div>
+            <div class="kpi-item">Community engagement (%)</div>
           </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">Meta Ads</span><span class="tag gray">LinkedIn</span><span class="tag gray">WhatsApp</span></div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Dashboardlar · User Flow · Feature'lar</div>
-        <div class="kpi-list">
-          <div class="kpi-item">Feature adoption (%)</div>
-          <div class="kpi-item">Drop-off rate</div>
-          <div class="kpi-item">Activation rate</div>
-          <div class="kpi-item">Time-to-value</div>
-        </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">Linear</span><span class="tag gray">Figma</span><span class="tag gray">Notion</span>
-        </div>
-      </div>
-
-      <div class="domain-card d-blue">
-        <div class="domain-header">
-          <div class="domain-icon">⚙️</div>
-          <div>
-            <div class="domain-name">Platform Core</div>
-            <div class="domain-owner">Owner: CTO</div>
+        <div class="domain-card d-amber">
+          <div class="domain-header"><div class="domain-icon">💳</div><div><div class="domain-name">Transaction Domain</div><div class="domain-owner">Owner: Revenue / Monetization Lead</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">Booking · Ödeme · Komisyon · Revenue Share</div>
+          <div class="kpi-list">
+            <div class="kpi-item">GMV (toplam işlem hacmi)</div>
+            <div class="kpi-item">Net revenue</div>
+            <div class="kpi-item">Take rate (%)</div>
+            <div class="kpi-item">Conversion rate (%)</div>
           </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">Stripe</span><span class="tag gray">Google Sheets</span><span class="tag gray">Notion</span></div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">Backend · API · Infra</div>
-        <div class="kpi-list">
-          <div class="kpi-item">Uptime (%)</div>
-          <div class="kpi-item">API latency</div>
-          <div class="kpi-item">Bug rate</div>
-          <div class="kpi-item">Deploy frequency</div>
-        </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">AWS</span><span class="tag gray">GitHub</span><span class="tag gray">Cursor</span>
-        </div>
-      </div>
-
-      <div class="domain-card d-pink">
-        <div class="domain-header">
-          <div class="domain-icon">🎧</div>
-          <div>
-            <div class="domain-name">Support & CRM</div>
-            <div class="domain-owner">Owner: Customer Success Lead</div>
+        <div class="domain-card d-coral">
+          <div class="domain-header"><div class="domain-icon">🎨</div><div><div class="domain-name">Experience Domain</div><div class="domain-owner">Owner: Product Manager</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">Dashboardlar · User Flow · Feature'lar</div>
+          <div class="kpi-list">
+            <div class="kpi-item">Feature adoption (%)</div>
+            <div class="kpi-item">Drop-off rate</div>
+            <div class="kpi-item">Activation rate</div>
+            <div class="kpi-item">Time-to-value</div>
           </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">Linear</span><span class="tag gray">Figma</span><span class="tag gray">Notion</span></div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">User Support · Retention · CRM</div>
-        <div class="kpi-list">
-          <div class="kpi-item">Response time</div>
-          <div class="kpi-item">Resolution time</div>
-          <div class="kpi-item">Retention rate</div>
-          <div class="kpi-item">NPS</div>
+        <div class="domain-card d-blue">
+          <div class="domain-header"><div class="domain-icon">⚙️</div><div><div class="domain-name">Platform Core</div><div class="domain-owner">Owner: CTO</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">Backend · API · Infra</div>
+          <div class="kpi-list">
+            <div class="kpi-item">Uptime (%)</div>
+            <div class="kpi-item">API latency</div>
+            <div class="kpi-item">Bug rate</div>
+            <div class="kpi-item">Deploy frequency</div>
+          </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">AWS</span><span class="tag gray">GitHub</span><span class="tag gray">Cursor</span></div>
         </div>
-        <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px;">
-          <span class="tag gray">Intercom</span><span class="tag gray">HubSpot</span><span class="tag gray">Notion</span>
+        <div class="domain-card d-pink">
+          <div class="domain-header"><div class="domain-icon">🎧</div><div><div class="domain-name">Support & CRM</div><div class="domain-owner">Owner: Customer Success Lead</div></div></div>
+          <div style="font-size:11px;color:#888;margin-bottom:8px;">User Support · Retention · CRM</div>
+          <div class="kpi-list">
+            <div class="kpi-item">Response time</div>
+            <div class="kpi-item">Resolution time</div>
+            <div class="kpi-item">Retention rate</div>
+            <div class="kpi-item">NPS</div>
+          </div>
+          <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;"><span class="tag gray">Intercom</span><span class="tag gray">HubSpot</span><span class="tag gray">Notion</span></div>
         </div>
       </div>
     </div>
+
+    <!-- KART 3: KPI Haritası -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">2 — KPI Haritası</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+        <div style="background:#7c6dfa11;border:1px solid #7c6dfa33;border-radius:10px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#7c6dfa;margin-bottom:8px;">📦 Supply Owner</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.9;">· Onboard edilen advisor sayısı<br>· Aktif partner sayısı</div>
+        </div>
+        <div style="background:#2dd4a011;border:1px solid #2dd4a033;border-radius:10px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#2dd4a0;margin-bottom:8px;">🌐 Demand Owner</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.9;">· Aktif user<br>· Community growth<br>· Ambassador output</div>
+        </div>
+        <div style="background:#f5a62311;border:1px solid #f5a62333;border-radius:10px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#f5a623;margin-bottom:8px;">💳 Revenue Owner</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.9;">· İşlem hacmi (GMV)<br>· Komisyon geliri</div>
+        </div>
+        <div style="background:#f06b4a11;border:1px solid #f06b4a33;border-radius:10px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#f06b4a;margin-bottom:8px;">🎨 Product Owner</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.9;">· Feature adoption<br>· Drop-off oranı</div>
+        </div>
+        <div style="background:#4a9eff11;border:1px solid #4a9eff33;border-radius:10px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#4a9eff;margin-bottom:8px;">🎧 Support Owner</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.9;">· Response time<br>· User satisfaction (NPS)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART 4: Operasyon Modeli -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">3 — Operasyon Modeli</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#1a1a24;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#7c6dfa;font-weight:700;margin-bottom:10px;">📅 Haftalık Ritüel</div>
+          <div style="font-size:13px;color:#bbb;line-height:1.9;">· Her owner → 10 dk KPI update<br>· Blokajlar → hızlı çözüm<br>· KPI review</div>
+        </div>
+        <div style="background:#1a1a24;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#2dd4a0;font-weight:700;margin-bottom:10px;">📆 Aylık Ritüel</div>
+          <div style="font-size:13px;color:#bbb;line-height:1.9;">· Ne çalıştı / ne çalışmadı<br>· Yeni deneyler<br>· Revenue review</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART 5: Tool Setup -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">4 — Minimum Tool Setup</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:10px;padding:14px 20px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:6px;">📋</div>
+          <div style="font-size:13px;font-weight:600;color:#e8e8f0;">Notion</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">Backlog + Ownership</div>
+        </div>
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:10px;padding:14px 20px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:6px;">⚡</div>
+          <div style="font-size:13px;font-weight:600;color:#e8e8f0;">Linear</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">Task takibi</div>
+        </div>
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:10px;padding:14px 20px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:6px;">💬</div>
+          <div style="font-size:13px;font-weight:600;color:#e8e8f0;">Slack</div>
+          <div style="font-size:12px;color:#666;margin-top:3px;">İletişim</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART 6: En Büyük Hata -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">5 — En Büyük Hata</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#f06b4a0a;border:1px solid #f06b4a33;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#f06b4a;font-weight:700;margin-bottom:10px;">❌ Fonksiyon Bazlı Dağıtım</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· "Frontend senin"<br>· "Marketing senin"<br><br><strong style="color:#f06b4a;">→ Kaos yaratır</strong></div>
+        </div>
+        <div style="background:#2dd4a00a;border:1px solid #2dd4a033;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#2dd4a0;font-weight:700;margin-bottom:10px;">✅ Domain Bazlı Dağıtım</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· "User growth senin"<br>· "Revenue senin"<br><br><strong style="color:#2dd4a0;">→ Accountability yaratır</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART 7: Senin Rolün -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">6 — Kurucu Rolü (Kritik)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#7c6dfa;font-weight:700;margin-bottom:10px;">✅ Senin İşin</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· Domain'leri tasarla<br>· Doğru owner'ları ata<br>· Sistemin çalışmasını izle</div>
+        </div>
+        <div style="background:#f06b4a0a;border:1px solid #f06b4a33;border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:#f06b4a;font-weight:700;margin-bottom:10px;">❌ Senin İşin Değil</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· Mikro yönetim<br>· Her görevi kendin yapmak</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KART 8: Net Sonuç -->
+    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #2a2a38;border-radius:12px;padding:24px;">
+      <div style="font-size:13px;font-weight:700;color:#e8e8f0;margin-bottom:14px;">Net Sonuç</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:#f06b4a;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Bu yapı kurulmazsa</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· Feature'lar sahipsiz kalır<br>· Revenue oluşmaz<br>· Herkes busy görünür ama sistem çalışmaz</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#2dd4a0;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Bu yapı kurulursa</div>
+          <div style="font-size:13px;color:#aaa;line-height:1.9;">· Her domain büyür bağımsız<br>· Revenue izlenebilir<br>· <strong style="color:#2dd4a0;">CorteQS = self-running growth machine</strong></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:12px 16px;background:#7c6dfa11;border-left:3px solid #7c6dfa;border-radius:4px;">
+        <div style="font-size:12px;color:#ccc;line-height:1.7;"><strong style="color:#7c6dfa;">Sonraki Adım:</strong> Her domain için → <strong style="color:#e8e8f0;">owner atama + KPI hedefi + tool seçimi</strong> → 2 Nisan Perşembe toplantısında konuşulacak.</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -650,6 +722,329 @@ Break it down into:
 Then convert everything into a structured product backlog.
 Be brutally honest and think like a product scaling globally.</div>
     </div>
+  </div>
+</div>
+
+<div class="section" id="audit">
+  <div class="container">
+
+    <!-- HEADER -->
+    <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid #2a2a38;border-radius:14px;padding:28px 32px;margin-bottom:24px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:#7c6dfa;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Senior Product Architect · CTO Perspective</div>
+          <div style="font-size:22px;font-weight:700;color:#f0f0ff;margin-bottom:6px;">CorteQS Platform Audit</div>
+          <div style="font-size:13px;color:#888;max-width:640px;line-height:1.7;">Global Türk Diasporası için çok taraflı bir platform. Yapılan analiz; kullanıcı tipleri, feature gap'leri, gelir modeli açıkları ve ölçekleme önceliklerini kapsamaktadır.</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="background:#2dd4a022;border:1px solid #2dd4a044;border-radius:8px;padding:10px 16px;text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#2dd4a0;">6</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Persona</div>
+          </div>
+          <div style="background:#f06b4a22;border:1px solid #f06b4a44;border-radius:8px;padding:10px 16px;text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#f06b4a;">12</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Kritik Gap</div>
+          </div>
+          <div style="background:#7c6dfa22;border:1px solid #7c6dfa44;border-radius:8px;padding:10px 16px;text-align:center;">
+            <div style="font-size:20px;font-weight:700;color:#7c6dfa;">7</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Gelir Akışı</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. PERSONA'LAR -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">1 — Kullanıcı Tipleri (Personas)</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+        <div style="background:#7c6dfa11;border:1px solid #7c6dfa33;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#7c6dfa;margin-bottom:6px;">Yeni Göçmen</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">Yeni gelmiş, sistemi anlamaya çalışan, hoşgeldin paketi ihtiyacı duyan kullanıcı. <strong style="color:#ccc;">En kritik acquisition hedefi.</strong></div>
+        </div>
+        <div style="background:#2dd4a011;border:1px solid #2dd4a033;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#2dd4a0;margin-bottom:6px;">Yerleşik Diaspora</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">10+ yıldır yurt dışında, işletmesi olan ya da profesyonel ağı güçlü, platform değerini anlayan kullanıcı.</div>
+        </div>
+        <div style="background:#f5a62311;border:1px solid #f5a62333;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f5a623;margin-bottom:6px;">Danışman (Advisor)</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">Avukat, muhasebeci, doktor, sigorta. Platform üzerinden müşteri bulan, profil açan, teklif veren profesyonel.</div>
+        </div>
+        <div style="background:#f06b4a11;border:1px solid #f06b4a33;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f06b4a;margin-bottom:6px;">İşletme Sahibi</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">Restoran, market, kuaför, ajans. SaaS abonelikle iş ilanı, kupon ve Jukebox gibi araçları kullanan B2B müşteri.</div>
+        </div>
+        <div style="background:#4a9eff11;border:1px solid #4a9eff33;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#4a9eff;margin-bottom:6px;">City Ambassador</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">Blogger/vlogger, sosyal medya üreticisi. Şehir elçisi olarak trafik üretir, revenue share alır. <strong style="color:#ccc;">Büyüme motoru.</strong></div>
+        </div>
+        <div style="background:#f06faa11;border:1px solid #f06faa33;border-radius:10px;padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f06faa;margin-bottom:6px;">Kurum / Vakıf</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.6;">Konsolosluk, dernek, diaspora vakfı. Etkinlik yönetimi, üyelik ve bağış modülü kullanan kurumsal kullanıcı.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FEATURE GAP'LER -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">2 — Kritik Eksikler (Must-Fix Before Launch)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f06b4a0a;border:1px solid #f06b4a33;border-radius:8px;">
+          <span style="color:#f06b4a;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f06b4a22;border-radius:4px;text-align:center;">KRİTİK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Auth & Onboarding Flow tanımlanmamış</div><div style="font-size:12px;color:#888;margin-top:3px;">Kullanıcı kayıt → profil tamamlama → ilk değer akışı tamamen belirsiz. Bu olmadan acquisition ölçülemez.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f06b4a0a;border:1px solid #f06b4a33;border-radius:8px;">
+          <span style="color:#f06b4a;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f06b4a22;border-radius:4px;text-align:center;">KRİTİK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Ödeme altyapısı (Stripe) entegre değil</div><div style="font-size:12px;color:#888;margin-top:3px;">Komisyon, abonelik, sponsor ödemeleri için Stripe Connect gerekli. Olmadan GMV = 0.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f06b4a0a;border:1px solid #f06b4a33;border-radius:8px;">
+          <span style="color:#f06b4a;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f06b4a22;border-radius:4px;text-align:center;">KRİTİK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">GDPR / Veri gizliliği uyumu yok</div><div style="font-size:12px;color:#888;margin-top:3px;">Avrupa pazarında (Almanya, Hollanda, Belçika) faaliyet için GDPR zorunlu. Şu an sıfır uyum.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f5a6230a;border:1px solid #f5a62333;border-radius:8px;">
+          <span style="color:#f5a623;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f5a62322;border-radius:4px;text-align:center;">YÜKSEK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Mobile-first strateji belirsiz</div><div style="font-size:12px;color:#888;margin-top:3px;">Diaspora kullanıcıları mobilde. Web-only ile acquisition mümkün değil. PWA veya native uygulama kararı verilmeli.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f5a6230a;border:1px solid #f5a62333;border-radius:8px;">
+          <span style="color:#f5a623;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f5a62322;border-radius:4px;text-align:center;">YÜKSEK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Ambassador payout yapısı belirsiz</div><div style="font-size:12px;color:#888;margin-top:3px;">Revenue share % nedir? Nasıl hesaplanır? Tracking nasıl yapılır? Bu olmadan ambassador program çalışmaz.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f5a6230a;border:1px solid #f5a62333;border-radius:8px;">
+          <span style="color:#f5a623;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f5a62322;border-radius:4px;text-align:center;">YÜKSEK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">İçerik moderasyon sistemi yok</div><div style="font-size:12px;color:#888;margin-top:3px;">Haber, blog, iş ilanı, profil içerikleri için moderasyon altyapısı olmadan platform güvenliği sağlanamaz.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#f5a6230a;border:1px solid #f5a62333;border-radius:8px;">
+          <span style="color:#f5a623;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#f5a62322;border-radius:4px;text-align:center;">YÜKSEK</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Çok dil desteği planlanmamış</div><div style="font-size:12px;color:#888;margin-top:3px;">Türkçe + hedef ülke dili (Almanca, Hollandaca, Fransızca) olmadan platformun çekiciliği sınırlı kalır.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:8px;">
+          <span style="color:#7c6dfa;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#7c6dfa22;border-radius:4px;text-align:center;">ORTA</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Analytics & tracking stack tanımlanmamış</div><div style="font-size:12px;color:#888;margin-top:3px;">Mixpanel / Amplitude / PostHog olmadan davranış verisi toplanamaz, funnel optimizasyonu yapılamaz.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:8px;">
+          <span style="color:#7c6dfa;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#7c6dfa22;border-radius:4px;text-align:center;">ORTA</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Notification altyapısı yok (push, email, WhatsApp)</div><div style="font-size:12px;color:#888;margin-top:3px;">Retention için push bildirim, e-posta (Resend/SendGrid) ve WhatsApp Business API entegrasyonu şart.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:8px;">
+          <span style="color:#7c6dfa;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#7c6dfa22;border-radius:4px;text-align:center;">ORTA</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Tüm kullanıcı tipleri için dashboard tanımı eksik</div><div style="font-size:12px;color:#888;margin-top:3px;">Advisor, işletme, ambassador ve kurum için ayrı dashboard wireframe'leri hazırlanmalı. Şu an sadece admin var.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:8px;">
+          <span style="color:#7c6dfa;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#7c6dfa22;border-radius:4px;text-align:center;">ORTA</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Legal entity kurulmamış</div><div style="font-size:12px;color:#888;margin-top:3px;">Dubai veya Delaware kararı hâlâ açık. Yatırım görüşmeleri ve sözleşmeler için şirket yapısı kritik.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:#7c6dfa0a;border:1px solid #7c6dfa33;border-radius:8px;">
+          <span style="color:#7c6dfa;font-weight:700;font-size:12px;min-width:70px;padding:2px 8px;background:#7c6dfa22;border-radius:4px;text-align:center;">ORTA</span>
+          <div><div style="font-size:13px;color:#e8e8f0;font-weight:600;">Hospital booking backend'i belirsiz</div><div style="font-size:12px;color:#888;margin-top:3px;">Calendly/custom booking sistemi mi? Hastane API entegrasyonu mu? Ödeme nasıl alınacak? Soruların yanıtı yok.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. GELİR MODELİ ANALİZİ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">3 — Gelir Modeli Analizi & Öneriler</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:#1e1e28;border-bottom:1px solid #2a2a38;">
+              <th style="padding:10px 14px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Gelir Akışı</th>
+              <th style="padding:10px 14px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Model</th>
+              <th style="padding:10px 14px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Önerilen Oran</th>
+              <th style="padding:10px 14px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Durum</th>
+              <th style="padding:10px 14px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Not</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">Danışman Komisyonu</td>
+              <td style="padding:10px 14px;color:#aaa;">Take-rate</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">%15–20</td>
+              <td style="padding:10px 14px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 8px;border-radius:4px;font-size:11px;">Tanımsız</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Stripe Connect ile otomatikleştir</td>
+            </tr>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">İşletme Aboneliği</td>
+              <td style="padding:10px 14px;color:#aaa;">SaaS</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">€29–€99/ay</td>
+              <td style="padding:10px 14px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 8px;border-radius:4px;font-size:11px;">Tanımsız</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">3 tier: Basic / Pro / Enterprise</td>
+            </tr>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">Etkinlik Sponsorluğu</td>
+              <td style="padding:10px 14px;color:#aaa;">Featured</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">€50–€500/etkinlik</td>
+              <td style="padding:10px 14px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 8px;border-radius:4px;font-size:11px;">Tanımsız</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Reach-based fiyatlandırma ekle</td>
+            </tr>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">Hoşgeldin Paketi</td>
+              <td style="padding:10px 14px;color:#aaa;">Affiliate</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">€20–€150/lead</td>
+              <td style="padding:10px 14px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 8px;border-radius:4px;font-size:11px;">Planlandı</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Banka ortaklıkları önce kazan</td>
+            </tr>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">City Ambassador</td>
+              <td style="padding:10px 14px;color:#aaa;">Rev Share</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">%30–%40 rev share</td>
+              <td style="padding:10px 14px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 8px;border-radius:4px;font-size:11px;">Tanımsız</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Attribution tracking şart</td>
+            </tr>
+            <tr style="border-bottom:1px solid #1e1e28;">
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">Kurum / Vakıf</td>
+              <td style="padding:10px 14px;color:#aaa;">Abonelik</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">€199–€499/ay</td>
+              <td style="padding:10px 14px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 8px;border-radius:4px;font-size:11px;">Tanımsız</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Konsolosluk pilot ile başla</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px;color:#e8e8f0;font-weight:600;">Hospital Booking</td>
+              <td style="padding:10px 14px;color:#aaa;">Komisyon</td>
+              <td style="padding:10px 14px;color:#2dd4a0;font-weight:600;">%10–%15/randevu</td>
+              <td style="padding:10px 14px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 8px;border-radius:4px;font-size:11px;">Backend yok</span></td>
+              <td style="padding:10px 14px;color:#666;font-size:12px;">Önce manual → sonra API entegrasyon</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. ABONELIK TİERLERİ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">4 — Önerilen Abonelik Tiers</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+        <div style="border:1px solid #2a2a38;border-radius:10px;padding:18px;">
+          <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Bireysel</div>
+          <div style="font-size:22px;font-weight:700;color:#e8e8f0;margin-bottom:4px;">Ücretsiz</div>
+          <div style="font-size:12px;color:#666;margin-bottom:12px;">Temel profil + haber okuma</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.8;">✓ Profil oluştur<br>✓ Haber oku<br>✓ Etkinlik gör<br>✗ Hizmet talebi<br>✗ Premium içerik</div>
+        </div>
+        <div style="border:1px solid #7c6dfa;border-radius:10px;padding:18px;background:#7c6dfa08;">
+          <div style="font-size:11px;color:#7c6dfa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Premium Üye</div>
+          <div style="font-size:22px;font-weight:700;color:#7c6dfa;margin-bottom:4px;">€4.99<span style="font-size:13px;color:#888;">/ay</span></div>
+          <div style="font-size:12px;color:#666;margin-bottom:12px;">Tüm özellikler + öncelikli destek</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.8;">✓ Hizmet talebi<br>✓ Hospital booking<br>✓ İş ilanı başvuru<br>✓ Hoşgeldin paketi<br>✓ WhatsApp bot</div>
+        </div>
+        <div style="border:1px solid #f5a623;border-radius:10px;padding:18px;background:#f5a62308;">
+          <div style="font-size:11px;color:#f5a623;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">İşletme Basic</div>
+          <div style="font-size:22px;font-weight:700;color:#f5a623;margin-bottom:4px;">€29<span style="font-size:13px;color:#888;">/ay</span></div>
+          <div style="font-size:12px;color:#666;margin-bottom:12px;">Listeleme + kupon + iş ilanı</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.8;">✓ İşletme profili<br>✓ 3 iş ilanı/ay<br>✓ 5 kupon/ay<br>✓ Temel analitik<br>✗ Jukebox</div>
+        </div>
+        <div style="border:1px solid #2dd4a0;border-radius:10px;padding:18px;background:#2dd4a008;">
+          <div style="font-size:11px;color:#2dd4a0;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">İşletme Pro</div>
+          <div style="font-size:22px;font-weight:700;color:#2dd4a0;margin-bottom:4px;">€79<span style="font-size:13px;color:#888;">/ay</span></div>
+          <div style="font-size:12px;color:#666;margin-bottom:12px;">Tüm araçlar + öne çıkar + Jukebox</div>
+          <div style="font-size:12px;color:#aaa;line-height:1.8;">✓ Sınırsız ilan<br>✓ Sınırsız kupon<br>✓ Jukebox erişimi<br>✓ Öne çıkar<br>✓ Gelişmiş analitik</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. DASHBOARD YAPILARI -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">5 — Her Kullanıcı Tipi İçin Dashboard Yapısı</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#7c6dfa;margin-bottom:8px;">Admin Dashboard</div>
+          <div style="font-size:12px;color:#888;line-height:1.9;">📊 GMV, WAU, Take-rate KPIs<br>👥 Kullanıcı yönetimi<br>✅ İçerik moderasyon kuyruğu<br>💳 Ödeme & komisyon takibi<br>📣 Campaign & ambassador mgmt</div>
+        </div>
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#2dd4a0;margin-bottom:8px;">Advisor Dashboard</div>
+          <div style="font-size:12px;color:#888;line-height:1.9;">📥 Gelen talepler & teklifler<br>📅 Randevu takvimi<br>💰 Kazanç & komisyon özeti<br>⭐ Değerlendirmeler<br>📈 Profil görüntülenme analitik</div>
+        </div>
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#f5a623;margin-bottom:8px;">İşletme Dashboard</div>
+          <div style="font-size:12px;color:#888;line-height:1.9;">👁 Profil görüntülenme & tıklama<br>🎫 Aktif kuponlar & kullanım oranı<br>💼 İş ilanları & başvurular<br>🎵 Jukebox yönetimi<br>📊 Aylık performans raporu</div>
+        </div>
+        <div style="background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:#f06faa;margin-bottom:8px;">Ambassador Dashboard</div>
+          <div style="font-size:12px;color:#888;line-height:1.9;">🔗 Referral link & QR kod<br>📊 Tıklama, kayıt, conversion<br>💸 Kazanç & bekleyen ödemeler<br>🏆 Liderboard sıralaması<br>📋 İçerik görev listesi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. BACKEND GEREKSİNİMLER -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">6 — Backend Gereksinimleri & Tech Stack</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;">
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#7c6dfa;margin-bottom:8px;">Auth & Kullanıcı</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">Supabase Auth ✓<br>Role-based access (user/advisor/business/admin)<br>Social login (Google, Apple)<br>Phone OTP (WhatsApp)</div>
+        </div>
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#2dd4a0;margin-bottom:8px;">Ödeme & Finansal</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">Stripe Connect (split payments)<br>Subscription management<br>Invoice generation<br>Payout scheduling</div>
+        </div>
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#f5a623;margin-bottom:8px;">Bildirim Altyapısı</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">WhatsApp Business API (360Dialog/Twilio)<br>Push notifications (OneSignal)<br>Email (Resend/SendGrid)<br>In-app notifications</div>
+        </div>
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#f06b4a;margin-bottom:8px;">İçerik & Arama</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">Supabase Storage (medya)<br>Algolia veya pgvector (arama)<br>CMS (Sanity/Contentful) haber için<br>Image CDN (Cloudflare)</div>
+        </div>
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#4a9eff;margin-bottom:8px;">Analitik & CRM</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">PostHog (product analytics)<br>HubSpot (CRM/sales)<br>Metabase (internal BI)<br>Sentry (error tracking)</div>
+        </div>
+        <div style="padding:14px;background:#1a1a24;border:1px solid #2a2a38;border-radius:8px;">
+          <div style="font-size:12px;font-weight:700;color:#f06faa;margin-bottom:8px;">Kritik DB Modelleri</div>
+          <div style="font-size:12px;color:#888;line-height:1.8;">users, profiles, roles<br>businesses, services, bookings<br>events, sponsorships<br>transactions, payouts, commissions<br>ambassadors, referrals, conversions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. BACKLOG -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">7 — Structured Product Backlog</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="background:#1e1e28;border-bottom:1px solid #2a2a38;">
+              <th style="padding:10px 12px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;white-space:nowrap;">Feature</th>
+              <th style="padding:10px 12px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;">Açıklama</th>
+              <th style="padding:10px 12px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;white-space:nowrap;">Öncelik</th>
+              <th style="padding:10px 12px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;white-space:nowrap;">Ver.</th>
+              <th style="padding:10px 12px;text-align:left;color:#666;font-size:11px;text-transform:uppercase;white-space:nowrap;">Bağımlılık</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Auth & Onboarding</td><td style="padding:9px 12px;color:#888;">Kayıt, giriş, profil tamamlama akışı</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">—</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">RBAC (Role-Based Access)</td><td style="padding:9px 12px;color:#888;">user/advisor/business/admin rolleri</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Auth</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Stripe Connect</td><td style="padding:9px 12px;color:#888;">Split payment, abonelik, komisyon otomasyonu</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Auth, RBAC</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Advisor Profil & Talep</td><td style="padding:9px 12px;color:#888;">Claiming, teklif al, randevu & ödeme</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Stripe</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">İşletme Onboarding</td><td style="padding:9px 12px;color:#888;">Profil, iş ilanı, kupon yönetimi</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Stripe, RBAC</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">GDPR Uyum</td><td style="padding:9px 12px;color:#888;">Consent management, veri silme, cookie banner</td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">P0</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Auth</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">PWA / Mobile</td><td style="padding:9px 12px;color:#888;">Progressive Web App, push notification, home screen</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#2dd4a022;color:#2dd4a0;padding:2px 7px;border-radius:4px;font-size:11px;">V1</span></td><td style="padding:9px 12px;color:#666;">Core platform</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">WhatsApp Bot</td><td style="padding:9px 12px;color:#888;">360Dialog/Twilio entegrasyonu, chatbot + bildirim</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#7c6dfa22;color:#7c6dfa;padding:2px 7px;border-radius:4px;font-size:11px;">V2</span></td><td style="padding:9px 12px;color:#666;">Auth, notif</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Ambassador Program</td><td style="padding:9px 12px;color:#888;">Referral tracking, rev share hesaplama, payout</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#7c6dfa22;color:#7c6dfa;padding:2px 7px;border-radius:4px;font-size:11px;">V2</span></td><td style="padding:9px 12px;color:#666;">Stripe, analytics</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">İçerik Moderasyon</td><td style="padding:9px 12px;color:#888;">AI-assisted + human review kuyruğu</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#7c6dfa22;color:#7c6dfa;padding:2px 7px;border-radius:4px;font-size:11px;">V2</span></td><td style="padding:9px 12px;color:#666;">Admin dashboard</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Hoşgeldin Paketi</td><td style="padding:9px 12px;color:#888;">Affiliate link hub, banka/araç kiralama partnerlıkları</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#7c6dfa22;color:#7c6dfa;padding:2px 7px;border-radius:4px;font-size:11px;">V2</span></td><td style="padding:9px 12px;color:#666;">Auth, partner anlaşmaları</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">PostHog Analytics</td><td style="padding:9px 12px;color:#888;">Funnel, retention, feature flag, session recording</td><td style="padding:9px 12px;"><span style="background:#f5a62322;color:#f5a623;padding:2px 7px;border-radius:4px;font-size:11px;">P1</span></td><td style="padding:9px 12px;"><span style="background:#7c6dfa22;color:#7c6dfa;padding:2px 7px;border-radius:4px;font-size:11px;">V2</span></td><td style="padding:9px 12px;color:#666;">—</td></tr>
+            <tr style="border-bottom:1px solid #1e1e28;"><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Jukebox (standalone)</td><td style="padding:9px 12px;color:#888;">İşletme müzik sistemi bağımsız uygulama</td><td style="padding:9px 12px;"><span style="background:#44444422;color:#aaa;padding:2px 7px;border-radius:4px;font-size:11px;">P2</span></td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">V3</span></td><td style="padding:9px 12px;color:#666;">İşletme aboneliği</td></tr>
+            <tr><td style="padding:9px 12px;color:#e8e8f0;font-weight:600;white-space:nowrap;">Multi-Diaspora Genişleme</td><td style="padding:9px 12px;color:#888;">Arapça, Farsça, diğer diaspora dilleri</td><td style="padding:9px 12px;"><span style="background:#44444422;color:#aaa;padding:2px 7px;border-radius:4px;font-size:11px;">P2</span></td><td style="padding:9px 12px;"><span style="background:#f06b4a22;color:#f06b4a;padding:2px 7px;border-radius:4px;font-size:11px;">V3</span></td><td style="padding:9px 12px;color:#666;">Traction + funding</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 8. SONUÇ -->
+    <div style="background:#1a1a2e;border:1px solid #2a2a38;border-radius:12px;padding:24px;">
+      <div style="font-size:13px;font-weight:700;color:#e8e8f0;margin-bottom:14px;">Brutally Honest Değerlendirme</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:#2dd4a0;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Güçlü Yanlar</div>
+          <div style="font-size:12px;color:#aaa;line-height:2;">✓ Niş ve defensible pazar (diaspora)<br>✓ Multi-sided platform → network effect<br>✓ Ambassador modeli düşük maliyetli büyüme<br>✓ Birden fazla gelir akışı<br>✓ Hoşgeldin paketi → güçlü ilk değer önerisi</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#f06b4a;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Acil Çözülmesi Gerekenler</div>
+          <div style="font-size:12px;color:#aaa;line-height:2;">✗ Auth + ödeme olmadan MVP = demo değil platform<br>✗ GDPR Avrupa'da zorunlu, ertelenecek bir şey değil<br>✗ Mobile-first kararı verilmeden pazarlama boş<br>✗ Legal entity = yatırım konuşmak için şart<br>✗ Ambassador tracking yoksa para yak demek</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:12px 16px;background:#7c6dfa11;border-left:3px solid #7c6dfa;border-radius:4px;">
+        <div style="font-size:12px;color:#ccc;line-height:1.7;"><strong style="color:#7c6dfa;">Öneri:</strong> V1'i 3 şeye indirge — <strong style="color:#e8e8f0;">(1) Auth + onboarding</strong>, <strong style="color:#e8e8f0;">(2) Advisor talebi + ödeme</strong>, <strong style="color:#e8e8f0;">(3) Hoşgeldin paketi affiliate</strong>. Bu üçü çalışırsa GMV görürsün, geri kalanı sonra gelir.</div>
+      </div>
+    </div>
+
   </div>
 </div>
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 type Durum = 'Başlanmadı' | 'Devam Ediyor' | 'Bitti' | 'Bekliyor'
-type Atanan = 'Umut' | 'Barış' | ''
+type Atanan = 'Burak' | 'UBT' | ''
 
 interface Gorev {
   id: string
@@ -18,20 +18,32 @@ interface Gorev {
 }
 
 const DURUM_STYLES: Record<Durum, { bg: string; color: string; border: string }> = {
-  'Başlanmadı': { bg: '#44444422', color: '#aaa',     border: '#44444444' },
-  'Devam Ediyor': { bg: '#7c6dfa22', color: '#7c6dfa', border: '#7c6dfa44' },
-  'Bitti':        { bg: '#2dd4a022', color: '#2dd4a0', border: '#2dd4a044' },
-  'Bekliyor':     { bg: '#f5a62322', color: '#f5a623', border: '#f5a62344' },
+  'Başlanmadı':  { bg: '#44444422', color: '#aaa',     border: '#44444444' },
+  'Devam Ediyor':{ bg: '#7c6dfa22', color: '#7c6dfa',  border: '#7c6dfa44' },
+  'Bitti':       { bg: '#2dd4a022', color: '#2dd4a0',  border: '#2dd4a044' },
+  'Bekliyor':    { bg: '#f5a62322', color: '#f5a623',  border: '#f5a62344' },
 }
 
 const EMPTY: Omit<Gorev, 'id'> = {
   gorev: '', durum: 'Başlanmadı', atanan: '', baslangic: '', bitis: '', aciklama: '', link: '',
 }
 
+const input = {
+  background: 'transparent',
+  border: 'none',
+  outline: 'none',
+  color: '#e8e8f0',
+  fontSize: 13,
+  width: '100%',
+  fontFamily: 'system-ui, sans-serif',
+} as React.CSSProperties
+
 export default function TakipPage() {
-  const [rows, setRows] = useState<Gorev[]>([])
+  const [rows, setRows]       = useState<Gorev[]>([])
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState<string | null>(null)
+  const [saving, setSaving]   = useState<string | null>(null)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [draft, setDraft]     = useState<Partial<Gorev>>({})
 
   useEffect(() => {
     supabase
@@ -44,33 +56,44 @@ export default function TakipPage() {
       })
   }, [])
 
-  async function updateField(id: string, field: keyof Omit<Gorev, 'id'>, value: string) {
-    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, [field]: value } : r)))
+  function startEdit(row: Gorev) {
+    setEditingId(row.id)
+    setDraft({ ...row })
+  }
+
+  function cancelEdit() {
+    setEditingId(null)
+    setDraft({})
+  }
+
+  async function saveEdit(id: string) {
     setSaving(id)
-    await supabase.from('gorevler').update({ [field]: value || null }).eq('id', id)
+    const { gorev, durum, atanan, baslangic, bitis, aciklama, link } = draft
+    await supabase.from('gorevler').update({
+      gorev, durum, atanan: atanan || null,
+      baslangic: baslangic || null, bitis: bitis || null,
+      aciklama: aciklama || null, link: link || null,
+    }).eq('id', id)
+    setRows((prev) => prev.map((r) => (r.id === id ? { ...r, ...draft } as Gorev : r)))
     setSaving(null)
+    setEditingId(null)
+    setDraft({})
   }
 
   async function addRow() {
     const { data } = await supabase.from('gorevler').insert([EMPTY]).select().single()
-    if (data) setRows((prev) => [...prev, data as Gorev])
+    if (data) {
+      const newRow = data as Gorev
+      setRows((prev) => [...prev, newRow])
+      startEdit(newRow)
+    }
   }
 
   async function deleteRow(id: string) {
     await supabase.from('gorevler').delete().eq('id', id)
     setRows((prev) => prev.filter((r) => r.id !== id))
+    if (editingId === id) cancelEdit()
   }
-
-  const cell = 'padding:11px 12px;'
-  const input = {
-    background: 'transparent',
-    border: 'none',
-    outline: 'none',
-    color: '#e8e8f0',
-    fontSize: 13,
-    width: '100%',
-    fontFamily: 'system-ui, sans-serif',
-  } as React.CSSProperties
 
   return (
     <div style={{ background: '#0f0f13', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', color: '#e8e8f0' }}>
@@ -102,97 +125,133 @@ export default function TakipPage() {
               </thead>
               <tbody>
                 {rows.map((row) => {
-                  const ds = DURUM_STYLES[row.durum] ?? DURUM_STYLES['Başlanmadı']
+                  const isEditing = editingId === row.id
+                  const isSaving  = saving === row.id
+                  const ds = DURUM_STYLES[isEditing ? (draft.durum ?? row.durum) : row.durum] ?? DURUM_STYLES['Başlanmadı']
+
                   return (
-                    <tr key={row.id} style={{ borderBottom: '1px solid #1e1e28' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = '#ffffff04')}
-                      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                    <tr
+                      key={row.id}
+                      style={{ borderBottom: '1px solid #1e1e28', background: isEditing ? '#ffffff06' : 'transparent' }}
+                      onMouseEnter={(e) => { if (!isEditing) e.currentTarget.style.background = '#ffffff04' }}
+                      onMouseLeave={(e) => { if (!isEditing) e.currentTarget.style.background = 'transparent' }}
                     >
                       {/* Görev */}
                       <td style={{ padding: '11px 12px', minWidth: 180 }}>
-                        <input
-                          style={input}
-                          value={row.gorev}
-                          placeholder="Görev adı..."
-                          onChange={(e) => updateField(row.id, 'gorev', e.target.value)}
-                        />
+                        {isEditing ? (
+                          <input style={input} value={draft.gorev ?? ''} placeholder="Görev adı..." autoFocus
+                            onChange={(e) => setDraft((d) => ({ ...d, gorev: e.target.value }))} />
+                        ) : (
+                          <span style={{ color: '#e8e8f0', fontWeight: 500 }}>{row.gorev || <span style={{ color: '#444' }}>—</span>}</span>
+                        )}
                       </td>
 
                       {/* Durum */}
                       <td style={{ padding: '11px 12px', whiteSpace: 'nowrap' }}>
-                        <select
-                          value={row.durum}
-                          onChange={(e) => updateField(row.id, 'durum', e.target.value)}
-                          style={{ background: ds.bg, color: ds.color, border: `1px solid ${ds.border}`, borderRadius: 20, padding: '3px 10px', fontSize: 11, fontWeight: 600, cursor: 'pointer', outline: 'none' }}
-                        >
-                          {(['Başlanmadı', 'Devam Ediyor', 'Bitti', 'Bekliyor'] as Durum[]).map((d) => (
-                            <option key={d} value={d}>{d}</option>
-                          ))}
-                        </select>
+                        {isEditing ? (
+                          <select value={draft.durum ?? row.durum}
+                            onChange={(e) => setDraft((d) => ({ ...d, durum: e.target.value as Durum }))}
+                            style={{ background: ds.bg, color: ds.color, border: `1px solid ${ds.border}`, borderRadius: 20, padding: '3px 10px', fontSize: 11, fontWeight: 600, cursor: 'pointer', outline: 'none' }}
+                          >
+                            {(['Başlanmadı', 'Devam Ediyor', 'Bitti', 'Bekliyor'] as Durum[]).map((d) => (
+                              <option key={d} value={d}>{d}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span style={{ background: ds.bg, color: ds.color, border: `1px solid ${ds.border}`, borderRadius: 20, padding: '3px 10px', fontSize: 11, fontWeight: 600 }}>
+                            {row.durum}
+                          </span>
+                        )}
                       </td>
 
                       {/* Atanan */}
                       <td style={{ padding: '11px 12px' }}>
-                        <select
-                          value={row.atanan}
-                          onChange={(e) => updateField(row.id, 'atanan', e.target.value)}
-                          style={{ background: '#1e1e28', color: '#ccc', border: '1px solid #2a2a38', borderRadius: 6, padding: '4px 8px', fontSize: 12, cursor: 'pointer', outline: 'none' }}
-                        >
-                          <option value="">—</option>
-                          <option value="Umut">Umut</option>
-                          <option value="Barış">Barış</option>
-                        </select>
+                        {isEditing ? (
+                          <select value={draft.atanan ?? ''}
+                            onChange={(e) => setDraft((d) => ({ ...d, atanan: e.target.value as Atanan }))}
+                            style={{ background: '#1e1e28', color: '#ccc', border: '1px solid #2a2a38', borderRadius: 6, padding: '4px 8px', fontSize: 12, cursor: 'pointer', outline: 'none' }}
+                          >
+                            <option value="">—</option>
+                            <option value="Burak">Burak</option>
+                            <option value="UBT">UBT</option>
+                          </select>
+                        ) : (
+                          <span style={{ color: '#ccc' }}>{row.atanan || '—'}</span>
+                        )}
                       </td>
 
                       {/* Başlangıç */}
                       <td style={{ padding: '11px 12px' }}>
-                        <input
-                          type="date"
-                          style={{ ...input, color: row.baslangic ? '#ccc' : '#555', width: 130 }}
-                          value={row.baslangic ?? ''}
-                          onChange={(e) => updateField(row.id, 'baslangic', e.target.value)}
-                        />
+                        {isEditing ? (
+                          <input type="date" style={{ ...input, color: '#ccc', width: 130 }}
+                            value={draft.baslangic ?? ''}
+                            onChange={(e) => setDraft((d) => ({ ...d, baslangic: e.target.value }))} />
+                        ) : (
+                          <span style={{ color: row.baslangic ? '#ccc' : '#444' }}>{row.baslangic || '—'}</span>
+                        )}
                       </td>
 
                       {/* Bitiş */}
                       <td style={{ padding: '11px 12px' }}>
-                        <input
-                          type="date"
-                          style={{ ...input, color: row.bitis ? '#ccc' : '#555', width: 130 }}
-                          value={row.bitis ?? ''}
-                          onChange={(e) => updateField(row.id, 'bitis', e.target.value)}
-                        />
+                        {isEditing ? (
+                          <input type="date" style={{ ...input, color: '#ccc', width: 130 }}
+                            value={draft.bitis ?? ''}
+                            onChange={(e) => setDraft((d) => ({ ...d, bitis: e.target.value }))} />
+                        ) : (
+                          <span style={{ color: row.bitis ? '#ccc' : '#444' }}>{row.bitis || '—'}</span>
+                        )}
                       </td>
 
                       {/* Açıklama */}
                       <td style={{ padding: '11px 12px', minWidth: 200 }}>
-                        <input
-                          style={input}
-                          value={row.aciklama ?? ''}
-                          placeholder="Açıklama..."
-                          onChange={(e) => updateField(row.id, 'aciklama', e.target.value)}
-                        />
+                        {isEditing ? (
+                          <input style={input} value={draft.aciklama ?? ''} placeholder="Açıklama..."
+                            onChange={(e) => setDraft((d) => ({ ...d, aciklama: e.target.value }))} />
+                        ) : (
+                          <span style={{ color: row.aciklama ? '#ccc' : '#444' }}>{row.aciklama || '—'}</span>
+                        )}
                       </td>
 
                       {/* Link */}
                       <td style={{ padding: '11px 12px', minWidth: 160 }}>
-                        <input
-                          style={{ ...input, color: row.link ? '#7c6dfa' : '#555' }}
-                          value={row.link ?? ''}
-                          placeholder="https://..."
-                          onChange={(e) => updateField(row.id, 'link', e.target.value)}
-                        />
+                        {isEditing ? (
+                          <input style={{ ...input, color: '#7c6dfa' }} value={draft.link ?? ''} placeholder="https://..."
+                            onChange={(e) => setDraft((d) => ({ ...d, link: e.target.value }))} />
+                        ) : row.link ? (
+                          <a href={row.link} target="_blank" rel="noopener noreferrer"
+                            style={{ color: '#7c6dfa', fontSize: 12, textDecoration: 'none' }}>
+                            {row.link.replace(/^https?:\/\//, '').slice(0, 28)}{row.link.length > 35 ? '…' : ''} ↗
+                          </a>
+                        ) : (
+                          <span style={{ color: '#444' }}>—</span>
+                        )}
                       </td>
 
-                      {/* Sil */}
-                      <td style={{ padding: '11px 12px' }}>
-                        <button
-                          onClick={() => deleteRow(row.id)}
-                          title="Sil"
-                          style={{ background: 'none', border: 'none', color: saving === row.id ? '#7c6dfa' : '#444', cursor: 'pointer', fontSize: 14, padding: '2px 6px' }}
-                        >
-                          {saving === row.id ? '●' : '✕'}
-                        </button>
+                      {/* Aksiyonlar */}
+                      <td style={{ padding: '11px 12px', whiteSpace: 'nowrap' }}>
+                        {isEditing ? (
+                          <span style={{ display: 'flex', gap: 6 }}>
+                            <button onClick={() => saveEdit(row.id)} title="Kaydet"
+                              style={{ background: '#2dd4a022', border: '1px solid #2dd4a044', borderRadius: 6, color: '#2dd4a0', cursor: 'pointer', fontSize: 13, padding: '3px 9px', fontWeight: 700 }}>
+                              {isSaving ? '…' : '✓'}
+                            </button>
+                            <button onClick={cancelEdit} title="İptal"
+                              style={{ background: 'none', border: '1px solid #2a2a38', borderRadius: 6, color: '#666', cursor: 'pointer', fontSize: 13, padding: '3px 9px' }}>
+                              ✕
+                            </button>
+                          </span>
+                        ) : (
+                          <span style={{ display: 'flex', gap: 6 }}>
+                            <button onClick={() => startEdit(row)} title="Düzenle"
+                              style={{ background: 'none', border: '1px solid #2a2a38', borderRadius: 6, color: '#888', cursor: 'pointer', fontSize: 12, padding: '3px 8px' }}>
+                              ✎
+                            </button>
+                            <button onClick={() => deleteRow(row.id)} title="Sil"
+                              style={{ background: 'none', border: '1px solid #2a2a38', borderRadius: 6, color: '#555', cursor: 'pointer', fontSize: 12, padding: '3px 8px' }}>
+                              🗑
+                            </button>
+                          </span>
+                        )}
                       </td>
                     </tr>
                   )
