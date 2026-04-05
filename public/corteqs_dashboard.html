@@ -116,6 +116,51 @@
   .team-role { font-size: 11px; color: #666; }
 
   hr-divider { display: block; height: 1px; background: #2a2a38; margin: 20px 0; }
+
+  /* ---- LANDING PAGE TODO ---- */
+  .landing-wrap { max-width: 980px; margin: 0 auto; }
+  .landing-hero {
+    background: #18181f;
+    border: 1px solid #2a2a38;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    margin-bottom: 16px;
+  }
+  .landing-hero h1 { margin: 0 0 10px; font-size: 24px; color: #e8e8f0; }
+  .landing-hero p { margin: 0 0 10px; color: #a8a8b3; line-height: 1.6; }
+  .landing-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 860px) {
+    .landing-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .landing-card {
+    background: #18181f;
+    border: 1px solid #2a2a38;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  .landing-card h2 { margin: 0 0 10px; font-size: 17px; color: #e8e8f0; }
+  .landing-card ul { margin: 0; padding-left: 20px; color: #b8b8c2; }
+  .landing-card li { margin: 7px 0; line-height: 1.45; }
+  .landing-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 5px 10px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    background: #0ea5e922;
+    color: #67d0ff;
+    border: 1px solid #0ea5e955;
+  }
+  .landing-done { color: #37d67a; font-weight: 700; }
+  .landing-footer { margin-top: 16px; color: #9a9aa6; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -140,6 +185,7 @@
   <button class="nav-btn" onclick="showTab('revenue')">Gelir Modeli</button>
   <button class="nav-btn" onclick="showTab('audit')">Audit</button>
   <button class="nav-btn" onclick="showTab('projectstatus')">Project Status</button>
+  <button class="nav-btn" onclick="showTab('landingpage')">Landing Page</button>
 </div>
 
 <!-- GENEL BAKIŞ -->
@@ -1241,6 +1287,70 @@ Be brutally honest and think like a product scaling globally.</div>
 
 <div class="section" id="projectstatus">
   <iframe src="/status.html" style="width:100%;height:calc(100vh - 120px);border:none;" loading="lazy"></iframe>
+</div>
+
+<div class="section" id="landingpage">
+  <div class="container">
+    <main class="landing-wrap">
+      <section class="landing-hero">
+        <h1>Corteqs Landing Page TODO</h1>
+        <p>
+          Kaynak: <code>landing.txt</code>. Amaç; mevcut organik ilgiyi kaybetmeden waitlist toplamak,
+          erken kullanıcıları segmente etmek ve launch öncesi hızlı onboarding zemini kurmak.
+        </p>
+        <span class="landing-tag">Oncelik: Yuksek</span>
+        <span class="landing-tag">Hedef: Waitlist Buyutme</span>
+        <span class="landing-tag">Firsat: 600+ yorum ilgisi</span>
+      </section>
+
+      <section class="landing-grid">
+        <article class="landing-card">
+          <h2>1. Landing Icerigi</h2>
+          <ul>
+            <li>[ ] Ne yaptigimizi net anlatan kisa deger onerisi yaz.</li>
+            <li>[ ] Hedef kitleleri ayir: kuruluslar, isletmeler, son kullanicilar.</li>
+            <li>[ ] Isbirligi cagrisi bolumu ekle: "Katki vermek isteyenler bize ulassin".</li>
+            <li>[ ] Sosyal kanit metni ekle: yuksek yorum/izlenme ilgisini vurgula.</li>
+          </ul>
+        </article>
+
+        <article class="landing-card">
+          <h2>2. Waitlist Tasarimi</h2>
+          <ul>
+            <li>[ ] Form alanlari: ad-soyad, email, ulke/sehir, profil tipi, katkı tipi.</li>
+            <li>[ ] Profil tipi secenekleri: "Kurulus", "Isletme", "Son Kullanici", "Gelistirici".</li>
+            <li>[ ] Oncelikli katilim odulu: ilk 100/500 kisiye abonelik indirimi kurgusu.</li>
+            <li>[ ] Basvuru sonrasi tesekkur + referans daveti mesaji hazirla.</li>
+          </ul>
+        </article>
+
+        <article class="landing-card">
+          <h2>3. Trafik ve Operasyon</h2>
+          <ul>
+            <li>[ ] Domain uzerinde landing sayfasini canliya al.</li>
+            <li>[ ] Gelen basvurulari tek listede topla (CSV/Sheet/DB).</li>
+            <li>[ ] Her gun en az 1 kez yeni basvuru kontrol rutini olustur.</li>
+            <li>[ ] Yuksek trafik senaryosu icin form hata/limit planini hazirla.</li>
+          </ul>
+        </article>
+
+        <article class="landing-card">
+          <h2>4. Hemen Baslanacaklar (72 Saat)</h2>
+          <ul>
+            <li class="landing-done">[x] Fikir kaynagi metni toplandi (<code>landing.txt</code>).</li>
+            <li>[ ] Landing ana metinlerinin ilk taslagini yaz.</li>
+            <li>[ ] Waitlist formunu ekle ve test et.</li>
+            <li>[ ] Isbirligi basvuru alanini ayri checkbox/alan olarak ac.</li>
+            <li>[ ] "Ilk katilanlara indirim" kosullarini netlestir ve yayinla.</li>
+          </ul>
+        </article>
+      </section>
+
+      <p class="landing-footer">
+        Not: Bu TODO dokumani, launch'i one cekme ve topluluk ilgisini somut basvuruya donusturme hedefiyle hazirlandi.
+      </p>
+    </main>
+  </div>
 </div>
 
 <script>
