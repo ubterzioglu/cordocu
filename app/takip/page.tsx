@@ -46,6 +46,11 @@ export default function TakipPage() {
   const [draft, setDraft]     = useState<Partial<Gorev>>({})
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
+
     supabase
       .from('gorevler')
       .select('*')
@@ -67,6 +72,7 @@ export default function TakipPage() {
   }
 
   async function saveEdit(id: string) {
+    if (!supabase) return
     setSaving(id)
     const { gorev, durum, atanan, baslangic, bitis, aciklama, link } = draft
     await supabase.from('gorevler').update({
@@ -81,6 +87,7 @@ export default function TakipPage() {
   }
 
   async function addRow() {
+    if (!supabase) return
     const { data } = await supabase.from('gorevler').insert([EMPTY]).select().single()
     if (data) {
       const newRow = data as Gorev
@@ -90,6 +97,7 @@ export default function TakipPage() {
   }
 
   async function deleteRow(id: string) {
+    if (!supabase) return
     await supabase.from('gorevler').delete().eq('id', id)
     setRows((prev) => prev.filter((r) => r.id !== id))
     if (editingId === id) cancelEdit()

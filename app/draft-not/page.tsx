@@ -18,6 +18,11 @@ export default function DraftNotPage() {
   const textareaRef           = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
+
     supabase
       .from('draft_notlar')
       .select('*')
@@ -29,6 +34,7 @@ export default function DraftNotPage() {
   }, [])
 
   async function ekle() {
+    if (!supabase) return
     const temiz = metin.trim()
     if (!temiz) return
     setSaving(true)
@@ -44,6 +50,7 @@ export default function DraftNotPage() {
   }
 
   async function sil(id: string) {
+    if (!supabase) return
     setDeleting(id)
     await supabase.from('draft_notlar').delete().eq('id', id)
     setNotlar((prev) => prev.filter((n) => n.id !== id))
