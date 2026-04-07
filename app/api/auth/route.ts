@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { adminSessionCookie, createAdminSession, isAdminUser } from '@/lib/admin-auth'
+import { isAdminUser, supabaseSessionCookies } from '@/lib/admin-auth'
 
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json()
@@ -21,21 +21,27 @@ export async function POST(request: NextRequest) {
   const supabase = createClient(supabaseUrl, supabaseAnonKey)
   const { data, error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password })
 
-  if (error || !data.user?.email) {
+  if (error || !data.user?.email || !data.session?.access_token || !data.session.refresh_token) {
     return NextResponse.json({ error: 'Gecersiz giris bilgileri' }, { status: 401 })
   }
 
   if (!isAdminUser(data.user)) {
-    await supabase.auth.signOut()
     return NextResponse.json({ error: 'Bu hesap admin olarak yetkili degil' }, { status: 403 })
   }
 
-  const session = await createAdminSession(data.user.email, data.user.id)
   const response = NextResponse.json({ ok: true })
 
-  response.cookies.set(adminSessionCookie.name, session, {
+  response.cookies.delete('auth')
+  response.cookies.set(supabaseSessionCookies.accessToken, data.session.access_token, {
     httpOnly: true,
-    maxAge: adminSessionCookie.maxAge,
+    maxAge: data.session.expires_in,
+    path: '/',
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  })
+  response.cookies.set(supabaseSessionCookies.refreshToken, data.session.refresh_token, {
+    httpOnly: true,
+    maxAge: supabaseSessionCookies.refreshTokenMaxAge,
     path: '/',
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',

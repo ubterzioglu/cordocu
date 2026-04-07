@@ -1,109 +1,46 @@
-const SESSION_COOKIE = 'auth'
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30
-
-type SessionPayload = {
-  email: string
-  exp: number
-  userId: string
-}
-
-function getSessionSecret() {
-  const secret = process.env.AUTH_SESSION_SECRET || process.env.AUTH_TOKEN
-
-  if (!secret) {
-    throw new Error('AUTH_SESSION_SECRET or AUTH_TOKEN must be configured')
-  }
-
-  return secret
-}
-
-function encodeBase64Url(input: string) {
-  const bytes = new TextEncoder().encode(input)
-  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('')
-
-  return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/g, '')
-}
-
-function decodeBase64Url(input: string) {
-  const normalized = input.replace(/-/g, '+').replace(/_/g, '/')
-  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=')
-  const binary = atob(padded)
-  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
-  return new TextDecoder().decode(bytes)
-}
-
-async function signValue(value: string) {
-  const key = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(getSessionSecret()),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  )
-
-  const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(value))
-  const bytes = new Uint8Array(signature)
-  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('')
-
-  return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/g, '')
-}
-
-export async function createAdminSession(email: string, userId: string) {
-  const payload: SessionPayload = {
-    email,
-    exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS,
-    userId,
-  }
-
-  const encodedPayload = encodeBase64Url(JSON.stringify(payload))
-  const signature = await signValue(encodedPayload)
-
-  return `${encodedPayload}.${signature}`
-}
-
-export async function verifyAdminSession(session: string | undefined) {
-  if (!session) return null
-
-  const [encodedPayload, signature] = session.split('.')
-  if (!encodedPayload || !signature) return null
-
-  const expectedSignature = await signValue(encodedPayload)
-  if (signature !== expectedSignature) return null
-
-  try {
-    const payload = JSON.parse(decodeBase64Url(encodedPayload)) as SessionPayload
-    if (!payload.email || !payload.userId || !payload.exp) return null
-    if (payload.exp <= Math.floor(Date.now() / 1000)) return null
-    return payload
-  } catch {
-    return null
-  }
-}
+const SUPABASE_ACCESS_TOKEN_COOKIE = 'sb-access-token'
+const SUPABASE_REFRESH_TOKEN_COOKIE = 'sb-refresh-token'
+const SUPABASE_REFRESH_TTL_SECONDS = 60 * 60 * 24 * 30
 
 function getRoles(metadata: Record<string, unknown> | undefined) {
-  const roleValue = metadata?.role
-  const rolesValue = metadata?.roles
   const roles = new Set<string>()
+  const candidateValues = [
+    metadata?.role,
+    metadata?.roles,
+    metadata?.user_role,
+    metadata?.user_roles,
+    metadata?.access_role,
+    metadata?.access_roles,
+  ]
 
-  if (typeof roleValue === 'string') {
-    roles.add(roleValue.toLowerCase())
-  }
+  for (const value of candidateValues) {
+    if (typeof value === 'string') {
+      value
+        .split(',')
+        .map((role) => role.trim().toLowerCase())
+        .filter(Boolean)
+        .forEach((role) => roles.add(role))
+      continue
+    }
 
-  if (Array.isArray(rolesValue)) {
-    for (const role of rolesValue) {
-      if (typeof role === 'string') {
-        roles.add(role.toLowerCase())
+    if (Array.isArray(value)) {
+      for (const role of value) {
+        if (typeof role === 'string') {
+          roles.add(role.trim().toLowerCase())
+        }
       }
     }
   }
 
   return roles
+}
+
+function isTruthy(value: unknown) {
+  if (value === true) return true
+  if (typeof value !== 'string') return false
+
+  const normalized = value.trim().toLowerCase()
+  return normalized === 'true' || normalized === '1' || normalized === 'yes'
 }
 
 function getAllowedAdminEmails() {
@@ -137,11 +74,18 @@ export function isAdminUser(user: {
     return true
   }
 
-  const adminFlag = user.app_metadata?.admin ?? user.user_metadata?.admin
-  return adminFlag === true
+  const adminFlagCandidates = [
+    user.app_metadata?.admin,
+    user.user_metadata?.admin,
+    user.app_metadata?.is_admin,
+    user.user_metadata?.is_admin,
+  ]
+
+  return adminFlagCandidates.some((value) => isTruthy(value))
 }
 
-export const adminSessionCookie = {
-  maxAge: SESSION_TTL_SECONDS,
-  name: SESSION_COOKIE,
+export const supabaseSessionCookies = {
+  accessToken: SUPABASE_ACCESS_TOKEN_COOKIE,
+  refreshToken: SUPABASE_REFRESH_TOKEN_COOKIE,
+  refreshTokenMaxAge: SUPABASE_REFRESH_TTL_SECONDS,
 }
