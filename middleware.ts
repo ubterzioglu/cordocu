@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname === '/' && authCookie === 'true') {
-    return NextResponse.redirect(new URL('/takip', request.url))
+    return NextResponse.redirect(new URL('/corteqs_dashboard.html', request.url))
   }
 
   return NextResponse.next()

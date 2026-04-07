@@ -21,7 +21,7 @@ export default function HomePage() {
     })
 
     if (res.ok) {
-      router.push('/takip')
+      window.location.href = '/corteqs_dashboard.html'
     } else {
       setError('Yanlış şifre')
       setLoading(false)
