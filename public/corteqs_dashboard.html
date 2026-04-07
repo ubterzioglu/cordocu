@@ -164,6 +164,15 @@
 </style>
 </head>
 <body>
+<script>
+  (function() {
+    var cookies = document.cookie.split(';');
+    var authed = cookies.some(function(c) { return c.trim().indexOf('auth=true') === 0; });
+    if (!authed) {
+      window.location.href = '/';
+    }
+  })();
+</script>
 
 <div class="header">
   <div>
