@@ -35,26 +35,6 @@ function getRoles(metadata: Record<string, unknown> | undefined) {
   return roles
 }
 
-function isTruthy(value: unknown) {
-  if (value === true) return true
-  if (typeof value !== 'string') return false
-
-  const normalized = value.trim().toLowerCase()
-  return normalized === 'true' || normalized === '1' || normalized === 'yes'
-}
-
-function getAllowedAdminEmails() {
-  const value = process.env.ADMIN_EMAILS
-  if (!value) return new Set<string>()
-
-  return new Set(
-    value
-      .split(',')
-      .map((email) => email.trim().toLowerCase())
-      .filter(Boolean)
-  )
-}
-
 export function isAdminUser(user: {
   app_metadata?: Record<string, unknown>
   email?: string | null
@@ -69,19 +49,7 @@ export function isAdminUser(user: {
     return true
   }
 
-  const email = user.email?.trim().toLowerCase()
-  if (email && getAllowedAdminEmails().has(email)) {
-    return true
-  }
-
-  const adminFlagCandidates = [
-    user.app_metadata?.admin,
-    user.user_metadata?.admin,
-    user.app_metadata?.is_admin,
-    user.user_metadata?.is_admin,
-  ]
-
-  return adminFlagCandidates.some((value) => isTruthy(value))
+  return false
 }
 
 export const supabaseSessionCookies = {
