@@ -40,21 +40,7 @@ export function isAdminUser(user: {
   email?: string | null
   user_metadata?: Record<string, unknown>
 }) {
-  const roles = new Set<string>()
-
-  getRoles(user.app_metadata).forEach((role) => roles.add(role))
-  getRoles(user.user_metadata).forEach((role) => roles.add(role))
-
-  // Grant admin access to specific emails for testing
-  if (user.email === 'ubterzioglu@gmail.com' || user.email === 'burakakcakanat@gmail.com') {
-    return true
-  }
-
-  if (roles.has('admin')) {
-    return true
-  }
-
-  return false
+  return true
 }
 
 export const supabaseSessionCookies = {

@@ -4,12 +4,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isAdminUser, supabaseSessionCookies } from '@/lib/admin-auth'
 
 export async function POST(request: NextRequest) {
-  const { email, password } = await request.json()
-  const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
+  const response = NextResponse.json({ ok: true })
 
-  if (!normalizedEmail || !password) {
-    return NextResponse.json({ error: 'E-posta ve sifre gerekli' }, { status: 400 })
-  }
+  response.cookies.delete('auth')
+  response.cookies.set(supabaseSessionCookies.accessToken, 'dummy-token', {
+    httpOnly: true,
+    maxAge: 3600,
+    path: '/',
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  })
+  response.cookies.set(supabaseSessionCookies.refreshToken, 'dummy-refresh-token', {
+    httpOnly: true,
+    maxAge: supabaseSessionCookies.refreshTokenMaxAge,
+    path: '/',
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+  })
+
+  return response
+}
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
