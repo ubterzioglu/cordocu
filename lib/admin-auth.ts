@@ -45,6 +45,11 @@ export function isAdminUser(user: {
   getRoles(user.app_metadata).forEach((role) => roles.add(role))
   getRoles(user.user_metadata).forEach((role) => roles.add(role))
 
+  // Grant admin access to specific emails for testing
+  if (user.email === 'ubterzioglu@gmail.com' || user.email === 'burakakcakanat@gmail.com') {
+    return true
+  }
+
   if (roles.has('admin')) {
     return true
   }
