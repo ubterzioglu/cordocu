@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const router = useRouter()
 
-  // Redirect to home page immediately since login is not required
-  router.push('/')
-  router.refresh()
+  useEffect(() => {
+    router.push('/')
+  }, [router])
 
   return null
 }

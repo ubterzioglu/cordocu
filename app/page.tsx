@@ -20,9 +20,9 @@ export default function HomePage() {
       body: JSON.stringify({ password }),
     })
 
-    if (res.ok) {
-      window.location.href = '/corteqs_dashboard.html'
-    } else {
+      if (res.ok) {
+        router.push('/dashboard/neden')
+      } else {
       setError('Yanlış şifre')
       setLoading(false)
     }
