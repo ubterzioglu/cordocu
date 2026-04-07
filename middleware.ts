@@ -1,23 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
-const PUBLIC_PATHS = ['/', '/api/auth']
+const PUBLIC_PATHS = ['/', '/api/auth', '/corteqs_dashboard.html', '/status.html', '/favicon.ico'];
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'))
-  const authCookie = request.cookies.get('auth')?.value
+export function middleware(request: NextRequest): NextResponse | undefined {
+  const { pathname } = request.nextUrl;
 
-  if (!isPublic && authCookie !== 'true') {
-    return NextResponse.redirect(new URL('/', request.url))
+  // Allow public paths
+  if (PUBLIC_PATHS.includes(pathname)) {
+    return undefined;
   }
 
-  if (pathname === '/' && authCookie === 'true') {
-    return NextResponse.redirect(new URL('/corteqs_dashboard.html', request.url))
+  // Check for auth cookie
+  const authCookie = request.cookies.get('auth')?.value;
+
+  if (!authCookie) {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next()
+  return undefined;
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
-}
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.html).*)',
+  ],
+};

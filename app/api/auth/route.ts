@@ -1,21 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  const { password } = await request.json()
-  const validPassword = process.env.APP_PASSWORD
+interface AuthRequest {
+  password?: string;
+}
 
-  if (!validPassword || password !== validPassword) {
-    return NextResponse.json({ error: 'Yanlış şifre' }, { status: 401 })
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  try {
+    const body = (await request.json()) as AuthRequest;
+    const { password } = body;
+
+    const appPassword = process.env.APP_PASSWORD;
+    if (!appPassword) {
+      throw new Error('Missing APP_PASSWORD');
+    }
+
+    if (!password) {
+      return NextResponse.json({ error: 'Password required' }, { status: 400 });
+    }
+
+    if (password !== appPassword) {
+      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+    }
+
+    const response = NextResponse.json({ success: true });
+    response.cookies.set('auth', 'true', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return response;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
-
-  const response = NextResponse.json({ ok: true })
-  response.cookies.set('auth', 'true', {
-    httpOnly: true,
-    maxAge: 86400,
-    path: '/',
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
-  })
-
-  return response
 }

@@ -3,1060 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CorteQS MVP Project Status</title>
+    <title>CorteQS - Proje Durumu</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-            line-height: 1.6;
-        }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 40px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            border: 1px solid #334155;
-        }
-        h1 { font-size: 2.5rem; color: #f8fafc; margin-bottom: 10px; }
-        .subtitle { color: #94a3b8; font-size: 1.1rem; }
-        .status-bar {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .status-item {
-            background: #1e293b;
-            padding: 15px 25px;
-            border-radius: 10px;
-            border: 1px solid #334155;
-        }
-        .status-item .label { font-size: 0.85rem; color: #64748b; text-transform: uppercase; }
-        .status-item .value { font-size: 1.5rem; font-weight: bold; color: #f8fafc; }
-        .status-item .value.success { color: #22c55e; }
-        .status-item .value.warning { color: #f59e0b; }
-        .status-item .value.danger { color: #ef4444; }
+        html, body { height: 100%; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5; color: #333; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
-        .card {
-            background: #1e293b;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            overflow: hidden;
+        .wrapper { display: flex; height: 100vh; }
+        
+        /* Sidebar Menu */
+        .sidebar { width: 280px; background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); color: white; padding: 0; overflow-y: auto; box-shadow: 2px 0 8px rgba(0,0,0,0.1); position: fixed; height: 100vh; left: 0; top: 0; }
+        
+        .sidebar-header { padding: 30px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.1); }
+        .sidebar-header h1 { font-size: 20px; margin: 0; }
+        .sidebar-header p { font-size: 12px; opacity: 0.8; margin-top: 5px; }
+        
+        .menu-items { padding: 20px 0; }
+        .menu-item { padding: 15px 20px; cursor: pointer; transition: all 0.3s ease; border-left: 3px solid transparent; display: flex; align-items: center; gap: 12px; }
+        .menu-item:hover { background: rgba(255,255,255,0.1); }
+        .menu-item.active { background: rgba(255,255,255,0.15); border-left-color: #a78bfa; font-weight: 600; }
+        .menu-icon { font-size: 18px; min-width: 24px; }
+        .menu-label { font-size: 14px; }
+        
+        /* Main Content */
+        .main { margin-left: 280px; width: calc(100% - 280px); height: 100vh; overflow-y: auto; }
+        
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; }
+        .header h1 { font-size: 32px; margin-bottom: 10px; }
+        .header .subtitle { font-size: 14px; opacity: 0.9; }
+        
+        .content { padding: 30px; }
+        .section-content { display: none; }
+        .section-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .card-header {
-            padding: 20px;
-            background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-            color: white;
-        }
-        .card-header h2 { font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .status-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .status-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .card-header { padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 18px; font-weight: bold; }
+        .card-status { font-size: 24px; font-weight: bold; }
         .card-body { padding: 20px; }
+        .progress-section { margin: 15px 0; }
+        .progress-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 600; }
+        .progress-bar { width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
         
-        .comparison-table { width: 100%; border-collapse: collapse; }
-        .comparison-table th, .comparison-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #334155;
-        }
-        .comparison-table th { color: #94a3b8; font-weight: 500; }
-        .comparison-table tr:hover { background: #252f47; }
+        .section { background: white; padding: 30px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #667eea; border-bottom: 3px solid #764ba2; padding-bottom: 10px; margin-bottom: 20px; }
         
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .badge-success { background: #166534; color: #86efac; }
-        .badge-warning { background: #92400e; color: #fcd34d; }
-        .badge-danger { background: #991b1b; color: #fca5a5; }
-        .badge-info { background: #1e40af; color: #93c5fd; }
-        .badge-new { background: #7c3aed; color: #ddd6fe; }
+        .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+        .kpi-box { background: #f9fafb; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #e5e7eb; }
+        .kpi-number { font-size: 24px; font-weight: bold; color: #667eea; }
+        .kpi-label { font-size: 11px; color: #666; margin-top: 5px; }
         
-        .progress-bar {
-            height: 8px;
-            background: #334155;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-        .progress-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .progress-fill.danger { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .timeline { display: flex; justify-content: space-between; margin-top: 30px; padding: 20px; background: white; border-radius: 12px; flex-wrap: wrap; gap: 10px; }
+        .timeline-item { flex: 1; min-width: 150px; text-align: center; padding: 15px; background: #f9fafb; border-radius: 8px; border-top: 3px solid #667eea; }
+        .timeline-month { font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        .timeline-desc { font-size: 12px; color: #666; }
         
-        .todo-list { list-style: none; }
-        .todo-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            background: #252f47;
-            border-left: 3px solid;
-        }
-        .todo-item.critical { border-left-color: #ef4444; }
-        .todo-item.high { border-left-color: #f59e0b; }
-        .todo-item.medium { border-left-color: #3b82f6; }
-        .todo-item.low { border-left-color: #22c55e; }
-        .todo-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #475569;
-            border-radius: 4px;
-            flex-shrink: 0;
-            margin-top: 2px;
-            cursor: pointer;
-        }
-        .todo-checkbox:hover { border-color: #64748b; }
-        .todo-content { flex: 1; }
-        .todo-title { font-weight: 500; color: #f8fafc; }
-        .todo-desc { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
-        .todo-meta { display: flex; gap: 10px; margin-top: 6px; }
+        .priority-item { padding: 12px; margin: 10px 0; border-radius: 4px; background: #fef2f2; border-left: 4px solid #ef4444; }
         
-        .feature-matrix {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 1px;
-            background: #334155;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .feature-matrix > div {
-            padding: 12px;
-            background: #1e293b;
-        }
-        .feature-matrix .header {
-            background: #252f47;
-            font-weight: 600;
-            color: #94a3b8;
-        }
-        .feature-matrix .check { text-align: center; color: #22c55e; }
-        .feature-matrix .partial { text-align: center; color: #f59e0b; }
-        .feature-matrix .cross { text-align: center; color: #ef4444; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th { background: #f0f0f0; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f9f9f9; }
         
-        .tab-container { margin-bottom: 20px; }
-        .tabs {
-            display: flex;
-            gap: 4px;
-            background: #0f172a;
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-        .tab {
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #94a3b8;
-        }
-        .tab:hover { color: #e2e8f0; }
-        .tab.active { background: #2563eb; color: white; }
-        .tab-content { display: none; padding: 20px 0; }
-        .tab-content.active { display: block; }
+        footer { text-align: center; padding: 20px; color: #666; font-size: 12px; margin-top: 40px; }
         
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .tech-item {
-            background: #252f47;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid #334155;
-        }
-        .tech-item.current { border-color: #22c55e; }
-        .tech-item.planned { border-color: #f59e0b; opacity: 0.7; }
-        
-        .roadmap {
-            position: relative;
-            padding-left: 30px;
-        }
-        .roadmap::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #334155;
-        }
-        .roadmap-item {
-            position: relative;
-            padding: 15px 0 25px 20px;
-        }
-        .roadmap-item::before {
-            content: '';
-            position: absolute;
-            left: -26px;
-            top: 18px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #334155;
-            border: 2px solid #1e293b;
-        }
-        .roadmap-item.done::before { background: #22c55e; }
-        .roadmap-item.active::before { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
-        .roadmap-item.pending::before { background: #f59e0b; }
-        .roadmap-date { font-size: 0.8rem; color: #64748b; margin-bottom: 4px; }
-        .roadmap-title { font-weight: 600; color: #f8fafc; }
-        .roadmap-desc { font-size: 0.9rem; color: #94a3b8; margin-top: 4px; }
-        
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .alert-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid #92400e; }
-        .alert-info { background: rgba(59, 130, 246, 0.1); border: 1px solid #1e40af; }
-        .alert-success { background: rgba(34, 197, 94, 0.1); border: 1px solid #166534; }
-        
+        /* Responsive */
         @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .feature-matrix { font-size: 0.8rem; }
-            h1 { font-size: 1.8rem; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main { margin-left: 0; width: 100%; }
+            .menu-items { display: flex; flex-direction: row; overflow-x: auto; padding: 10px 0; }
+            .menu-item { flex: 0 0 auto; padding: 10px 15px; white-space: nowrap; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🚀 CorteQS MVP Project Guide</h1>
-            <p class="subtitle">Türk Diaspora Ağı - Proje Takip ve Geliştirme Rehberi</p>
-            <div class="status-bar">
-                <div class="status-item">
-                    <div class="label">MVP İlerleme</div>
-                    <div class="value warning">65%</div>
-                    <div class="progress-bar"><div class="progress-fill warning" style="width: 65%"></div></div>
-                </div>
-                <div class="status-item">
-                    <div class="label">Tamamlanan</div>
-                    <div class="value success">41/55</div>
-                </div>
-                <div class="status-item">
-                    <div class="label">Bekleyen</div>
-                    <div class="value danger">14</div>
-                </div>
-                <div class="status-item">
-                    <div class="label">Kritik Eksik</div>
-                    <div class="value danger">6</div>
-                </div>
+    <div class="wrapper">
+        <!-- SIDEBAR MENU -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>📊 Status</h1>
+                <p>Proje Durumu v2.0</p>
             </div>
-        </header>
-
-        <div class="tab-container">
-            <div class="tabs">
-                <div class="tab active" onclick="showTab('overview')">Genel Bakış</div>
-                <div class="tab" onclick="showTab('comparison')">Döküman Karşılaştırma</div>
-                <div class="tab" onclick="showTab('missing')">Eksikler & Yapılacaklar</div>
-                <div class="tab" onclick="showTab('roadmap')">Yol Haritası</div>
-                <div class="tab" onclick="showTab('tech')">Teknik Altyapı</div>
+            <div class="menu-items">
+                <div class="menu-item active" onclick="showSection('overview')">
+                    <span class="menu-icon">📈</span>
+                    <span class="menu-label">Genel Bakış</span>
+                </div>
+                <div class="menu-item" onclick="showSection('categories')">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-label">Kategoriler</span>
+                </div>
+                <div class="menu-item" onclick="showSection('priorities')">
+                    <span class="menu-icon">🔴</span>
+                    <span class="menu-label">Kritik Öncelikler</span>
+                </div>
+                <div class="menu-item" onclick="showSection('timeline')">
+                    <span class="menu-icon">📅</span>
+                    <span class="menu-label">Zaman Çizelgesi</span>
+                </div>
+                <div class="menu-item" onclick="showSection('metrics')">
+                    <span class="menu-icon">📊</span>
+                    <span class="menu-label">Metrikler</span>
+                </div>
             </div>
         </div>
 
-        <!-- Overview Tab -->
-        <div id="overview" class="tab-content active">
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>📊 Proje Durumu</h2>
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <!-- GENEL BAKIŞ -->
+            <div id="overview" class="section-content active">
+                <div class="header">
+                    <h1>📊 CorteQS Proje Durumu</h1>
+                    <p class="subtitle">MVP v2.0 | Genel İlerleme: 65% (41/55 Tamamlanan)</p>
+                </div>
+                <div class="content">
+                    <div class="status-grid">
+                        <!-- Vizyon & Kapsam -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Vizyon & Kapsam</span>
+                                <span class="card-status">✅</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>6/6 (100%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Misyon tanımlandı<br>
+                                    ✓ Target market belirlendi<br>
+                                    ✓ MVP scope sonuçlandırıldı
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kullanıcı Rolleri -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Kullanıcı Rolleri</span>
+                                <span class="card-status">✅</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>6/6 (100%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ 6 rol tanımlandı<br>
+                                    ✓ RBAC planlandı<br>
+                                    ✓ Izin yapısı hazırlandı
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arama & AI -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Arama & AI</span>
+                                <span class="card-status">⚠️</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>6/7 (85%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Temel arama<br>
+                                    ✓ Filtreleme<br>
+                                    ⏳ AI önerileri
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- İçerik & Veri -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">İçerik & Veri</span>
+                                <span class="card-status">❌</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>2/7 (28%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 28%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Şema tasarımı<br>
+                                    ✓ Test verileri<br>
+                                    ⏳ Migration
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UI/UX Tasarımı -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">UI/UX Tasarımı</span>
+                                <span class="card-status">✅</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>6/6 (100%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Design system<br>
+                                    ✓ Wireframes<br>
+                                    ✓ Mockups
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Teknik Altyapı -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Teknik Altyapı</span>
+                                <span class="card-status">❌</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>3/8 (37%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 37%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Frontend setup<br>
+                                    ✓ Supabase<br>
+                                    ⏳ CI/CD
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pazarlama & Lansman -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Pazarlama & Lansman</span>
+                                <span class="card-status">✅</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>5/5 (100%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ Messaging<br>
+                                    ✓ Strategy<br>
+                                    ✓ Planning
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gelir Modelleri -->
+                        <div class="status-card">
+                            <div class="card-header">
+                                <span class="card-title">Gelir Modelleri</span>
+                                <span class="card-status">✅</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>İlerleme</span>
+                                        <span>5/5 (100%)</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 13px; color: #666;">
+                                    ✓ 6 model<br>
+                                    ✓ Pricing<br>
+                                    ✓ Strategies
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table class="comparison-table">
-                            <tr>
-                                <th>Kategori</th>
-                                <th>Durum</th>
-                                <th>İlerleme</th>
-                            </tr>
-                            <tr>
-                                <td>Vizyon & Kapsam</td>
-                                <td><span class="badge badge-success">Tamam</span></td>
-                                <td>6/6</td>
-                            </tr>
-                            <tr>
-                                <td>Kullanıcı Rolleri</td>
-                                <td><span class="badge badge-success">Tamam</span></td>
-                                <td>6/6</td>
-                            </tr>
-                            <tr>
-                                <td>Arama & AI</td>
-                                <td><span class="badge badge-warning">Kısmen</span></td>
-                                <td>6/7</td>
-                            </tr>
-                            <tr>
-                                <td>İçerik & Veri</td>
-                                <td><span class="badge badge-danger">Geliştirilecek</span></td>
-                                <td>2/7</td>
-                            </tr>
-                            <tr>
-                                <td>UI/UX Tasarımı</td>
-                                <td><span class="badge badge-success">Tamam</span></td>
-                                <td>6/6</td>
-                            </tr>
-                            <tr>
-                                <td>Teknik Altyapı</td>
-                                <td><span class="badge badge-danger">Değerlendirme Gerekli</span></td>
-                                <td>3/8</td>
-                            </tr>
-                            <tr>
-                                <td>Pazarlama & Lansman</td>
-                                <td><span class="badge badge-success">Tamam</span></td>
-                                <td>5/5</td>
-                            </tr>
-                            <tr>
-                                <td>Gelir Modelleri</td>
-                                <td><span class="badge badge-success">Tamam</span></td>
-                                <td>5/5</td>
-                            </tr>
+                </div>
+            </div>
+
+            <!-- KATEGORİLER -->
+            <div id="categories" class="section-content">
+                <div class="header">
+                    <h1>📊 Kategori Detayları</h1>
+                    <p class="subtitle">8 Kategori, Detaylı İlerleme</p>
+                </div>
+                <div class="content">
+                    <div class="section">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th>Durum</th>
+                                    <th>İlerleme</th>
+                                    <th>Not</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Vizyon & Kapsam</strong></td>
+                                    <td>✅ Tamam</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 100%; border-radius: 3px;"></div></div></td>
+                                    <td>Hazır</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kullanıcı Rolleri</strong></td>
+                                    <td>✅ Tamam</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 100%; border-radius: 3px;"></div></div></td>
+                                    <td>6 rol tanımlandı</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Arama & AI</strong></td>
+                                    <td>⚠️ Kısmen</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 85%; border-radius: 3px;"></div></div></td>
+                                    <td>AI önerileri beklemede</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>İçerik & Veri</strong></td>
+                                    <td>❌ Başlamadı</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 28%; border-radius: 3px;"></div></div></td>
+                                    <td>Kritik öncelik</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>UI/UX Tasarımı</strong></td>
+                                    <td>✅ Tamam</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 100%; border-radius: 3px;"></div></div></td>
+                                    <td>Lovable'da hazır</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Teknik Altyapı</strong></td>
+                                    <td>❌ Değerlendirilme</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 37%; border-radius: 3px;"></div></div></td>
+                                    <td>Next.js + Supabase</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pazarlama & Lansman</strong></td>
+                                    <td>✅ Tamam</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 100%; border-radius: 3px;"></div></div></td>
+                                    <td>Hazır</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gelir Modelleri</strong></td>
+                                    <td>✅ Tamam</td>
+                                    <td><div style="background: #e5e7eb; height: 6px; border-radius: 3px;"><div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 6px; width: 100%; border-radius: 3px;"></div></div></td>
+                                    <td>6 model hazır</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2>⚡ Kritik Öncelikler</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Supabase Auth & Database Kurulumu</div>
-                                    <div class="todo-desc">Kullanıcı kimlik doğrulama ve veritabanı altyapısı</div>
-                                    <div class="todo-meta">
-                                        <span class="badge badge-danger">Kritik</span>
-                                        <span class="badge badge-info">Backend</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Kullanıcı Rolleri Sistemi</div>
-                                    <div class="todo-desc">Bireysel, Danışman, İşletme, Kuruluş rolleri ve yetkileri</div>
-                                    <div class="todo-meta">
-                                        <span class="badge badge-danger">Kritik</span>
-                                        <span class="badge badge-info">Auth</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">İşletme Claim Sistemi</div>
-                                    <div class="todo-desc">İşletme sahiplik doğrulama ve yönetim devralma</div>
-                                    <div class="todo-meta">
-                                        <span class="badge badge-warning">Yüksek</span>
-                                        <span class="badge badge-info">Feature</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Moderasyon Paneli</div>
-                                    <div class="todo-desc">İçerik onayı, spam kontrolü, raporlama sistemi</div>
-                                    <div class="todo-meta">
-                                        <span class="badge badge-warning">Yüksek</span>
-                                        <span class="badge badge-info">Admin</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+            <!-- KRİTİK ÖNCELİKLER -->
+            <div id="priorities" class="section-content">
+                <div class="header">
+                    <h1>🔴 Kritik Öncelikler</h1>
+                    <p class="subtitle">Yapılması Gerekenler</p>
+                </div>
+                <div class="content">
+                    <div class="section">
+                        <div class="priority-item">
+                            <strong>1. Supabase Auth & Database Kurulumu</strong><br>
+                            <span style="font-size: 13px; color: #666;">Kullanıcı kimlik doğrulama ve veritabanı altyapısı. Başlama: Nisan 2026</span>
+                        </div>
+                        <div class="priority-item">
+                            <strong>2. Kullanıcı Rolleri Sistemi</strong><br>
+                            <span style="font-size: 13px; color: #666;">Bireysel, Danışman, İşletme, Kuruluş rolleri ve izinleri</span>
+                        </div>
+                        <div class="priority-item">
+                            <strong>3. İşletme Talep Sistemi</strong><br>
+                            <span style="font-size: 13px; color: #666;">İşletme sahipliği doğrulama ve claim yönetimi</span>
+                        </div>
+                        <div class="priority-item">
+                            <strong>4. Moderasyon Paneli</strong><br>
+                            <span style="font-size: 13px; color: #666;">İçerik onayı, spam kontrolü ve şikayet sistemi</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="alert alert-info">
-                <strong>ℹ️ Bilgi:</strong> Bu rehber iki ayrı MVP dokümanının (ba_docu.md ve ubt_docu.md) karşılaştırmasını içerir. 
-                Mevcut frontend React + Vite + TypeScript ile hazır. Backend için Supabase entegrasyonu bekleniyor.
-            </div>
-        </div>
-
-        <!-- Comparison Tab -->
-        <div id="comparison" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <h2>📑 Döküman Karşılaştırma Matrisi</h2>
+            <!-- ZAMAN ÇİZELGESİ -->
+            <div id="timeline" class="section-content">
+                <div class="header">
+                    <h1>📅 Zaman Çizelgesi</h1>
+                    <p class="subtitle">MVP Lanş Süreci</p>
                 </div>
-                <div class="card-body">
-                    <div class="feature-matrix">
-                        <div class="header">Özellik</div>
-                        <div class="header" style="text-align: center;">BA Docu</div>
-                        <div class="header" style="text-align: center;">UBT Docu</div>
-                        <div class="header" style="text-align: center;">Durum</div>
-
-                        <div>Kullanıcı Rolleri (4 tip)</div>
-                        <div class="check">✓</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-success">Eşleşiyor</span></div>
-
-                        <div>AI Arama Sistemi</div>
-                        <div class="check">✓</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-success">Eşleşiyor</span></div>
-
-                        <div>Harita Entegrasyonu</div>
-                        <div class="check">✓</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-success">Eşleşiyor</span></div>
-
-                        <div>WhatsApp Grup Listeleme</div>
-                        <div class="check">✓</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-success">Eşleşiyor</span></div>
-
-                        <div>İşletme Claim Sistemi</div>
-                        <div class="cross">✗</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-new">Yeni Eklendi</span></div>
-
-                        <div>Kategori Hiyerarşisi</div>
-                        <div class="partial">~</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-warning">Detaylandırılmalı</span></div>
-
-                        <div>Moderasyon Sistemi</div>
-                        <div class="cross">✗</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-new">Yeni Eklendi</span></div>
-
-                        <div>Doğrulama Rozetleri</div>
-                        <div class="cross">✗</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-new">Yeni Eklendi</span></div>
-
-                        <div>Ödeme Sistemi</div>
-                        <div class="partial">~</div>
-                        <div class="cross">✗</div>
-                        <div><span class="badge badge-warning">MVP Sonrası</span></div>
-
-                        <div>Çoklu Dil Desteği</div>
-                        <div class="check">✓</div>
-                        <div class="check">✓</div>
-                        <div><span class="badge badge-success">Eşleşiyor</span></div>
-
-                        <div>Danışman KYC</div>
-                        <div class="check">✓</div>
-                        <div class="cross">✗</div>
-                        <div><span class="badge badge-info">BA Özel</span></div>
-
-                        <div>AI Twin Sistemi</div>
-                        <div class="partial">~</div>
-                        <div class="cross">✗</div>
-                        <div><span class="badge badge-info">BA Özel</span></div>
-
-                        <div>Gelir Modelleri (10+)</div>
-                        <div class="check">✓</div>
-                        <div class="cross">✗</div>
-                        <div><span class="badge badge-info">MVP Sonrası</span></div>
+                <div class="content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-month">Mart 2026</div>
+                            <div class="timeline-desc">Frontend Kurulumu</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-month">Nisan 2026</div>
+                            <div class="timeline-desc">Auth & Kullanıcı Yönetimi</div>
+                        </div>
+                        <div class="timeline-item" style="border-top-color: #f59e0b;">
+                            <div class="timeline-month" style="color: #f59e0b;">Mayıs 2026</div>
+                            <div class="timeline-desc">Core Özellikleri</div>
+                        </div>
+                        <div class="timeline-item" style="border-top-color: #f59e0b;">
+                            <div class="timeline-month" style="color: #f59e0b;">Haziran 2026</div>
+                            <div class="timeline-desc">Beta Lanş</div>
+                        </div>
+                        <div class="timeline-item" style="border-top-color: #2563eb;">
+                            <div class="timeline-month" style="color: #2563eb;">Ağustos 2026</div>
+                            <div class="timeline-desc">Public MVP</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid" style="margin-top: 20px;">
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #059669 0%, #047857 100%);">
-                        <h2>✅ Her İki Dökümanda Ortak</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item low">
-                                <div class="todo-content">
-                                    <div class="todo-title">4 Temel Kullanıcı Rolü</div>
-                                    <div class="todo-desc">Bireysel, Danışman, Ticari, Ticari Olmayan</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-content">
-                                    <div class="todo-title">AI Destekli Arama</div>
-                                    <div class="todo-desc">Doğal dil ile arama ve öneriler</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-content">
-                                    <div class="todo-title">Harita Entegrasyonu</div>
-                                    <div class="todo-desc">Google Maps ile konum bazlı arama</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-content">
-                                    <div class="todo-title">Etkinlik Sistemi</div>
-                                    <div class="todo-desc">Etkinlik oluşturma, katılım, yönetim</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-content">
-                                    <div class="todo-title">Çoklu Dil</div>
-                                    <div class="todo-desc">Türkçe, İngilizce, Almanca</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+            <!-- METRİKLER -->
+            <div id="metrics" class="section-content">
+                <div class="header">
+                    <h1>📊 Temel Metrikler</h1>
+                    <p class="subtitle">KPI'lar ve Göstergeler</p>
                 </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);">
-                        <h2>🔍 Farklılıklar</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item medium">
-                                <div class="todo-content">
-                                    <div class="todo-title">UBT: İşletme Claim Sistemi</div>
-                                    <div class="todo-desc">Kullanıcılar işletme ekleyebilir, sahipler claim edebilir</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-content">
-                                    <div class="todo-title">UBT: Moderasyon Paneli</div>
-                                    <div class="todo-desc">İçerik onayı, spam filtreleri, raporlama</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-content">
-                                    <div class="todo-title">UBT: Doğrulama Rozetleri</div>
-                                    <div class="todo-desc">Doğrulanmış işletme/profesyonel rozeti</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-content">
-                                    <div class="todo-title">BA: KYC Doğrulama</div>
-                                    <div class="todo-desc">Danışmanlar için kimlik doğrulama</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-content">
-                                    <div class="todo-title">BA: AI Twin Sistemi</div>
-                                    <div class="todo-desc">Sanal danışman ikizi ve bakım</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Missing Tab -->
-        <div id="missing" class="tab-content">
-            <div class="alert alert-warning">
-                <strong>⚠️ Önemli:</strong> Aşağıdaki liste mevcut frontend kodunda eksik olan backend özelliklerini ve henüz planlanmamış yapıları içerir.
-            </div>
-
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);">
-                        <h2>🔴 Backend Eksikleri (Supabase)</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Supabase Client Setup</div>
-                                    <div class="todo-desc">React projesine Supabase client entegrasyonu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Auth Context & Hooks</div>
-                                    <div class="todo-desc">Giriş/çıkış, session yönetimi, protected routes</div>
-                                </div>
-                            </li>
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">RLS Policies (Row Level Security)</div>
-                                    <div class="todo-desc">Her tablo için güvenlik kuralları</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Storage Buckets</div>
-                                    <div class="todo-desc">Avatar, logo, etkinlik fotoğrafları için depolama</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Edge Functions</div>
-                                    <div class="todo-desc">Email gönderimi, ödeme webhook, AI entegrasyonu</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #ea580c 0%, #c2410c 100%);">
-                        <h2>🟠 Veritabanı Tabloları</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">profiles tablosu</div>
-                                    <div class="todo-desc">Kullanıcı profilleri, roller, iletişim bilgileri</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">consultants tablosu</div>
-                                    <div class="todo-desc">Danışman detayları, uzmanlık alanları, KYC durumu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">associations tablosu</div>
-                                    <div class="todo-desc">Dernekler, kuruluşlar, topluluklar</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">businesses tablosu</div>
-                                    <div class="todo-desc">İşletmeler, claim durumu, sahibi</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">events tablosu</div>
-                                    <div class="todo-desc">Etkinlikler, katılımcılar, boost durumu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">reviews tablosu</div>
-                                    <div class="todo-desc">Yorumlar, puanlar, moderasyon durumu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">favorites tablosu</div>
-                                    <div class="todo-desc">Kullanıcı favorileri</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #ca8a04 0%, #a16207 100%);">
-                        <h2>🟡 Feature Eksikleri</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">İşletme Claim Sistemi</div>
-                                    <div class="todo-desc">Claim başvurusu, moderasyon onayı, sahiplik transferi</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Moderasyon Paneli</div>
-                                    <div class="todo-desc">Admin dashboard, içerik onayı, raporlar</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Doğrulama Rozetleri</div>
-                                    <div class="todo-desc">Verified badge sistemi</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Etkinlik Boost Sistemi</div>
-                                    <div class="todo-desc">Öne çıkarma, ödeme entegrasyonu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Kupon Sistemi</div>
-                                    <div class="todo-desc">İşletme kuponları, QR kod doğrulama</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">AI Arama</div>
-                                    <div class="todo-desc">Doğal dil arama, vektör embedding</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #0891b2 0%, #0e7490 100%);">
-                        <h2>🔵 Dokümantasyon Eksikleri</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">API Dokümantasyonu</div>
-                                    <div class="todo-desc">Endpointler, request/response şemaları</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Database Şema Diagramı</div>
-                                    <div class="todo-desc">ER diagram, ilişkiler, indexes</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Deployment Guide</div>
-                                    <div class="todo-desc">Staging, production deploy süreci</div>
-                                </div>
-                            </li>
-                            <li class="todo-item low">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Environment Variables</div>
-                                    <div class="todo-desc">Tüm gerekli env var listesi</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Roadmap Tab -->
-        <div id="roadmap" class="tab-content">
-            <div class="grid">
-                <div class="card" style="grid-column: 1 / -1;">
-                    <div class="card-header">
-                        <h2>🗓️ MVP Yol Haritası</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="roadmap">
-                            <div class="roadmap-item done">
-                                <div class="roadmap-date">Mart 2026 - Tamamlandı</div>
-                                <div class="roadmap-title">Frontend Altyapısı</div>
-                                <div class="roadmap-desc">React + Vite + TypeScript + Tailwind + shadcn/ui kurulumu</div>
+                <div class="content">
+                    <div class="section">
+                        <div class="kpi-row">
+                            <div class="kpi-box">
+                                <div class="kpi-number">65%</div>
+                                <div class="kpi-label">Genel İlerleme</div>
                             </div>
-                            <div class="roadmap-item done">
-                                <div class="roadmap-date">Mart 2026 - Tamamlandı</div>
-                                <div class="roadmap-title">UI/UX Tasarımı</div>
-                                <div class="roadmap-desc">Tüm sayfaların statik implementasyonu, mock data ile çalışan prototip</div>
+                            <div class="kpi-box">
+                                <div class="kpi-number">6/8</div>
+                                <div class="kpi-label">Kategoriler Tamamlandı</div>
                             </div>
-                            <div class="roadmap-item active">
-                                <div class="roadmap-date">Mart 2026 - Devam Ediyor</div>
-                                <div class="roadmap-title">Supabase Kurulumu</div>
-                                <div class="roadmap-desc">Proje oluşturma, auth yapılandırması, temel tablolar</div>
+                            <div class="kpi-box">
+                                <div class="kpi-number">41/55</div>
+                                <div class="kpi-label">Görevler Tamamlandı</div>
                             </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Nisan 2026</div>
-                                <div class="roadmap-title">Auth & User Management</div>
-                                <div class="roadmap-desc">Giriş/kayıt, rol yönetimi, profil sayfaları</div>
+                            <div class="kpi-box">
+                                <div class="kpi-number">2</div>
+                                <div class="kpi-label">Kritik Alan</div>
                             </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Nisan 2026</div>
-                                <div class="roadmap-title">Core Features</div>
-                                <div class="roadmap-desc">Danışmanlar, dernekler, işletmeler CRUD operasyonları</div>
+                            <div class="kpi-box">
+                                <div class="kpi-number">20+</div>
+                                <div class="kpi-label">Planlı Özellik</div>
                             </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Mayıs 2026</div>
-                                <div class="roadmap-title">Etkinlik Sistemi</div>
-                                <div class="roadmap-desc">Etkinlik oluşturma, katılım, yönetim paneli</div>
-                            </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Mayıs 2026</div>
-                                <div class="roadmap-title">Claim & Moderasyon</div>
-                                <div class="roadmap-desc">İşletme claim sistemi, admin moderasyon paneli</div>
-                            </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Haziran 2026</div>
-                                <div class="roadmap-title">Beta Launch</div>
-                                <div class="roadmap-desc">Sınırlı kullanıcı grubu ile test, geri bildirim toplama</div>
-                            </div>
-                            <div class="roadmap-item pending">
-                                <div class="roadmap-date">Ağustos 2026</div>
-                                <div class="roadmap-title">MVP Lansmanı</div>
-                                <div class="roadmap-desc">Herkese açık lansman, pazarlama başlangıcı</div>
+                            <div class="kpi-box">
+                                <div class="kpi-number">5</div>
+                                <div class="kpi-label">Aylar Lanşa</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid" style="margin-top: 20px;">
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #059669 0%, #047857 100%);">
-                        <h2>✅ Sprint 1: Foundation (Mart)</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item done">
-                                <div class="todo-content"><div class="todo-title">Frontend kurulumu</div></div>
-                            </li>
-                            <li class="todo-item done">
-                                <div class="todo-content"><div class="todo-title">Tasarım sisteminin kurulması</div></div>
-                            </li>
-                            <li class="todo-item active">
-                                <div class="todo-content"><div class="todo-title">Supabase projesi oluşturma</div></div>
-                            </li>
-                            <li class="todo-item active">
-                                <div class="todo-content"><div class="todo-title">Temel tablo şemaları</div></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);">
-                        <h2>🔵 Sprint 2: Auth & Profiles (Nisan)</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Email/password auth</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">OAuth (Google)</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Profil sayfaları</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Rol bazlı yetkilendirme</div></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);">
-                        <h2>🟣 Sprint 3: Content (Mayıs)</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Danışman listesi & detay</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Dernek & işletme yönetimi</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Etkinlik sistemi</div></div>
-                            </li>
-                            <li class="todo-item pending">
-                                <div class="todo-content"><div class="todo-title">Arama & filtreleme</div></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <footer>
+                <p>CorteQS Project Status Dashboard | Son Güncelleme: 7 Nisan 2026</p>
+                <p>© 2026 CorteQS - Tüm Hakları Saklıdır</p>
+            </footer>
         </div>
-
-        <!-- Tech Tab -->
-        <div id="tech" class="tab-content">
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🛠️ Mevcut Teknoloji Stack</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="tech-stack">
-                            <span class="tech-item current">React 18</span>
-                            <span class="tech-item current">TypeScript</span>
-                            <span class="tech-item current">Vite</span>
-                            <span class="tech-item current">Tailwind CSS</span>
-                            <span class="tech-item current">shadcn/ui</span>
-                            <span class="tech-item current">React Router</span>
-                            <span class="tech-item current">TanStack Query</span>
-                            <span class="tech-item current">Zod</span>
-                            <span class="tech-item current">React Hook Form</span>
-                            <span class="tech-item current">Vitest</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #0891b2 0%, #0e7490 100%);">
-                        <h2>➕ Eklenecek Stack</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="tech-stack">
-                            <span class="tech-item planned">Supabase</span>
-                            <span class="tech-item planned">PostgreSQL</span>
-                            <span class="tech-item planned">Supabase Auth</span>
-                            <span class="tech-item planned">Supabase Storage</span>
-                            <span class="tech-item planned">Edge Functions</span>
-                            <span class="tech-item planned">Row Level Security</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #7c3aed 0%, #6d28d9 100%);">
-                        <h2>🔮 İleri Seviye (V2+)</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="tech-stack">
-                            <span class="tech-item planned">React Native</span>
-                            <span class="tech-item planned">Stripe</span>
-                            <span class="tech-item planned">OpenAI API</span>
-                            <span class="tech-item planned">Redis</span>
-                            <span class="tech-item planned">Docker</span>
-                            <span class="tech-item planned">CI/CD Pipeline</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" style="background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);">
-                        <h2>⚠️ Güvenlik Kontrol Listesi</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="todo-list">
-                            <li class="todo-item critical">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">RLS Policies Aktif</div>
-                                    <div class="todo-desc">Tüm tablolar için row level security</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Input Validasyonu</div>
-                                    <div class="todo-desc">Zod ile form ve API validasyonu</div>
-                                </div>
-                            </li>
-                            <li class="todo-item high">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">Rate Limiting</div>
-                                    <div class="todo-desc">API istek limitleri, brute force koruması</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">HTTPS/SSL</div>
-                                    <div class="todo-desc">Production SSL sertifikası</div>
-                                </div>
-                            </li>
-                            <li class="todo-item medium">
-                                <div class="todo-checkbox"></div>
-                                <div class="todo-content">
-                                    <div class="todo-title">CORS Ayarları</div>
-                                    <div class="todo-desc">Domain bazlı CORS kısıtlamaları</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="margin-top: 20px;">
-                <div class="card-header" style="background: linear-gradient(90deg, #059669 0%, #047857 100%);">
-                    <h2>📁 Önerilen Proje Yapısı</h2>
-                </div>
-                <div class="card-body">
-                    <pre style="background: #0f172a; padding: 20px; border-radius: 8px; overflow-x: auto; color: #94a3b8;">
-src/
-├── components/
-│   └── ui/                 # shadcn/ui bileşenleri
-├── contexts/
-│   ├── AuthContext.tsx     # Supabase auth context
-│   └── DiasporaContext.tsx # Mevcut dil/ülke context
-├── hooks/
-│   ├── useAuth.ts          # Auth hooks
-│   ├── useProfile.ts       # Profil veri hooks
-│   └── useSupabase.ts      # Supabase client hook
-├── lib/
-│   ├── supabase.ts         # Supabase client kurulumu
-│   └── utils.ts            # Yardımcı fonksiyonlar
-├── pages/
-│   ├── Index.tsx
-│   ├── Consultants.tsx
-│   ├── Associations.tsx
-│   ├── Businesses.tsx
-│   ├── Events.tsx
-│   ├── Profile.tsx
-│   └── admin/              # Admin panel sayfaları
-│       ├── Dashboard.tsx
-│       ├── Moderation.tsx
-│       └── Users.tsx
-├── types/
-│   └── database.ts         # Supabase generated types
-└── utils/
-    ├── constants.ts        # Sabitler
-    └── validations.ts      # Zod şemaları
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <footer style="text-align: center; padding: 40px; color: #64748b; border-top: 1px solid #334155; margin-top: 40px;">
-            <p>CorteQS MVP Project Guide • Son Güncelleme: Mart 2026</p>
-            <p style="margin-top: 10px; font-size: 0.9rem;">
-                <a href="ba_docu.md" style="color: #3b82f6;">BA Docu</a> • 
-                <a href="ubt_docu.md" style="color: #3b82f6;">UBT Docu</a> • 
-                <a href="https://github.com/ubterzioglu/corteqs" style="color: #3b82f6;">GitHub Repo</a>
-            </p>
-        </footer>
     </div>
 
     <script>
-        function showTab(tabId) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
+        function showSection(sectionId) {
+            // Tüm section'ları gizle
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('active'));
 
-        // Add checkbox functionality
-        document.querySelectorAll('.todo-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('click', function() {
-                this.style.background = this.style.background ? '' : '#22c55e';
-                this.style.borderColor = this.style.borderColor === 'rgb(34, 197, 94)' ? '' : '#22c55e';
-            });
-        });
+            // Seçili section'u göster
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+
+            // Menü öğelerinden aktif sınıfını kaldır
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+
+            // Tıklanan menü öğesine aktif sınıfını ekle
+            event.target.closest('.menu-item')?.classList.add('active');
+        }
     </script>
 </body>
 </html>

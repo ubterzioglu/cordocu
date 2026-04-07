@@ -1,50 +1,22 @@
-const SUPABASE_ACCESS_TOKEN_COOKIE = 'sb-access-token'
-const SUPABASE_REFRESH_TOKEN_COOKIE = 'sb-refresh-token'
-const SUPABASE_REFRESH_TTL_SECONDS = 60 * 60 * 24 * 30
+interface AdminAuthCredentials {
+  email: string;
+  password: string;
+}
 
-function getRoles(metadata: Record<string, unknown> | undefined) {
-  const roles = new Set<string>()
-  const candidateValues = [
-    metadata?.role,
-    metadata?.roles,
-    metadata?.user_role,
-    metadata?.user_roles,
-    metadata?.access_role,
-    metadata?.access_roles,
-  ]
+export async function validateAdminAuth(credentials: AdminAuthCredentials): Promise<boolean> {
+  const { email, password } = credentials;
 
-  for (const value of candidateValues) {
-    if (typeof value === 'string') {
-      value
-        .split(',')
-        .map((role) => role.trim().toLowerCase())
-        .filter(Boolean)
-        .forEach((role) => roles.add(role))
-      continue
-    }
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (Array.isArray(value)) {
-      for (const role of value) {
-        if (typeof role === 'string') {
-          roles.add(role.trim().toLowerCase())
-        }
-      }
-    }
+  if (!adminEmail || !adminPassword) {
+    throw new Error('Missing admin credentials');
   }
 
-  return roles
+  return email === adminEmail && password === adminPassword;
 }
 
-export function isAdminUser(user: {
-  app_metadata?: Record<string, unknown>
-  email?: string | null
-  user_metadata?: Record<string, unknown>
-}) {
-  return true
-}
-
-export const supabaseSessionCookies = {
-  accessToken: SUPABASE_ACCESS_TOKEN_COOKIE,
-  refreshToken: SUPABASE_REFRESH_TOKEN_COOKIE,
-  refreshTokenMaxAge: SUPABASE_REFRESH_TTL_SECONDS,
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
