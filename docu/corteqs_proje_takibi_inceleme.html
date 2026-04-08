@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORTEQS Proje Takibi - İnceleme</title>
+<style>
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #162132;
+  --muted: #5d6b82;
+  --border: #d8e0ea;
+  --accent: #1e40af;
+  --accent-2: #2563eb;
+  --soft: #eaf1ff;
+  --ok: #eaf8ef;
+  --ok-text: #166534;
+  --progress: #eef4ff;
+  --progress-text: #1d4ed8;
+  --hold: #f3edff;
+  --hold-text: #6d28d9;
+  --planned: #eff6ff;
+  --planned-text: #075985;
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family: Arial, Helvetica, sans-serif; background: linear-gradient(180deg,#f8fbff 0%, #f3f5f8 100%); color:var(--text); line-height:1.55; }
+.container { max-width: 1280px; margin: 0 auto; padding: 38px 20px 64px; }
+.hero { background: linear-gradient(135deg, #0f2d7a 0%, #2563eb 100%); color:#fff; border-radius: 24px; padding: 34px; box-shadow: 0 20px 42px rgba(37,99,235,.22); }
+.hero h1 { margin:0 0 12px; font-size:36px; }
+.hero p { margin:0; max-width: 900px; font-size:17px; opacity:.96; }
+.meta { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap:12px; margin-top:18px; }
+.mini { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:14px; padding:14px; }
+.mini strong { display:block; font-size:22px; margin-bottom:3px; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:18px; margin-top:24px; }
+.card, .section { background:var(--card); border:1px solid var(--border); border-radius:20px; box-shadow: 0 10px 28px rgba(15,23,42,.05); }
+.card { padding:22px; }
+.section { margin-top:26px; padding:26px; }
+.card h2, .section h2 { margin-top:0; }
+.small { color:var(--muted); }
+.note { margin-top:16px; padding:16px 18px; background:var(--soft); border-left:4px solid var(--accent-2); border-radius:12px; }
+.key-list { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:18px; }
+.key-box { background:#f8fafc; border:1px solid var(--border); border-radius:16px; padding:18px; }
+.key-box ul { margin:10px 0 0; padding-left:20px; }
+.summary-table { width:100%; border-collapse:collapse; margin-top:14px; }
+.summary-table th, .summary-table td { padding:12px 14px; border-bottom:1px solid var(--border); text-align:left; }
+.summary-table th { width:220px; background:#f8fafc; }
+table { width:100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; text-align: left; }
+th { background:#f8fafc; color:#334155; font-weight:700; position: sticky; top:0; }
+tr:hover td { background:#fafcff; }
+.badge { display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; white-space:nowrap; }
+.badge.done { background:var(--ok); color:var(--ok-text); }
+.badge.progress { background:var(--progress); color:var(--progress-text); }
+.badge.hold { background:var(--hold); color:var(--hold-text); }
+.badge.planned { background:var(--planned); color:var(--planned-text); }
+.badge.default { background:#eef2f7; color:#475467; }
+.formula-boxes { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; margin-top:14px; }
+.formula { background:#f8fafc; border:1px solid var(--border); border-radius:14px; padding:14px; }
+.formula strong { display:block; margin-bottom:6px; }
+.formula span { color:var(--muted); font-family: Consolas, Monaco, monospace; font-size:13px; }
+ul { margin: 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>CORTEQS Proje Takibi - Yapı Analizi</h1>
+    <p>Bu dosya, görev bazlı proje yönetimi için hazırlanmış tek sayfalık bir takip şablonu. Üst tarafta proje kimliği, sağ tarafta durum ve öncelik anahtarları, orta bölümde ise proje grupları altında görev, ilerleme, maliyet ve saat takibi bir araya getirilmiş.</p>
+    <div class="meta">
+      <div class="mini"><strong>1</strong>Sekme</div>
+      <div class="mini"><strong>2</strong>Proje bloğu</div>
+      <div class="mini"><strong>14</strong>Görev satırı</div>
+      <div class="mini"><strong>9</strong>Maliyet verili satır</div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Ne anlıyorum?</h2>
+      <p>Bu çalışma, karmaşık proje yönetim araçları yerine daha sade bir tablo mantığıyla proje ilerlemesini kontrol etmeyi hedefliyor. Yapı, küçük ekipler veya operasyonel proje takibi için uygun.</p>
+    </section>
+    <section class="card">
+      <h2>Mevcut durum</h2>
+      <p>Dosya büyük ölçüde şablon niteliğinde. Alanlar tanımlı, formüller yerleştirilmiş; ancak proje başlığı, sahiplik ve görev ayrıntılarının önemli bölümü hâlâ örnek veya boş durumda.</p>
+    </section>
+    <section class="card">
+      <h2>En net okuma</h2>
+      <p>Burada amaç ayrıntılı raporlama değil; tek ekranda durum, öncelik, tarih, yüzdesel ilerleme, sabit maliyet ve saat takibini hızlıca görmek.</p>
+    </section>
+  </div>
+
+  <section class="section">
+    <h2>Üst Bilgiler</h2>
+    <table class="summary-table">
+      <tr><th>Proje başlığı</th><td>[Projenin başlığı]</td></tr>
+      <tr><th>Proje yöneticisi</th><td>[Proje Yöneticisinin adı]</td></tr>
+      <tr><th>Şirket adı</th><td>[Şirketin adı]</td></tr>
+      <tr><th>Tarih</th><td>12.03.2018</td></tr>
+    </table>
+    <div class="note">Bu alanların üçü şu anda gerçek veri yerine placeholder metin taşıyor. Yani dosya doğrudan kullanım yerine uyarlanmayı bekleyen bir template gibi duruyor.</div>
+  </section>
+
+  <section class="section">
+    <h2>Durum ve Öncelik Anahtarları</h2>
+    <div class="key-list">
+      <div class="key-box">
+        <h3>Durumlar</h3>
+        <ul><li>Beklemede</li><li>Henüz Başlamadı</li><li>Devam Ediyor</li><li>Tamamlandı</li></ul>
+      </div>
+      <div class="key-box">
+        <h3>Öncelikler</h3>
+        <ul><li>Düşük</li><li>Orta</li><li>Yüksek</li></ul>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section">
+    <h2>PROJE 1</h2>
+    <p>Bu proje bloğu altında görevler satır bazında tutuluyor. Üst satırdaki özet hücreleri, görevlerin tamamlanma oranı ile maliyet ve saat toplamlarını formülle hesaplamayı amaçlıyor.</p>
+    <div class="formula-boxes">
+      <div class="formula"><strong>Tamamlanan %</strong><span>=AVERAGE(K11:K15)</span></div>
+      <div class="formula"><strong>Sabit maliyet</strong><span>=SUM(L11:L15)</span></div>
+      <div class="formula"><strong>Tahmini saat</strong><span>=SUM(M11:M15)</span></div>
+      <div class="formula"><strong>Fiili saat</strong><span>=SUM(N11:N15)</span></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Durum</th><th>Öncelik</th><th>Başlangıç</th><th>Bitiş</th><th>Süre</th><th>Görev adı</th><th>Atanan</th><th>Açıklama</th><th>Materyal</th><th>Tamamlanan %</th><th>Sabit maliyet</th><th>Tahmini saat</th><th>Fiili saat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge hold">Beklemede</span></td><td>Yüksek</td><td>09.09.2018</td><td>10.09.2018</td><td>=DAYS360(D11,E11)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%56</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="badge planned">Henüz Başlamadı</span></td><td>Düşük</td><td>10.09.2018</td><td>14.09.2018</td><td>=DAYS360(D12,E12)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%50</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="badge hold">Beklemede</span></td><td>Düşük</td><td>11.09.2018</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="badge progress">Devam Ediyor</span></td><td>Orta</td><td>11.09.2018</td><td>20.09.2018</td><td>=DAYS360(D14,E14)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%22</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>12.09.2018</td><td>20.09.2018</td><td>=DAYS360(D15,E15)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%11</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>PROJE 2</h2>
+    <p>Bu proje bloğu altında görevler satır bazında tutuluyor. Üst satırdaki özet hücreleri, görevlerin tamamlanma oranı ile maliyet ve saat toplamlarını formülle hesaplamayı amaçlıyor.</p>
+    <div class="formula-boxes">
+      <div class="formula"><strong>Tamamlanan %</strong><span>=AVERAGE(K17:K20)</span></div>
+      <div class="formula"><strong>Sabit maliyet</strong><span>=SUM(L17:L20)</span></div>
+      <div class="formula"><strong>Tahmini saat</strong><span>=SUM(M17:M20)</span></div>
+      <div class="formula"><strong>Fiili saat</strong><span>=SUM(N17:N20)</span></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Durum</th><th>Öncelik</th><th>Başlangıç</th><th>Bitiş</th><th>Süre</th><th>Görev adı</th><th>Atanan</th><th>Açıklama</th><th>Materyal</th><th>Tamamlanan %</th><th>Sabit maliyet</th><th>Tahmini saat</th><th>Fiili saat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="badge hold">Beklemede</span></td><td>Yüksek</td><td>09.09.2018</td><td>10.09.2018</td><td>=DAYS360(D17,E17)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%11</td><td>400</td><td>20</td><td>20</td></tr><tr><td><span class="badge planned">Henüz Başlamadı</span></td><td>Düşük</td><td>10.09.2018</td><td>14.09.2018</td><td>=DAYS360(D18,E18)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>200</td><td>6</td><td>5</td></tr><tr><td><span class="badge progress">Devam Ediyor</span></td><td>Orta</td><td>11.09.2018</td><td>20.09.2018</td><td>=DAYS360(D19,E19)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>50</td><td>5</td><td>5</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>12.09.2018</td><td>20.09.2018</td><td>=DAYS360(D20,E20)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>13.09.2018</td><td>21.09.2018</td><td>=DAYS360(D21,E21)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>14.09.2018</td><td>22.09.2018</td><td>=DAYS360(D22,E22)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>15.09.2018</td><td>23.09.2018</td><td>=DAYS360(D23,E23)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>16.09.2018</td><td>24.09.2018</td><td>=DAYS360(D24,E24)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr><tr><td><span class="badge done">Tamamlandı</span></td><td>Orta</td><td>17.09.2018</td><td>25.09.2018</td><td>=DAYS360(D25,E25)</td><td>Görev</td><td><span class="small">Boş</span></td><td>Buraya görev ayrıntılarını girin</td><td><span class="small">Boş</span></td><td>%0</td><td>40</td><td>2</td><td>2</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <section class="section">
+    <h2>Öne Çıkan Eksikler</h2>
+    <ul>
+      <li>Proje başlığı, şirket adı ve proje yöneticisi alanları gerçek veriyle doldurulmamış.</li>
+      <li>Atanan kişi sütununda doldurulmuş kayıt görünmüyor.</li>
+      <li>Görev isimleri büyük ölçüde jenerik tutulmuş.</li>
+      <li>Materyal alanları boş bırakılmış.</li>
+      <li>Proje 1 tarafında maliyet ve saat alanları boş; Proje 2 tarafında örnek sayı girişi bulunuyor.</li>
+      <li>Bazı satırlar kısmen dolu, yani şablon kullanım sırasında yarım bırakılmış gibi görünüyor.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Sonuç</h2>
+    <p>Bu dosya, CORTEQS tarafında kullanılabilecek sade bir proje takip omurgası sunuyor. Yapı mantıklı: görevleri projelere bölüyor, durum ve önceliği standardize ediyor, ilerleme ile maliyet/saat toplamlarını formülle yukarı taşıyor. Ancak şu haliyle tamamlanmış bir proje arşivi değil, düzenlenip gerçek verilerle beslenmesi gereken bir şablon.</p>
+    <div class="note">
+      Güçlü taraf: görev, ilerleme, maliyet ve saat mantığını aynı tabloda toplaması.<br>
+      Zayıf taraf: sahiplik ve gerçek operasyonel verilerin henüz büyük ölçüde eksik olması.
+    </div>
+  </section>
+</div>
+</body>
+</html>
