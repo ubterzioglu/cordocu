@@ -260,7 +260,7 @@ export const docsCategories: DocCategoryDefinition[] = [
       title: 'MVP Approach (Merged Documentation)',
       description:
         'İki ayrı kaynak dokümanı birleştirilerek hazırlanan Kortex / Türk Diaspora Ağı ürün vizyonu, MVP gereksinimleri, içerik yapısı ve teknik karar başlıkları.',
-      ctaLabel: 'MVP docs'a git',
+      ctaLabel: "MVP docs'a git",
     },
     items: [
       {
@@ -342,7 +342,7 @@ export const docsCategories: DocCategoryDefinition[] = [
         id: 'mvp-arama-filtreleme',
         label: '10. Arama, Filtreleme ve AI',
         description:
-          'MVP arama alanları, AI destekli doğal dil sorgulama (Berlin'de Türk dişçi), veri kaynakları ve sonuç sıralaması.',
+          "MVP arama alanları, AI destekli doğal dil sorgulama (Berlin'de Türk dişçi), veri kaynakları ve sonuç sıralaması.",
         href: '#mvp-arama-filtreleme',
         categorySlug: 'mvp',
       },
@@ -350,7 +350,7 @@ export const docsCategories: DocCategoryDefinition[] = [
         id: 'mvp-icerik-toplama',
         label: '11. İçerik Toplama ve Veri Kaynakları',
         description:
-          'Bireysel girişler, işletme başvuruları, toplu veri, Google Maps entegrasyonu, ticaret odaları, konsülosluk ve dış API'ler.',
+          "Bireysel girişler, işletme başvuruları, toplu veri, Google Maps entegrasyonu, ticaret odaları, konsülosluk ve dış API'ler.",
         href: '#mvp-icerik-toplama',
         categorySlug: 'mvp',
       },
@@ -438,7 +438,7 @@ export const docsCategories: DocCategoryDefinition[] = [
         id: 'mvp-gelir-modelleri',
         label: '22. Gelir Modelleri',
         description:
-          'MVP'de freemium yapı. Uzun vadede üyelik, reklam, sponsorluk, iş ilanları, kupon, AI twin, micro site ve dernek paketleri.',
+          "MVP'de freemium yapı. Uzun vadede üyelik, reklam, sponsorluk, iş ilanları, kupon, AI twin, micro site ve dernek paketleri.",
         href: '#mvp-gelir-modelleri',
         categorySlug: 'mvp',
       },
