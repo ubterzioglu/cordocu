@@ -1,7 +1,7 @@
 
 # TÜRK DİASPORA AĞI - MVP GEREKSİNİMLERİ
 **Hazırlayan:** [Burak Akçakanat | **Tarih:** [13 Mart 2026 | **Durum:** 55/55 Tamamlandı
-
+aaaaa
 
 ## 🎯 VİZYON VE KAPSAM (1-6)
 
