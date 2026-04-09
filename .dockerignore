@@ -1,0 +1,12 @@
+.git
+.next
+.kilo
+node_modules
+docu
+*.log
+*.pid
+*.err
+Dockerfile
+.dockerignore
+.env*.local
+README.md

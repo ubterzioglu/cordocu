@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
+import DbStatusBadge from '@/components/ui/DbStatusBadge'
 
 interface HeaderProps {
   onMenuToggle: () => void
@@ -43,7 +44,8 @@ export default function Header({
             Documentation Hub
           </Link>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <DbStatusBadge />
           <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
             v1.0.0
           </span>

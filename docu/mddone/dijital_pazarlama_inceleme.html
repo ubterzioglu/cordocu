@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dijital Pazarlama - İnceleme</title>
+<style>
+:root {
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --text: #18212f;
+  --muted: #5b6678;
+  --border: #dbe2ec;
+  --accent: #2f6fed;
+  --accent-soft: #eaf1ff;
+  --ok: #eaf8ef;
+  --ok-text: #166534;
+  --warn: #fff7e8;
+  --warn-text: #9a6700;
+  --info: #eef4ff;
+  --info-text: #1d4ed8;
+  --pause: #fcecec;
+  --pause-text: #b42318;
+  --hold: #f4f0ff;
+  --hold-text: #6d28d9;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, #f8fbff 0%, #f3f5f8 100%);
+  color: var(--text);
+  line-height: 1.55;
+}
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+.hero {
+  background: linear-gradient(135deg, #1f4fbf 0%, #4f86ff 100%);
+  color: white;
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 18px 40px rgba(31,79,191,.18);
+}
+.hero h1 { margin: 0 0 12px; font-size: 34px; }
+.hero p { margin: 0; max-width: 860px; font-size: 17px; opacity: .96; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 28px rgba(15,23,42,.05);
+}
+.card h2, .section h2 { margin-top: 0; }
+.section {
+  margin-top: 26px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow: 0 10px 28px rgba(15,23,42,.05);
+}
+ul { margin: 0; padding-left: 20px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 14px;
+}
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  text-align: left;
+}
+th {
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 700;
+}
+tr:hover td { background: #fafcff; }
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badge.done { background: var(--ok); color: var(--ok-text); }
+.badge.progress { background: var(--info); color: var(--info-text); }
+.badge.review { background: var(--warn); color: var(--warn-text); }
+.badge.planned, .badge.new { background: #edf7ff; color: #0369a1; }
+.badge.paused { background: var(--pause); color: var(--pause-text); }
+.badge.hold { background: var(--hold); color: var(--hold-text); }
+.badge.default { background: #eef2f7; color: #475467; }
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.meta .mini {
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  padding: 14px;
+}
+.meta .mini strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.note {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+}
+.small { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>Dijital Pazarlama - Yapı Analizi</h1>
+    <p>Bu çalışma dosyası, dijital pazarlama süreçlerini içerik ve kampanya bazında takip etmek için hazırlanmış bir şablon yapısı sunuyor. Mevcut haliyle sistem kurulmuş durumda; ancak veri girişlerinin büyük bölümü henüz taslak seviyesinde.</p>
+    <div class="meta">
+      <div class="mini"><strong>2</strong>Sekme</div>
+      <div class="mini"><strong>2</strong>Ana takip alanı</div>
+      <div class="mini"><strong>11</strong>Tanımlı durum / tür girdisi</div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Ne anlıyorum?</h2>
+      <p>Dosya, pazarlama operasyonlarını düzenli hale getirmek için hazırlanmış. Bir sekme içerik üretimini, diğer sekme ise kampanya yönetimini takip ediyor.</p>
+    </section>
+    <section class="card">
+      <h2>Mevcut durum</h2>
+      <p>Tablo başlıkları ve süreç adımları tanımlı. Buna karşılık içerik isimleri, tarih alanları, sahiplik bilgileri ve dosya/not alanları çoğunlukla boş.</p>
+    </section>
+    <section class="card">
+      <h2>Genel yorum</h2>
+      <p>Bu dosya dolu bir rapor değil, kullanılmaya hazır bir operasyon iskeleti gibi duruyor. Düzenli kullanım için gerçek kayıtlarla beslenmesi gerekiyor.</p>
+    </section>
+  </div>
+
+  <section class="section">
+    <h2>İçerikler</h2>
+    <p>Bu sekme içerik üretimi ve yayın takibi için tasarlanmış. E-posta, sosyal medya, TV ve blog gibi farklı içerik türlerini aynı tabloda yönetmeye uygun.</p>
+    <table>
+      <thead>
+        <tr><th>İçerik</th><th>Tür</th><th>Ayrıntılar</th><th>Sahibi</th><th>Durum</th><th>Yayınlanma tarihi</th><th>Dosya</th><th>Notlar</th></tr>
+      </thead>
+      <tbody>
+<tr><td><span class="small">Boş</span></td><td>E-posta</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge new">Yeni</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>Sosyal medya</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge progress">Devam ediyor</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>TV</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge default">İnceleniyor</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>Blog yayını</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge done">Yayınlandı</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>Tümü</td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge paused">Askıya alındı</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge paused">Duraklatıldı</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>Kampanyalar1</h2>
+    <p>Bu sekme kampanya takibi için tasarlanmış. Planlama, ilerleme ve yayın durumlarını tek bir yapı içinde izlemeye yardımcı oluyor.</p>
+    <table>
+      <thead>
+        <tr><th>Kampanya</th><th>Tür</th><th>Sahibi</th><th>Durum</th><th>Başlangıç tarihi</th><th>Bitiş tarihi</th><th>Öğeler</th><th>Notlar</th></tr>
+      </thead>
+      <tbody>
+<tr><td>İlk 100 işletmeye/danışmana sosyal medya hesaplarında ücretsiz video</td><td>Tür 1</td><td><span class="small">Boş</span></td><td><span class="badge planned">Planlanıyor</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>Tür 2</td><td><span class="small">Boş</span></td><td><span class="badge progress">Gelişiyor</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td>Tür 3</td><td><span class="small">Boş</span></td><td><span class="badge default">İnceleniyor</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge hold">Beklemede</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr><tr><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="badge done">Yayınlandı</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td><td><span class="small">Boş</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>Sonuç</h2>
+    <p>Dosya yapısal olarak mantıklı ve kullanılabilir. En net okuma şu: burada amaç raporlama değil, süreç takibi için temel bir pazarlama çalışma alanı kurmak. İçerik ve kampanya tarafları ayrılmış, durum bazlı ilerleme mantığı kurulmuş, ama gerçek operasyonel veri henüz tam işlenmemiş.</p>
+    <div class="note">
+      Güçlü taraf: yapı hazır. <br>
+      Eksik taraf: gerçek kullanım verileri, sahiplik, tarihler ve operasyon detayları eksik.
+    </div>
+  </section>
+</div>
+</body>
+</html>
