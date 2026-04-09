@@ -4,6 +4,7 @@ export type DocCategorySlug =
   | 'planung'
   | 'architecture'
   | 'tests'
+  | 'mvp'
 
 export type DocIconKey =
   | 'book'
@@ -235,6 +236,232 @@ export const docsCategories: DocCategoryDefinition[] = [
         description: 'End-to-end user journey coverage and browser automation notes.',
         href: '#tests-e2e-tests',
         categorySlug: 'tests',
+      },
+    ],
+  },
+  {
+    slug: 'mvp',
+    label: 'MVP APPROACH',
+    shortDescription: 'Birleştirilmiş MVP ürün, içerik ve gereksinim dökümanı — Kortex / Türk Diaspora Ağı.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'MVP Approach (Merged Documentation)',
+      description:
+        'İki ayrı kaynak dokümanı birleştirilerek hazırlanan Kortex / Türk Diaspora Ağı ürün vizyonu, MVP gereksinimleri, içerik yapısı ve teknik karar başlıkları.',
+      ctaLabel: 'MVP docs'a git',
+    },
+    items: [
+      {
+        id: 'mvp-platform-tanimi',
+        label: '1. Platform Tanımı',
+        description:
+          'Kortex / Türk Diaspora Ağı nedir? Dünyanın farklı şehirlerinde yaşayan Türkler için tasarlanan global dijital platformun tek cümlelik değer önerisi.',
+        href: '#mvp-platform-tanimi',
+        categorySlug: 'mvp',
+        featuredOrder: 5,
+      },
+      {
+        id: 'mvp-temel-problem',
+        label: '2. Temel Problem ve Çözüm',
+        description:
+          'Yerel bilgi eksikliği, topluluklara erişim ve sosyal/profesyonel bağlantı eksikliği — platformun çözdüğü üç temel problem.',
+        href: '#mvp-temel-problem',
+        categorySlug: 'mvp',
+        featuredOrder: 6,
+      },
+      {
+        id: 'mvp-hedef-kitle',
+        label: '3. Hedef Kitle ve Pazarlar',
+        description:
+          'Ana hedef kitle ve başlangıç ülkeleri: Almanya, İngiltere, UAE, Avustralya, Fransa, Amerika, Kanada.',
+        href: '#mvp-hedef-kitle',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-basari-metrikleri',
+        label: '4. Başarı Metrikleri',
+        description:
+          'MVP başarısı için kritik üç metrik: Traction, Retention, Revenue. Ek destek metrikleri ve şehir bazlı doluluk oranı.',
+        href: '#mvp-basari-metrikleri',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-bilgi-mimarisi',
+        label: '5. Platform Bilgi Mimarisi',
+        description:
+          'Country → City → Category → Listing hiyerarşisi. Arama, filtreleme, şehir sayfaları ve harita görünümünün paylaştığı ortak omurga.',
+        href: '#mvp-bilgi-mimarisi',
+        categorySlug: 'mvp',
+        featuredOrder: 7,
+      },
+      {
+        id: 'mvp-kullanici-rolleri',
+        label: '6. Kullanıcı Rolleri ve Hesap',
+        description:
+          'Bireysel kullanıcı, danışman, işletme sahibi, topluluk yöneticisi, moderatör ve admin rolleri. Google/Apple auth, KYC doğrulaması.',
+        href: '#mvp-kullanici-rolleri',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-claim-sistemi',
+        label: '7. Claim ve Sahiplenme Sistemi',
+        description:
+          'Topluluk tarafından eklenen işletmelerin gerçek sahipleri tarafından moderasyon onayıyla claim edilmesi modeli.',
+        href: '#mvp-claim-sistemi',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-kategori-sistemi',
+        label: '8. Kategori Sistemi',
+        description:
+          'Sağlık, hukuk, günlük yaşam, yeme-içme, eğitim, hizmetler, iş-kariyer, topluluklar, etkinlikler ve ek ticari alanlar.',
+        href: '#mvp-kategori-sistemi',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-listing-veri-modeli',
+        label: '9. Listing Veri Modeli',
+        description:
+          'Her listing için: temel bilgiler, iletişim, lokasyon, işletme bilgileri, medya, dil, rezervasyon, ödeme ve doğrulama durumu.',
+        href: '#mvp-listing-veri-modeli',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-arama-filtreleme',
+        label: '10. Arama, Filtreleme ve AI',
+        description:
+          'MVP arama alanları, AI destekli doğal dil sorgulama (Berlin'de Türk dişçi), veri kaynakları ve sonuç sıralaması.',
+        href: '#mvp-arama-filtreleme',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-icerik-toplama',
+        label: '11. İçerik Toplama ve Veri Kaynakları',
+        description:
+          'Bireysel girişler, işletme başvuruları, toplu veri, Google Maps entegrasyonu, ticaret odaları, konsülosluk ve dış API'ler.',
+        href: '#mvp-icerik-toplama',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-harita',
+        label: '12. Harita ve Lokasyon Deneyimi',
+        description:
+          'Şehirdeki Türk işletmelerini, profesyonelleri ve etkinlikleri harita üzerinde keşfetme. Google Maps entegrasyonu.',
+        href: '#mvp-harita',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-cok-dilli',
+        label: '13. Çok Dilli Yapı',
+        description:
+          'İlk aşamada Türkçe, İngilizce ve Almanca dil desteği. Dil seçeneği kullanıcı tercihine göre aktif olacak.',
+        href: '#mvp-cok-dilli',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-topluluk-grup',
+        label: '14. Topluluk ve Grup Sistemi',
+        description:
+          'WhatsApp, Telegram, Discord topluluklarının listelenmesi ve keşif işlevi. Moderasyon grup adminlerinde kalır.',
+        href: '#mvp-topluluk-grup',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-etkinlik',
+        label: '15. Etkinlik Sistemi',
+        description:
+          'Konser, meetup, networking, kültürel etkinlik, konferans, festival ve workshop — tarih, konum, açıklama, bilet linki.',
+        href: '#mvp-etkinlik',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-yorum-puan',
+        label: '16. Yorum, Puanlama ve Güven',
+        description:
+          'Kullanıcı puanlama ve yorum mekanizması. Google işletme ratinglerinin sisteme taşınması fikri.',
+        href: '#mvp-yorum-puan',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-moderasyon',
+        label: '17. Moderasyon ve Güvenlik',
+        description:
+          'İçerik onayı, kullanıcı raporlama, spam filtreleri, moderatör paneli. Auth güvenliği, KYC, rate limiting, RBAC.',
+        href: '#mvp-moderasyon',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-ui-ux',
+        label: '18. UI/UX Çerçevesi',
+        description:
+          'Mobil uyumluluk, pastel ton paleti, 19–24 ekran MVP tasarımı, onboarding süreci, marka adı ve ekran aileleri.',
+        href: '#mvp-ui-ux',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-teknik-altyapi',
+        label: '19. Teknik Altyapı ve Kararlar',
+        description:
+          '100K günlük kullanıcı hedefi, SSL, ölçeklenebilirlik. Önerilen stack: Next.js, Supabase, Google Maps, PostHog, Stripe.',
+        href: '#mvp-teknik-altyapi',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-hosting',
+        label: '20. Hosting ve Ölçeklenebilirlik',
+        description:
+          'Çok ülkeli veri yapısı, medya yükleme, harita, moderasyon, AI arama ve 100K kullanıcı hedefi için altyapı kriterleri.',
+        href: '#mvp-hosting',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-pazarlama',
+        label: '21. Pazarlama ve Lansman',
+        description:
+          'Beta kullanıcılar, 4–6 ay lansman hedefi, Instagram/Facebook/LinkedIn kanalları, THY master sponsor vizyonu.',
+        href: '#mvp-pazarlama',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-gelir-modelleri',
+        label: '22. Gelir Modelleri',
+        description:
+          'MVP'de freemium yapı. Uzun vadede üyelik, reklam, sponsorluk, iş ilanları, kupon, AI twin, micro site ve dernek paketleri.',
+        href: '#mvp-gelir-modelleri',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-analitik',
+        label: '23. Analitik ve Geri Bildirim',
+        description:
+          'Kullanıcı geri bildirim kanalı, henüz seçilmemiş analitik araçları, önerilen event seti: search, listing, claim, signup.',
+        href: '#mvp-analitik',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-yol-haritasi',
+        label: '24. Yol Haritası',
+        description:
+          'MVP: şehir/kategori/listing, login, arama, harita, moderasyon. V2: mobil uygulama, AI, monetization, premium sayfalar.',
+        href: '#mvp-yol-haritasi',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-acik-kararlar',
+        label: '25. Açık Karar Gerektiren Konular',
+        description:
+          'Marka adı, technology stack, hosting, veritabanı şeması, medya depolama, AI MVP kapsamı, güvenlik standardı ve lansman ülkeleri.',
+        href: '#mvp-acik-kararlar',
+        categorySlug: 'mvp',
+      },
+      {
+        id: 'mvp-cto-aksiyonlar',
+        label: '26. CTO / Product Lead Aksiyonları',
+        description:
+          'Öncelik 1: stack kararı, şema, auth modeli. Öncelik 2: onboarding, claim, çok dilli. Öncelik 3: monetization, analytics.',
+        href: '#mvp-cto-aksiyonlar',
+        categorySlug: 'mvp',
       },
     ],
   },
