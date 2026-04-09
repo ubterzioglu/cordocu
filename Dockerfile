@@ -21,7 +21,9 @@ ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npm run build
+# Some deployments have no public/ directory; create it so the runner stage
+# can always copy a stable path from the builder image.
+RUN mkdir -p public && npm run build
 
 # ─── Stage 3: runner ─────────────────────────────────────────────────────────
 FROM node:20-alpine AS runner
