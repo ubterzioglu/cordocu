@@ -272,7 +272,7 @@ const mvpSectionDetail: Record<string, string> = {
   'mvp-listing-veri-modeli':
     'Temel: isim, kategori, ülke, şehir, açıklama. İletişim: telefon, WhatsApp, e-posta, website, sosyal medya. Lokasyon: adres, harita, Google Maps. İşletme: çalışma saatleri, hizmetler, fiyat aralığı. Medya: fotoğraf/video. Ek: konuşulan diller, rezervasyon, ödeme, puan/yorum, doğrulama durumu.',
   'mvp-arama-filtreleme':
-    "MVP arama alanları: kullanıcılar, iş fırsatları, kuponlar, WhatsApp grupları. AI arama: 'Berlin'de Türk dişçi' gibi doğal dil sorguları; şehir, kategori, hizmet dili ve kullanıcı puanına göre sıralama. Filtreler: ülke, şehir, kullanıcı tipi, alt kategori, featured/sponsored.",
+    "MVP arama alanları: kullanıcılar, iş fırsatları, kuponlar, WhatsApp grupları. AI arama: \"Berlin'de Türk dişçi\" gibi doğal dil sorguları; şehir, kategori, hizmet dili ve kullanıcı puanına göre sıralama. Filtreler: ülke, şehir, kullanıcı tipi, alt kategori, featured/sponsored.",
   'mvp-icerik-toplama':
     "Kaynaklar: bireysel giriş, işletme/danışman başvurusu, kuruluş paketleri, toplu veri, Google Maps, ticaret odaları, dış API'ler. Özel: konsolosluk verisi gov.tr/Dışişleri kaynaklarından. Açık bırakılan başlıklar: ilk içerik üretim planı, veritabanı şeması, güncelleme sıklığı, medya depolama.",
   'mvp-harita':

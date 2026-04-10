@@ -40,10 +40,10 @@ export default function SidebarCategory({
         onClick={onToggle}
         aria-expanded={isExpanded}
         aria-controls={panelId}
-        className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
+        className={`flex w-full items-center gap-2 rounded-2xl border px-3 py-3 text-xs font-semibold uppercase tracking-[0.18em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
           active
-            ? 'bg-primary-50 text-primary-700'
-            : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+            ? 'border-[rgba(66,133,244,0.16)] bg-[linear-gradient(90deg,rgba(66,133,244,0.12),rgba(255,255,255,0.96))] text-primary-700 shadow-[0_10px_20px_rgba(60,64,67,0.06)]'
+            : 'border-transparent bg-white/70 text-gray-500 hover:border-[rgba(66,133,244,0.1)] hover:bg-[rgba(66,133,244,0.05)] hover:text-gray-700'
         }`}
       >
         {icon && (

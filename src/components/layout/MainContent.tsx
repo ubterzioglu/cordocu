@@ -27,34 +27,42 @@ export default function MainContent({ categorySlug }: MainContentProps) {
         {contentView.backLink && (
           <Link
             href={contentView.backLink.href}
-            className="inline-flex items-center gap-2 rounded-md text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-2 rounded-full border border-[rgba(66,133,244,0.12)] bg-white/80 px-4 py-2 text-sm font-medium text-gray-600 shadow-[0_10px_20px_rgba(60,64,67,0.06)] transition-all hover:border-[rgba(66,133,244,0.2)] hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <ArrowLeft size={16} aria-hidden="true" />
             {contentView.backLink.label}
           </Link>
         )}
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="docs-surface p-6 md:p-8">
+          <div
+            className="pointer-events-none absolute -right-16 top-0 h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(66,133,244,0.22)_0%,_rgba(66,133,244,0)_72%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(52,168,83,0.14)_0%,_rgba(52,168,83,0)_74%)]"
+            aria-hidden="true"
+          />
           {contentView.eyebrow && (
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600">
+            <p className="docs-kicker">
               {contentView.eyebrow}
             </p>
           )}
-          <h1 className="mt-3 text-3xl font-bold text-gray-900">
+          <h1 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl">
             {contentView.title}
           </h1>
-          <p className="mt-3 max-w-3xl text-base text-gray-600">
+          <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">
             {contentView.description}
           </p>
           {contentView.supportingText && (
-            <p className="mt-3 max-w-3xl text-sm text-gray-500">
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-500">
               {contentView.supportingText}
             </p>
           )}
           {contentView.metaBadges && contentView.metaBadges.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
               {contentView.metaBadges.map((metaBadge) => (
-                <span key={metaBadge} className="rounded-full bg-gray-100 px-3 py-1">
+                <span key={metaBadge} className="docs-chip">
                   {metaBadge}
                 </span>
               ))}
@@ -62,15 +70,15 @@ export default function MainContent({ categorySlug }: MainContentProps) {
           )}
 
           {contentView.search && (
-            <div className="mt-8 border-t border-gray-200 pt-6">
-              <div className="mb-2 flex items-center justify-between gap-3">
+            <div className="mt-8 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]">
+              <div className="mb-3 flex items-center justify-between gap-3">
                 <label
                   htmlFor={searchInputId}
                   className="text-sm font-medium text-gray-700"
                 >
                   {contentView.search.label}
                 </label>
-                <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">
+                <span className="inline-flex items-center rounded-full bg-[rgba(251,188,5,0.14)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[rgba(166,118,0,0.92)]">
                   Placeholder UI
                 </span>
               </div>
@@ -84,15 +92,15 @@ export default function MainContent({ categorySlug }: MainContentProps) {
                   autoComplete="off"
                   aria-readonly="true"
                   aria-describedby={searchHelperId}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 text-sm text-gray-500 focus-visible:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                  className="w-full rounded-2xl border border-[rgba(66,133,244,0.12)] bg-white py-3.5 pl-11 pr-4 text-sm text-gray-500 shadow-[0_10px_20px_rgba(60,64,67,0.04)] focus-visible:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 />
                 <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-500"
                   size={18}
                   aria-hidden="true"
                 />
               </div>
-              <p id={searchHelperId} className="mt-2 text-sm text-gray-400">
+              <p id={searchHelperId} className="mt-3 text-sm text-gray-500">
                 {contentView.search.helperText}
               </p>
             </div>
@@ -104,7 +112,7 @@ export default function MainContent({ categorySlug }: MainContentProps) {
         <section
           key={section.id}
           aria-labelledby={`section-heading-${section.id}`}
-          className="space-y-4"
+          className="space-y-5"
         >
           <SectionHeading
             id={`section-heading-${section.id}`}

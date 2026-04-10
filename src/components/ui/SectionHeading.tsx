@@ -10,12 +10,15 @@ export default function SectionHeading({
   description,
 }: SectionHeadingProps) {
   return (
-    <div className="space-y-1">
-      <h2 id={id} className="text-lg font-semibold text-gray-900">
+    <div className="space-y-3">
+      <p className="docs-kicker">
+        Section
+      </p>
+      <h2 id={id} className="text-2xl font-semibold tracking-tight text-gray-900">
         {title}
       </h2>
       {description && (
-        <p className="max-w-3xl text-sm text-gray-500">
+        <p className="max-w-3xl text-sm leading-6 text-gray-500">
           {description}
         </p>
       )}

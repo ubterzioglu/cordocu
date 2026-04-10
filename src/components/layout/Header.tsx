@@ -15,14 +15,14 @@ export default function Header({
   menuButtonRef,
 }: HeaderProps) {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-[var(--docs-header-height)] border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header className="fixed inset-x-0 top-0 z-50 h-[var(--docs-header-height)] border-b border-white/70 bg-white/85 shadow-[0_8px_32px_rgba(60,64,67,0.08)] backdrop-blur-xl">
       <div className="flex h-full items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-4">
           <button
             ref={menuButtonRef}
             type="button"
             onClick={onMenuToggle}
-            className="rounded-lg p-2 transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden"
+            className="rounded-xl border border-transparent bg-white/80 p-2 text-gray-700 transition-all hover:border-[rgba(66,133,244,0.14)] hover:bg-[rgba(66,133,244,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden"
             aria-label={
               isSidebarOpen
                 ? 'Close documentation navigation'
@@ -39,14 +39,30 @@ export default function Header({
           </button>
           <Link
             href="/"
-            className="rounded-md text-xl font-semibold text-gray-900 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="group flex items-center gap-3 rounded-xl px-1 py-1 text-gray-900 transition-colors hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
-            Documentation Hub
+            <span
+              className="grid h-10 w-10 grid-cols-2 gap-1 rounded-2xl bg-white p-2 shadow-[0_12px_24px_rgba(60,64,67,0.12)] ring-1 ring-black/5"
+              aria-hidden="true"
+            >
+              <span className="rounded-full bg-[#4285F4]" />
+              <span className="rounded-full bg-[#EA4335]" />
+              <span className="rounded-full bg-[#FBBC05]" />
+              <span className="rounded-full bg-[#34A853]" />
+            </span>
+            <span className="flex flex-col">
+              <span className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-gray-400 transition-colors group-hover:text-primary-500">
+                Google-style docs
+              </span>
+              <span className="text-lg font-semibold tracking-tight text-gray-900">
+                Documentation Hub
+              </span>
+            </span>
           </Link>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <DbStatusBadge />
-          <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+          <span className="docs-chip">
             v1.0.0
           </span>
         </div>
