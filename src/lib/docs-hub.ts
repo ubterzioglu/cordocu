@@ -729,13 +729,13 @@ export const docsCategories: DocCategoryDefinition[] = [
   {
     slug: 'toplanti',
     label: 'TOPLANTI NOTLARI',
-    shortDescription: 'Zoom toplantı notları — Şubat ve Mart 2025 — Cortex projesinin oluşum süreci.',
+    shortDescription: 'Zoom toplantı notları — Şubat, Mart ve Nisan 2026 — Cortex projesinin oluşum süreci.',
     iconKey: 'calendar',
     defaultExpanded: false,
     overview: {
       title: 'Toplantı Notları',
       description:
-        'Cortex (CorteQS) projesinin kuruluş sürecindeki Zoom görüşmelerinin birleştirilmiş notları: problem tespiti, platform vizyonu, özellikler, monetizasyon ve sonraki adımlar.',
+        'Cortex (CorteQS) projesinin kuruluş sürecindeki Zoom görüşmelerinin birleştirilmiş notları: problem tespiti, platform vizyonu, operasyon, büyüme stratejileri ve sonraki adımlar.',
       ctaLabel: 'Toplantı notlarına git',
     },
     items: [
@@ -827,6 +827,55 @@ export const docsCategories: DocCategoryDefinition[] = [
         description:
           'AI destekli MVP belgesi (Burak), mevcut MVP\'nin devamı ve birleştirme (Barış), 17 Mart belge takası ve 19 Mart birleşik plan toplantısı.',
         href: '#toplanti-2-adimlar',
+        categorySlug: 'toplanti',
+      },
+      {
+        id: 'toplanti-3-ozet',
+        label: 'Toplantı 3 — Genel Bakış (9 Nisan)',
+        description:
+          'Üçüncü Zoom görüşmesi: D.Cortex dashboard, influencer/City Partner modeli, manuel büyüme taktikleri ve ekip genişletme başlıkları netleşti.',
+        href: '#toplanti-3-ozet',
+        categorySlug: 'toplanti',
+        featuredOrder: 16,
+      },
+      {
+        id: 'toplanti-3-dashboard',
+        label: 'T3 — D.Cortex ve Dokümantasyon Merkezi',
+        description:
+          'WhatsApp, Notion ve Drive dağınıklığını çözmek için tüm notları, kişileri ve MVP planını tek merkezde toplayan D.Cortex dashboard kararı.',
+        href: '#toplanti-3-dashboard',
+        categorySlug: 'toplanti',
+      },
+      {
+        id: 'toplanti-3-icerik',
+        label: 'T3 — Influencer ve İçerik Stratejisi',
+        description:
+          'Küçük influencerlarla City Partner modeli, WhatsApp grupları ve YouTube/Instagram/TikTok kaynaklı içerik akışı; ileride otomatik seyahat rotası üreticisi fikri.',
+        href: '#toplanti-3-icerik',
+        categorySlug: 'toplanti',
+      },
+      {
+        id: 'toplanti-3-pazarlama',
+        label: 'T3 — Gerilla Pazarlama ve SEO',
+        description:
+          'Viral diaspora videolarının yorumlarında manuel büyüme, gönüllü/stajyer ekip modeli, Google Console kurulumu ve mevcut domainlerden backlink akışı.',
+        href: '#toplanti-3-pazarlama',
+        categorySlug: 'toplanti',
+      },
+      {
+        id: 'toplanti-3-ekip',
+        label: 'T3 — Ekip, Operasyon ve AI Twin',
+        description:
+          'Seren Uzluer için pazarlama liderliği teklifi, yeni ekip üyeleri için SOP ve ertelenmiş ücret modeli, araç matrisi ve kurucu AI twin vizyonu.',
+        href: '#toplanti-3-ekip',
+        categorySlug: 'toplanti',
+      },
+      {
+        id: 'toplanti-3-adimlar',
+        label: 'T3 — Sonraki Adımlar',
+        description:
+          '12 Nisan\'a kadar D.Cortex paylaşımı, Google Console ekleme, tool matrix oluşturma, SOP gözden geçirme, backlink ve pazarlama liderliği takibi.',
+        href: '#toplanti-3-adimlar',
         categorySlug: 'toplanti',
       },
       {

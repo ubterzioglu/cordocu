@@ -1,10 +1,13 @@
 import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Info } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
 import {
+  buildDocsHubHref,
   createExpandedCategoryState,
   getDocsRouteState,
   syncExpandedCategoryState,
@@ -23,6 +26,7 @@ const hiddenSidebarCategorySlugs: DocCategorySlug[] = [
   'testfall',
   'planung',
   'architecture',
+  'tests',
 ]
 
 export default function Sidebar({
@@ -70,11 +74,21 @@ export default function Sidebar({
           className="h-full overflow-y-auto px-3 py-4 [overscroll-behavior:contain]"
         >
           <div className="mb-4 px-3 pt-1">
+            <Link
+              href={buildDocsHubHref()}
+              onClick={onClose}
+              className={`sidebar-item group mb-3 w-full text-left ${
+                router.asPath === '/' ? 'active' : ''
+              }`}
+              aria-current={router.asPath === '/' ? 'page' : undefined}
+            >
+              <span className="h-5 w-5" aria-hidden="true">
+                <Info size={16} />
+              </span>
+              <span>Bu sayfa neden var ?</span>
+            </Link>
             <p className="docs-kicker">
               Navigation
-            </p>
-            <p className="mt-3 text-sm leading-6 text-gray-500">
-              Focused access to the active documentation areas with a shared visual rhythm.
             </p>
           </div>
           <div className="space-y-1">
@@ -95,10 +109,7 @@ export default function Sidebar({
                   onToggle={() =>
                     setExpandedCategories((previousState) => ({
                       ...previousState,
-                      [category.slug]:
-                        category.slug === activeCategorySlug
-                          ? true
-                          : !previousState[category.slug],
+                      [category.slug]: !previousState[category.slug],
                     }))
                   }
                   onItemSelect={onClose}
