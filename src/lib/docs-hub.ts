@@ -15,6 +15,7 @@ export type DocCategorySlug =
   | 'kortexdocs'
   | 'captable'
   | 'todolist'
+  | 'roadmap'
   | 'projetakibi'
 
 export type DocIconKey =
@@ -1373,56 +1374,19 @@ export const docsCategories: DocCategoryDefinition[] = [
   },
   {
     slug: 'todolist',
-    label: 'To Do List & Roadmap',
-    shortDescription: '12 aylık roadmap, 25 ürün/teknik görev ve 19 GTM/operasyon görevi — MVP\'den Seed Ready\'e.',
+    label: 'To Do List',
+    shortDescription: 'Canlı görev takip tablosu — Konu, Görev, Sorumlu, Zaman ve Durum kolonlarıyla DB\'ye bağlı.',
     iconKey: 'test-tube',
     defaultExpanded: false,
     overview: {
-      title: 'To Do List & Roadmap',
-      description: 'MVP\'den Seed Ready\'e uzanan 12 aylık roadmap, ürün/teknik backlog (25 görev) ve go-to-market + operasyon backlog\'u (19 görev) tek çatıda.',
+      title: 'To Do List',
+      description: 'Tüm görevler tek tabloda: Konu / Görev / Sorumlu / Zaman / Durum. Supabase\'e bağlı, yeni görev eklenebilir.',
       ctaLabel: 'Görevlere Bak',
     },
     items: [
       {
-        id: 'todo-roadmap-ozet',
-        label: '1. 12 Aylık Roadmap Özeti',
-        description: 'M1 MVP (20 advisor / 50 kullanıcı) → M12 Seed Ready (500 advisor / 20K kullanıcı / $100K revenue).',
-        href: '#todo-roadmap-ozet',
-        categorySlug: 'todolist',
-        featuredOrder: 35,
-      },
-      {
-        id: 'todo-mvp-phase',
-        label: '2. MVP Fazı (M1–M2)',
-        description: 'Platform canlı, booking sistemi, ilk 20–50 advisor onboarding, 10 SEO içerik, ilk satış.',
-        href: '#todo-mvp-phase',
-        categorySlug: 'todolist',
-        featuredOrder: 36,
-      },
-      {
-        id: 'todo-launch-phase',
-        label: '3. Launch Fazı (M3)',
-        description: 'Stripe entegrasyonu, onboarding optimizasyonu, GA kurulumu, güvenlik, mobil optimizasyon, $1K revenue.',
-        href: '#todo-launch-phase',
-        categorySlug: 'todolist',
-      },
-      {
-        id: 'todo-growth-pmf',
-        label: '4. Growth ve PMF Fazı (M4–M6)',
-        description: 'Referral sistemi, içerik ölçekleme, community dağıtımı, $3K–$10K revenue, 1K–2K kullanıcı, retention odağı.',
-        href: '#todo-growth-pmf',
-        categorySlug: 'todolist',
-      },
-      {
-        id: 'todo-scale-expansion',
-        label: '5. Scale ve Expansion Fazı (M7–M11)',
-        description: 'Yeni şehirler, B2B anlaşmalar, partnership, perks katmanı, otomasyon, $15K–$80K revenue, 3K–15K kullanıcı.',
-        href: '#todo-scale-expansion',
-        categorySlug: 'todolist',
-      },
-      {
         id: 'todo-product-backlog',
-        label: '6. Product Backlog (25 Görev)',
+        label: '1. Product Backlog (25 Görev)',
         description: 'Setup, Auth, Profiles, Listing, Search, Booking, Payment, Notification, Admin, CMS, SEO, UX, Analytics, Security, Mobile, Referral, Scaling.',
         href: '#todo-product-backlog',
         categorySlug: 'todolist',
@@ -1430,7 +1394,7 @@ export const docsCategories: DocCategoryDefinition[] = [
       },
       {
         id: 'todo-gtm-backlog',
-        label: '7. GTM & Ops Backlog (19 Görev)',
+        label: '2. GTM & Ops Backlog (19 Görev)',
         description: 'Supply (advisor listesi, outreach, onboarding), Content (SEO, blog), Growth (LinkedIn, WhatsApp), Revenue, Partnership, Ops (feedback loop, destek).',
         href: '#todo-gtm-backlog',
         categorySlug: 'todolist',
@@ -1438,14 +1402,14 @@ export const docsCategories: DocCategoryDefinition[] = [
       },
       {
         id: 'todo-eksikler-oneri',
-        label: '8. Eksikler ve İyileştirme Önerileri',
+        label: '3. Eksikler ve İyileştirme Önerileri',
         description: 'Owner, due date, dependency ve progress alanları eksik. Backlog yapısı execution tracker\'a dönüştürülmeli.',
         href: '#todo-eksikler-oneri',
         categorySlug: 'todolist',
       },
       {
         id: 'todo-notion-gorev-tablosu',
-        label: '9. Notion Görev Tablosu',
+        label: '4. Notion Görev Tablosu',
         description: '9 görevlik Notion tracker: Dij. Paz. Planı, Lansman, Gelir Modeli, Bütçe, Cap Table, Ambassador Mock, Proje Yönetimi, Ekip Datası. 1 Done, 3 In progress, 5 Not started.',
         href: '#todo-notion-gorev-tablosu',
         categorySlug: 'todolist',
@@ -1453,10 +1417,61 @@ export const docsCategories: DocCategoryDefinition[] = [
       },
       {
         id: 'todo-notion-brainstorm',
-        label: '10. Notion Brainstorm Notları',
+        label: '5. Notion Brainstorm Notları',
         description: 'Core team kararları (Burak + Barış), ürün fikirleri (WhatsApp bot, Ambassador, JukeBox, haberler, hospital booking) ve networking bağlantıları.',
         href: '#todo-notion-brainstorm',
         categorySlug: 'todolist',
+      },
+    ],
+  },
+  {
+    slug: 'roadmap',
+    label: 'Roadmap',
+    shortDescription: '12 aylık stratejik roadmap — MVP\'den Seed Ready\'e faz bazlı büyüme planı.',
+    iconKey: 'calendar',
+    defaultExpanded: false,
+    overview: {
+      title: '12 Aylık Roadmap',
+      description: 'M1 MVP\'den M12 Seed Ready\'e uzanan stratejik büyüme planı: advisor hedefleri, kullanıcı büyümesi ve gelir kilometre taşları.',
+      ctaLabel: 'Roadmap\'e Bak',
+    },
+    items: [
+      {
+        id: 'todo-roadmap-ozet',
+        label: '1. 12 Aylık Roadmap Özeti',
+        description: 'M1 MVP (20 advisor / 50 kullanıcı) → M12 Seed Ready (500 advisor / 20K kullanıcı / $100K revenue).',
+        href: '#todo-roadmap-ozet',
+        categorySlug: 'roadmap',
+        featuredOrder: 35,
+      },
+      {
+        id: 'todo-mvp-phase',
+        label: '2. MVP Fazı (M1–M2)',
+        description: 'Platform canlı, booking sistemi, ilk 20–50 advisor onboarding, 10 SEO içerik, ilk satış.',
+        href: '#todo-mvp-phase',
+        categorySlug: 'roadmap',
+        featuredOrder: 36,
+      },
+      {
+        id: 'todo-launch-phase',
+        label: '3. Launch Fazı (M3)',
+        description: 'Stripe entegrasyonu, onboarding optimizasyonu, GA kurulumu, güvenlik, mobil optimizasyon, $1K revenue.',
+        href: '#todo-launch-phase',
+        categorySlug: 'roadmap',
+      },
+      {
+        id: 'todo-growth-pmf',
+        label: '4. Growth ve PMF Fazı (M4–M6)',
+        description: 'Referral sistemi, içerik ölçekleme, community dağıtımı, $3K–$10K revenue, 1K–2K kullanıcı, retention odağı.',
+        href: '#todo-growth-pmf',
+        categorySlug: 'roadmap',
+      },
+      {
+        id: 'todo-scale-expansion',
+        label: '5. Scale ve Expansion Fazı (M7–M11)',
+        description: 'Yeni şehirler, B2B anlaşmalar, partnership, perks katmanı, otomasyon, $15K–$80K revenue, 3K–15K kullanıcı.',
+        href: '#todo-scale-expansion',
+        categorySlug: 'roadmap',
       },
     ],
   },

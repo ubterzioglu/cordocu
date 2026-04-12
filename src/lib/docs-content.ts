@@ -20,7 +20,7 @@ const projeTakibiSectionDetail: Record<string, string> = {
     'Öne çıkan eksikler: (1) Proje başlığı, yönetici ve şirket adı hâlâ placeholder. (2) Atanan sütununda tek doldurulmuş kayıt yok — sahiplik belirsiz. (3) Görev isimleri büyük çoğunlukla sadece "Görev" olarak bırakılmış. (4) Açıklamaların çoğu jenerik örnek metin: "Buraya görev ayrıntılarını girin". (5) Materyal alanları tamamen boş. (6) Proje 1\'de maliyet/saat verisi girilmemiş. Sonuç: Dosya tamamlanmış bir operasyon arşivinden çok uyarlanmayı bekleyen bir şablon. Güçlü yanı: görev, ilerleme, maliyet ve saat mantığını tek tabloda birleştirmesi. Zayıf yanı: gerçek operasyonel verilerin henüz büyük ölçüde eksik olması. Kullanıma alınacaksa önce proje adı, görev sahipleri, gerçek görev isimleri ve maliyet/saat verileri doldurulmalı.',
 }
 
-const todoListSectionDetail: Record<string, string> = {
+const roadmapSectionDetail: Record<string, string> = {
   'todo-roadmap-ozet':
     '12 aylık stratejik akış: M1–M2 MVP → M3 Launch → M4–M5 Growth → M6 PMF → M7–M9 Scale → M10–M11 Expansion → M12 Seed Ready. Başlangıç: 20 advisor, 50 kullanıcı. Bitiş hedefi: 500 advisor, 20K kullanıcı, $100K revenue. Roadmap aynı zamanda yatırımcı sunum iskeleti ve aylık odak özeti olarak kullanılabilir. Temel iş modeli: arz tarafı (advisor/business onboarding) + talep tarafı (içerik, SEO, dağıtım) + gelir tarafı (booking, ödeme, komisyon).',
   'todo-mvp-phase':
@@ -31,6 +31,9 @@ const todoListSectionDetail: Record<string, string> = {
     'M4 (Growth): User dashboard, 100 advisor, referral sistemi, $3K revenue, 1K kullanıcı. M5 (Growth): İyileştirmeler, 120 advisor, içerik ölçekleme, $5K revenue, 2K kullanıcı. M6 (PMF): Stabilizasyon, 150 advisor, organik büyüme, $10K revenue, retention odağı. GTM görevleri bu fazda: LinkedIn haftalık paylaşımı, WhatsApp grup paylaşımı, ilk 50 kullanıcı onboarding, pricing modeli belirleme, ilk ücretli booking testi, SEO içerik 30+ ölçekleme, referral sistemi aktivasyonu.',
   'todo-scale-expansion':
     'M7 (Scale): Yeni özellikler, 200 advisor, yeni şehir hazırlığı, $15K revenue, 3K kullanıcı. M8: Expansion, 250 advisor, şehir lansmanı, $25K revenue, 5K kullanıcı. M9: Optimizasyon, 300 advisor, partnerships, $40K revenue, 7K kullanıcı. M10 (Expansion): Perks katmanı, 350 advisor, B2B anlaşmalar, $60K revenue, 10K kullanıcı. M11: Otomasyon, 400 advisor, kanal ölçekleme, $80K revenue, 15K kullanıcı. GTM: yerel partnershipler başlatma, conversion optimizasyonu.',
+}
+
+const todoListSectionDetail: Record<string, string> = {
   'todo-product-backlog':
     'Toplam 25 ürün/teknik görev — hepsi "To Do" statüsünde. Kategoriler: Setup (GitHub repo, database schema), Auth (signup/login email+Google), Profiles (advisor + user profili), Listing (advisor listing sayfası), Search (filter/search), Booking (booking request + takvim müsaitliği), Payment (Stripe + komisyon mantığı), Notification (email), Admin (admin paneli), Content (CMS/blog), SEO (URL yapısı + meta), UX (onboarding flow, form optimizasyonu), Performance (sayfa hızı), Analytics (GA + event tracking), Security (güvenlik kontrolleri), Mobile (mobil optimizasyon), Support (chat/destek), Referral (temel referral sistemi), Scaling (sunucu hazırlığı). High öncelik: 15 görev. Medium öncelik: 10 görev.',
   'todo-gtm-backlog':
@@ -537,6 +540,7 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
           detail:
             whatsappBotSectionDetail[item.id] ??
             projeTakibiSectionDetail[item.id] ??
+            roadmapSectionDetail[item.id] ??
             todoListSectionDetail[item.id] ??
             capTableSectionDetail[item.id] ??
             kortexDocsSectionDetail[item.id] ??

@@ -15,10 +15,15 @@ interface CategoryPageProps {
   categorySlug: DocCategorySlug
 }
 
+// 'todolist' has its own dedicated page (pages/todolist.tsx) with Supabase integration
+const DEDICATED_PAGES = new Set(['todolist'])
+
 export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: getDocsCategorySlugs().map((category) => ({
-    params: { category },
-  })),
+  paths: getDocsCategorySlugs()
+    .filter((category) => !DEDICATED_PAGES.has(category))
+    .map((category) => ({
+      params: { category },
+    })),
   fallback: false,
 })
 
