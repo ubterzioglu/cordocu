@@ -761,38 +761,42 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
       `Canonical route: /${category.slug}`,
     ],
     sections: [
-      {
-        id: `${category.slug}-section-map`,
-        title: 'Bölüm Haritası',
-        description:
-          'Özet kartlar, bu kategorideki içerik bloklarına en hızlı erişim yolunu sunar.',
-        columns: 3,
-        cards: category.items.map((item, index) => ({
-          id: `${item.id}-summary`,
-          title: item.label,
-          description: item.description,
-          badge: category.label,
-          eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
-          density: 'compact',
-          action: {
-            type: 'link',
-            href: buildDocItemHref(item),
-            label: 'Bölüme Git',
-            surface: 'card',
-          },
-        })),
-        emptyState: {
-          title: 'Bu kategori için içerik hazırlanıyor',
-          description:
-            'Rota geçerli, ancak bölüm kartları henüz doldurulmadı.',
-          action: {
-            type: 'link',
-            href: buildDocsHubHref(),
-            label: 'Ana sayfaya dön',
-            surface: 'cta',
-          },
-        },
-      },
+      ...(category.items.length > 1
+        ? [
+            {
+              id: `${category.slug}-section-map`,
+              title: 'Bölüm Haritası',
+              description:
+                'Özet kartlar, bu kategorideki içerik bloklarına en hızlı erişim yolunu sunar.',
+              columns: 3 as const,
+              cards: category.items.map((item, index) => ({
+                id: `${item.id}-summary`,
+                title: item.label,
+                description: item.description,
+                badge: category.label,
+                eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
+                density: 'compact' as const,
+                action: {
+                  type: 'link' as const,
+                  href: buildDocItemHref(item),
+                  label: 'Bölüme Git',
+                  surface: 'card' as const,
+                },
+              })),
+              emptyState: {
+                title: 'Bu kategori için içerik hazırlanıyor',
+                description:
+                  'Rota geçerli, ancak bölüm kartları henüz doldurulmadı.',
+                action: {
+                  type: 'link' as const,
+                  href: buildDocsHubHref(),
+                  label: 'Ana sayfaya dön',
+                  surface: 'cta' as const,
+                },
+              },
+            },
+          ]
+        : []),
       {
         id: `${category.slug}-sections`,
         title: 'Kategori İçeriği',

@@ -139,9 +139,20 @@ export default function ContentCard({
               {description}
             </p>
             {detail && (
-              <p className="text-sm leading-6 text-gray-500">
-                {detail}
-              </p>
+              <div className="text-sm leading-6 text-gray-500">
+                {detail.split('\n').map((line, i) => {
+                  const trimmed = line.trimStart()
+                  if (trimmed === '') {
+                    return <div key={i} className="h-3" />
+                  }
+                  const isBullet = trimmed.startsWith('- ')
+                  return (
+                    <div key={i} className={isBullet ? 'pl-4 relative' : ''}>
+                      {trimmed}
+                    </div>
+                  )
+                })}
+              </div>
             )}
           </div>
           {actionMarkup && actionSurface === 'card' && (
