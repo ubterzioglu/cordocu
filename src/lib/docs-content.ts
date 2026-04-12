@@ -470,126 +470,123 @@ const ambassadorSectionDetail: Record<string, string> = {
 
 const mvpSectionDetail: Record<string, string> = {
   'mvp-tum-icerik':
-    '1. Platform Tanımı\n' +
-    '- Kortex / Türk Diaspora Ağı: dünyanın farklı şehirlerinde yaşayan Türklerin günlük hayatını kolaylaştırmak için tasarlanan global dijital platform\n' +
-    '- Türk işletmelerini, profesyonelleri, toplulukları, etkinlikleri, iş fırsatlarını, kuponları ve yerel rehber bilgilerini tek çatı altında toplar\n' +
-    '- Değer önerisi: "Diaspora için rehber, bağlantı merkezi ve çok amaçlı dijital yardımcı"\n\n' +
-    '2. Temel Problem ve Çözüm\n' +
-    '- Yerel bilgi eksikliği: Türk doktor, avukat, market, kuaför bulmak zor\n' +
-    '- Topluluklara erişim eksikliği: WhatsApp grupları, Telegram toplulukları ve dernekler dağınık\n' +
-    '- Sosyal ve profesyonel bağlantı eksikliği: etkinlikler, iş fırsatları ve profesyonel hizmetler görünür değil\n\n' +
-    '3. Hedef Kitle ve Pazarlar\n' +
-    '- Yeni göç edenler, öğrenciler, profesyoneller, işletme sahipleri, danışmanlar, topluluk yöneticileri ve etkinlik organizatörleri\n' +
-    '- İlk 7 ülke: Almanya, İngiltere, UAE, Avustralya, Fransa, Amerika, Kanada\n\n' +
-    '4. Başarı Metrikleri\n' +
-    '- Kritik 3 metrik: Traction, Retention, Revenue\n' +
-    '- Aktif kullanıcı sayısı, şehir bazlı içerik doluluk oranı\n' +
-    '- Claim edilen işletme sayısı, etkinlik ve grup tıklama oranı\n' +
-    '- İşletme/danışman dönüşüm oranı\n\n' +
-    '5. Platform Bilgi Mimarisi\n' +
-    '- Country → City → Category → Listing (örn. Germany → Berlin → Restaurants → Anadolu Grill)\n' +
-    '- Bu hiyerarşi; arama, filtreleme, şehir sayfaları, kategori listeleri ve harita görünümünün ortak omurgasıdır\n\n' +
-    '6. Kullanıcı Rolleri ve Hesap\n' +
-    '- Ana tipler: bireysel kullanıcı, danışman/profesyonel, işletme sahibi, topluluk yöneticisi\n' +
-    '- Operasyonel: moderatör, admin\n' +
-    '- Giriş: Google/Apple veya standard auth\n' +
-    '- Doğrulama: danışmanlara KYC; doğrulanmış işletme, profesyonel ve topluluk rozetleri\n\n' +
-    '7. Claim ve Sahiplenme Sistemi\n' +
-    '- Bir işletme önce topluluk tarafından eklenir, ardından gerçek işletme sahibi moderasyon onayıyla claim ederek yönetimi devralır\n' +
-    '- Bu model veri büyümesini hızlandırırken sahipliğin sonradan doğrulanmasını sağlar\n\n' +
-    '8. Kategori Sistemi\n' +
-    '- Sağlık (doktor, dişçi, psikolog)\n' +
-    '- Hukuk ve danışmanlık (avukat, göçmenlik, muhasebe)\n' +
-    '- Günlük yaşam (market, kasap, kuaför)\n' +
-    '- Yeme-içme (restoran, kafe, pastane)\n' +
-    '- Eğitim (Türk okulları, dil kursları)\n' +
-    '- Hizmetler (emlak, temizlik, IT)\n' +
-    '- İş ve kariyer\n' +
-    '- Topluluklar\n' +
-    '- Etkinlikler\n' +
-    '- Ek ticari alanlar (kuponlar, AI twin, sponsored içerik)\n\n' +
-    '9. Listing Veri Modeli\n' +
-    '- Temel: isim, kategori, ülke, şehir, açıklama\n' +
-    '- İletişim: telefon, WhatsApp, e-posta, website, sosyal medya\n' +
-    '- Lokasyon: adres, harita, Google Maps\n' +
-    '- İşletme: çalışma saatleri, hizmetler, fiyat aralığı\n' +
-    '- Medya: fotoğraf/video\n' +
-    '- Ek: konuşulan diller, rezervasyon, ödeme, puan/yorum, doğrulama durumu\n\n' +
-    '10. Arama, Filtreleme ve AI\n' +
-    "- MVP arama alanları: kullanıcılar, iş fırsatları, kuponlar, WhatsApp grupları\n" +
-    "- AI arama: \"Berlin'de Türk dişçi\" gibi doğal dil sorguları; şehir, kategori, hizmet dili ve kullanıcı puanına göre sıralama\n" +
-    '- Filtreler: ülke, şehir, kullanıcı tipi, alt kategori, featured/sponsored\n\n' +
-    '11. İçerik Toplama ve Veri Kaynakları\n' +
-    '- Bireysel giriş, işletme/danışman başvurusu, kuruluş paketleri\n' +
-    "- Toplu veri, Google Maps, ticaret odaları, dış API'ler\n" +
-    '- Özel: konsolosluk verisi gov.tr/Dışişleri kaynaklarından\n' +
-    '- Açık başlıklar: ilk içerik üretim planı, veritabanı şeması, güncelleme sıklığı, medya depolama\n\n' +
-    '12. Harita ve Lokasyon Deneyimi\n' +
-    '- Kullanıcılar şehirdeki Türk işletmelerini, profesyonelleri ve etkinlikleri harita üzerinden görebilecek\n' +
-    '- Google Maps entegrasyonu hem listing sayfaları hem arama deneyimi için ana bileşendir\n\n' +
-    '13. Çok Dilli Yapı\n' +
-    '- İlk aşamada: Türkçe, İngilizce, Almanca\n' +
-    '- Kullanıcı tercihine göre aktif dil seçimi\n' +
-    '- Dil mimarisi ikinci öncelik paketi kapsamında ayrıca tasarlanacak\n\n' +
-    '14. Topluluk ve Grup Sistemi\n' +
-    '- WhatsApp, Telegram ve benzeri topluluklar listelenir ve keşfedilir\n' +
-    '- Platform rolü; listeleme ve keşif sağlamak\n' +
-    '- Grup yönetimi ve moderasyon doğrudan grup adminlerinde\n' +
-    '- Bu ayrım operasyonel yükü azaltır\n\n' +
-    '15. Etkinlik Sistemi\n' +
-    '- Desteklenen tipler: konser, meetup, networking, kültürel etkinlik, konferans, festival, workshop\n' +
-    '- Etkinlik sayfası alanları: tarih, konum, açıklama, bilet linki\n\n' +
-    '16. Yorum, Puanlama ve Güven\n' +
-    '- Kullanıcılar işletmeleri puanlayabilir ve yorum yazabilir\n' +
-    '- Google işletme ratinglerinin sisteme taşınması değerlendirilmektedir\n' +
-    '- Hem platform içi puanlar hem dış kaynak referansları birlikte kullanılabilir\n\n' +
-    '17. Moderasyon ve Güvenlik\n' +
-    '- Araçlar: içerik onayı, kullanıcı raporlama, spam filtreleri, moderatör paneli\n' +
-    '- Açık güvenlik başlıkları: auth güvenliği, KYC süreçleri, RBAC, rate limiting, içerik suistimali önleme, yedekleme ve loglama\n\n' +
-    '18. UI/UX Çerçevesi\n' +
-    '- Mobil uyumluluk zorunlu\n' +
-    '- Pastel ton paleti; Türk kuruluşlarında kırmızı kullanılabilir\n' +
-    '- 19–24 ekranlık MVP ön görüsü\n' +
-    '- Onboarding: KYC, Google auth, profil unlock\n' +
-    '- Ekran aileleri: home, country, city, category, listing detail, search, map, event, community, profile, dashboard, claim flow, moderasyon\n\n' +
-    '19. Teknik Altyapı ve Kararlar\n' +
-    '- Hedef: 100K günlük kullanıcı, SSL zorunlu, çok diasporaya uyarlanabilir mimari\n' +
-    '- Önerilen stack: Next.js (frontend), Supabase (backend/auth/db), Google Maps, object storage (medya), PostHog veya GA4 (analitik), Stripe/ülke alternatifi (ödeme)\n\n' +
-    '20. Hosting ve Ölçeklenebilirlik\n' +
-    '- Çok ülkeli veri yapısı, medya yükleme, harita, çoklu rol, AI arama, 100K günlük kullanıcı\n' +
-    '- Aranan özellikler: hızlı geliştirme, RBAC, storage, search-friendly veri modeli, CDN, backup/restore kolaylığı\n\n' +
-    '21. Pazarlama ve Lansman\n' +
-    '- Beta kullanıcılar kurucular tarafından bulunacak\n' +
-    '- Lansman hedefi: 4–6 ay\n' +
-    '- İlk kanallar: Instagram, Facebook, LinkedIn\n' +
-    '- THY tarafında master sponsor vizyonu değerlendiriliyor\n\n' +
-    '22. Gelir Modelleri\n' +
-    '- MVP: freemium (ücretsiz)\n' +
-    '- Uzun vade: üyelik paketleri, reklam, sponsorlar, webinarlar, iş ilanları, kupon satışı\n' +
-    '- Ek: online görüşme, AI twin bakım, sosyal medya paketi, micro site/web/app paketleri, dernek aidatı/etkinlik bileti\n' +
-    '- İlk yıl hedefi: 2000 işletme+danışman, 100K kullanıcı, 200K€ gelir\n\n' +
-    '23. Analitik ve Geri Bildirim\n' +
-    '- Geri bildirim: destek/geri bildirim adresi üzerinden\n' +
-    '- Analitik aracı henüz seçilmedi\n' +
-    '- Önerilen event seti: search performed, listing viewed, claim started/completed, event clicked, contact clicked, signup completed, city/category engagement\n\n' +
-    '24. Yol Haritası\n' +
-    '- MVP: şehir/kategori/listing yapısı, login+profil, işletme/topluluk/etkinlik ekleme, arama+filtreleme, harita, temel moderasyon, çok dilli temel yapı\n' +
-    '- V2: mobil uygulama, güçlü AI öneri, gelişmiş monetization, premium sayfalar, gelişmiş rozet sistemi\n\n' +
-    '25. Açık Karar Gerektiren Konular\n' +
-    '- Nihai marka adı (Kortex/CorteQS/Türk Diaspora Ağı)\n' +
-    '- Tech stack\n' +
-    '- Hosting/deployment\n' +
-    '- Veritabanı şeması\n' +
-    '- Medya depolama\n' +
-    '- AI MVP kapsamı\n' +
-    '- Analitik aracı\n' +
-    '- Güvenlik/yedekleme standardı\n' +
-    '- Moderasyon manuel mi yarı otomatik mi?\n' +
-    '- Başlangıçta kaç ülke aktif açılacak?\n\n' +
-    '26. CTO / Product Lead Aksiyonları\n' +
-    '- Öncelik 1: tech stack kararı, veritabanı şema taslağı, auth+rol modeli, listing veri modeli, moderasyon akışı, harita entegrasyon planı\n' +
-    '- Öncelik 2: onboarding akışı, claim sistemi, çoklu dil mimarisi, içerik giriş operasyonu, ilk ülke/şehir kapsamı\n' +
-    '- Öncelik 3: monetization altyapısı, analytics',
+    '🚀 TÜRK DİASPORA PLATFORMU (KORTEX / CORTEQS) – MERGED MVP\n\n' +
+    '🎯 Vizyon & Amaç\n' +
+    '- Diasporanın dağınık ihtiyaçlarını tek platformda toplamak\n' +
+    '- Global Türk rehberi + networking merkezi oluşturmak\n' +
+    '- "Diaspora için İsviçre çakısı" yaklaşımı\n' +
+    '- Tek merkezden bilgi, hizmet ve bağlantı sağlamak\n\n' +
+    '🌍 Hedef Kitle & Kapsam\n' +
+    '- Yurtdışında yaşayan tüm Türkler\n' +
+    '- Yeni göç edenler, öğrenciler, profesyoneller\n' +
+    '- İşletme sahipleri, danışmanlar, topluluk yöneticileri\n' +
+    '- Başlangıç ülkeleri: Almanya, UK, UAE, AU, FR, US, CA\n\n' +
+    '🧩 Temel Problemler\n' +
+    '- Yerel bilgi eksikliği (doktor, avukat, market vs.)\n' +
+    '- Topluluklara erişim zorluğu\n' +
+    '- Networking ve iş fırsatlarının görünmemesi\n' +
+    '- Diaspora verisinin dağınık olması\n\n' +
+    '👥 Kullanıcı Rolleri\n' +
+    '- Bireysel kullanıcı (görüntüleme, yorum, içerik ekleme)\n' +
+    '- İşletme sahibi (listing yönetimi, claim)\n' +
+    '- Topluluk yöneticisi (grup & etkinlik ekleme)\n' +
+    '- Danışman (KYC ile doğrulama)\n' +
+    '- Moderatör (onay, spam kontrolü)\n\n' +
+    '🔐 Auth & Profil Sistemi\n' +
+    '- Google / Apple login veya auth flow\n' +
+    '- Kullanıcı tipine göre profil zenginliği\n' +
+    '- KYC ile doğrulama\n' +
+    '- Claim sistemi ile işletme sahiplenme\n\n' +
+    '🏗️ Platform Yapısı (Data Model)\n' +
+    '- Country → City → Category → Listing\n' +
+    '- Çok katmanlı kategori sistemi\n' +
+    '- Geniş listing veri modeli (iletişim, lokasyon, medya vb.)\n\n' +
+    '🗂️ Kategori Yapısı\n' +
+    '- Sağlık (doktor, dişçi vs.)\n' +
+    '- Hukuk & danışmanlık\n' +
+    '- Günlük yaşam (market, kuaför vb.)\n' +
+    '- Yeme-içme\n' +
+    '- Eğitim\n' +
+    '- Hizmetler\n' +
+    '- İş & kariyer\n' +
+    '- Topluluklar (WA, Telegram, Discord)\n' +
+    '- Etkinlikler\n\n' +
+    '🔍 Arama & AI\n' +
+    '- Kategori bazlı arama (user, job, kupon, gruplar)\n' +
+    "- AI destekli doğal dil arama (\"Berlin'de Türk dişçi\")\n" +
+    '- Sıralama: ülke, şehir, kategori, featured, sponsored\n' +
+    "- Veri kaynakları: platform + AI twin + API'ler\n\n" +
+    '🗺️ Harita & Lokasyon\n' +
+    '- Google Maps entegrasyonu\n' +
+    '- Harita üzerinden keşif\n' +
+    '- Listing bazlı konum gösterimi\n\n' +
+    '📊 İçerik & Veri Yönetimi\n' +
+    '- Manuel + toplu veri girişi\n' +
+    '- API entegrasyonları (Google Maps, gov.tr)\n' +
+    '- Veri güncelleme planı (henüz net değil)\n' +
+    '- Çok dilli destek (TR, EN, DE)\n\n' +
+    '📱 UI/UX\n' +
+    '- Mobil-first tasarım\n' +
+    '- 19–24 ekran planı\n' +
+    '- Pastel tonlar + Türk kırmızısı\n' +
+    '- Onboarding: auth + KYC + profil unlock\n\n' +
+    '🔧 Teknik Altyapı (Eksik / Karar Bekleyen)\n' +
+    '- Tech stack → belirlenmeli\n' +
+    '- Hosting → belirlenmeli\n' +
+    '- Database → belirlenmeli\n' +
+    '- Security & backup → tanımlanmalı\n' +
+    '- Günlük kapasite hedefi: 100K user\n\n' +
+    '🧠 AI & Gelecek Özellikler\n' +
+    '- AI öneri sistemi (henüz net değil)\n' +
+    '- AI twin (gelir modeli içinde)\n' +
+    '- Akıllı öneri & filtreleme\n\n' +
+    '👥 Topluluk & Etkinlik\n' +
+    '- WhatsApp / Telegram grup listeleri\n' +
+    '- Grup yönetimi platform dışı\n' +
+    '- Etkinlik sistemi (konser, meetup, workshop vb.)\n' +
+    '- Etkinlik detayları: tarih, lokasyon, bilet\n\n' +
+    '⭐ Yorum & Güven Sistemi\n' +
+    '- Kullanıcı yorumları ve puanlama\n' +
+    '- Google rating entegrasyonu\n' +
+    '- Doğrulanmış rozet sistemi\n\n' +
+    '🛡️ Moderasyon\n' +
+    '- İçerik onayı\n' +
+    '- Spam filtreleme\n' +
+    '- Kullanıcı raporlama\n' +
+    '- Moderatör paneli\n\n' +
+    '📣 Pazarlama & Lansman\n' +
+    '- İlk kanal: Instagram, FB, LinkedIn\n' +
+    '- Beta kullanıcılar: founder network\n' +
+    '- Lansman: 4–6 ay\n' +
+    '- Sosyal medya genişleme planı\n\n' +
+    '💰 Gelir Modeli\n' +
+    '- Üyelik paketleri\n' +
+    '- Reklam & sponsor\n' +
+    '- İş ilanları\n' +
+    '- Kupon satışları\n' +
+    '- Online görüşmeler\n' +
+    '- AI twin hizmetleri\n' +
+    '- Business paketleri (micro site/app)\n\n' +
+    '📈 KPI & Başarı Metrikleri\n' +
+    '- Traction\n' +
+    '- Retention\n' +
+    '- Revenue\n\n' +
+    '🎯 Hedefler\n' +
+    '- 100K kullanıcı\n' +
+    '- 2000 işletme + danışman\n' +
+    '- 200K € gelir (ilk yıl)\n\n' +
+    '🔮 Roadmap\n' +
+    '- MVP → Web platform\n' +
+    '- V2 → Mobile app\n' +
+    '- Global diaspora expansion\n\n' +
+    '⚡ Kritik Eksikler / Aksiyonlar\n' +
+    '- Tech stack seçimi\n' +
+    '- Hosting & DB kararı\n' +
+    '- Güvenlik & backup\n' +
+    '- Analitik araçlar\n' +
+    '- AI öneri sistemi\n' +
+    '- Medya storage\n' +
+    '- Logo / branding',
 }
 import {
   buildDocCategoryHref,
