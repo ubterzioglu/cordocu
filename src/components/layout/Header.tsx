@@ -24,8 +24,8 @@ export default function Header({
             className="shrink-0 rounded-xl border border-transparent bg-white/80 p-2 text-gray-700 transition-all hover:border-[rgba(66,133,244,0.14)] hover:bg-[rgba(66,133,244,0.06)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden"
             aria-label={
               isSidebarOpen
-                ? 'Close documentation navigation'
-                : 'Open documentation navigation'
+                ? 'Navigasyonu kapat'
+                : 'Navigasyonu aç'
             }
             aria-expanded={isSidebarOpen}
             aria-controls="docs-sidebar"
@@ -51,10 +51,10 @@ export default function Header({
             </span>
             <span className="flex min-w-0 flex-col">
               <span className="hidden text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-gray-400 transition-colors group-hover:text-primary-500 sm:block">
-                Google-style docs
+                CorteQS Dashboard
               </span>
               <span className="truncate text-sm font-semibold tracking-tight text-gray-900 sm:text-lg">
-                Documentation Hub
+                Dokümantasyon Merkezi
               </span>
             </span>
           </Link>

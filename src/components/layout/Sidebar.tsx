@@ -43,7 +43,7 @@ export default function Sidebar({
           type="button"
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={onClose}
-          aria-label="Close documentation navigation"
+          aria-label="Navigasyonu kapat"
         />
       )}
       <aside
@@ -55,7 +55,7 @@ export default function Sidebar({
         }`}
       >
         <nav
-          aria-label="Documentation navigation"
+          aria-label="Dokümantasyon navigasyonu"
           className="h-full overflow-y-auto px-3 py-4 [overscroll-behavior:contain]"
         >
           <div className="mb-4 px-3 pt-1">
@@ -73,7 +73,7 @@ export default function Sidebar({
               <span>Bu sayfa neden var ?</span>
             </Link>
             <p className="docs-kicker">
-              Navigation
+              Navigasyon
             </p>
           </div>
           <div className="space-y-1">

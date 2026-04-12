@@ -403,12 +403,12 @@ export function getDocsHubContentView(): ContentView {
         title: item.label,
         description: item.description,
         badge: category.label,
-        eyebrow: 'Quick Link',
+        eyebrow: 'Hızlı Bağlantı',
         density: 'compact',
         action: {
           type: 'link',
           href: buildDocItemHref(item),
-          label: 'Open section',
+          label: 'Bölümü Aç',
           surface: 'card',
         },
       })
@@ -420,23 +420,23 @@ export function getDocsHubContentView(): ContentView {
 
   return {
     mode: 'hub-overview',
-    title: 'Table of Contents',
+    title: 'İçindekiler',
     description:
-      'Browse documentation by category, then drill into stable section routes from the same shared content layout.',
+      'Kategoriye göre dokümanlara göz at, ardından aynı paylaşımlı içerik düzeninden bölüm rotalarına gir.',
     supportingText:
-      'This session keeps the search field as placeholder UI only. Navigation should flow through category routes and section cards.',
+      'Arama alanı şu an yalnızca görsel amaçlıdır. Gezinti, kategori rotaları ve bölüm kartları üzerinden yapılmalıdır.',
     search: {
-      label: 'Search',
-      placeholder: 'Search documentation…',
+      label: 'Ara',
+      placeholder: 'Dokümanlarda ara…',
       helperText:
-        'Placeholder UI only in Session 05. Search should not be treated as a functional feature yet.',
+        'Arama henüz aktif bir özellik değildir; yalnızca görsel amaçlıdır.',
     },
     sections: [
       {
         id: 'overview-categories',
-        title: 'Browse by Category',
+        title: 'Kategoriye Göre Gözat',
         description:
-          'Each card opens a dedicated category route while preserving the shared shell, card contract, and section composition rules.',
+          'Her kart, paylaşımlı kabuk ve bölüm yapısını koruyarak ayrı bir kategori rotası açar.',
         columns: 2,
         cards: docsOverviewCards.map((card) => ({
           id: card.id,
@@ -455,19 +455,19 @@ export function getDocsHubContentView(): ContentView {
       },
       {
         id: 'overview-quick-links',
-        title: 'Quick Links',
+        title: 'Hızlı Bağlantılar',
         description:
-          'Pinned routes for common starting points. These reuse the same card surface, but with denser metadata than the main category grid.',
+          'Sık kullanılan başlangıç noktaları için sabitlenmiş rotalar.',
         columns: 3,
         cards: quickLinkCards,
         emptyState: {
-          title: 'Quick links are not configured yet',
+          title: 'Hızlı bağlantılar henüz yapılandırılmadı',
           description:
-            'Featured entry points can be added later without changing the shared card renderer or route contract.',
+            'Öne çıkan giriş noktaları daha sonra kart yapısı değiştirilmeden eklenebilir.',
           action: {
             type: 'link',
             href: buildDocsHubHref(),
-            label: 'Stay on hub',
+            label: 'Ana sayfada kal',
             surface: 'cta',
           },
         },
@@ -487,50 +487,50 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
     supportingText: category.shortDescription,
     backLink: {
       href: buildDocsHubHref(),
-      label: 'Back to documentation hub',
+      label: 'Dokümantasyon ana sayfasına dön',
     },
     metaBadges: [
-      `${category.items.length} sections`,
+      `${category.items.length} bölüm`,
       `Canonical route: /${category.slug}`,
     ],
     sections: [
       {
         id: `${category.slug}-section-map`,
-        title: 'Section Map',
+        title: 'Bölüm Haritası',
         description:
-          'Summary cards stay route-aware and act as the fastest way to jump into anchored content blocks for this category.',
+          'Özet kartlar, bu kategorideki içerik bloklarına en hızlı erişim yolunu sunar.',
         columns: 3,
         cards: category.items.map((item, index) => ({
           id: `${item.id}-summary`,
           title: item.label,
           description: item.description,
           badge: category.label,
-          eyebrow: `Section ${String(index + 1).padStart(2, '0')}`,
+          eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
           density: 'compact',
           action: {
             type: 'link',
             href: buildDocItemHref(item),
-            label: 'Jump to section',
+            label: 'Bölüme Git',
             surface: 'card',
           },
         })),
         emptyState: {
-          title: 'Content is being outlined for this category',
+          title: 'Bu kategori için içerik hazırlanıyor',
           description:
-            'The route is valid, but section cards are not populated yet. Session 06 can style this state without redefining the content model.',
+            'Rota geçerli, ancak bölüm kartları henüz doldurulmadı.',
           action: {
             type: 'link',
             href: buildDocsHubHref(),
-            label: 'Return to hub',
+            label: 'Ana sayfaya dön',
             surface: 'cta',
           },
         },
       },
       {
         id: `${category.slug}-sections`,
-        title: 'Category Content',
+        title: 'Kategori İçeriği',
         description:
-          'Detailed section blocks keep anchor ids stable so later sessions can add richer modules without changing navigation behavior.',
+          'Detaylı bölüm blokları, navigasyon davranışını değiştirmeden zengin modüller eklemeye olanak tanır.',
         columns: 1,
         cards: category.items.map((item, index) => ({
           id: item.id,
@@ -551,25 +551,25 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
             ambassadorSectionDetail[item.id] ??
             ekipSectionDetail[item.id] ??
             mvpSectionDetail[item.id] ??
-            'Session 05 keeps this block intentionally content-light so Session 06 can focus on visual polish and Session 08 can validate semantics on a stable structure.',
+            'Bu bölüm içeriği henüz eklenmedi.',
           badge: category.label,
-          eyebrow: `Section ${String(index + 1).padStart(2, '0')}`,
+          eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
           density: 'detail',
           action: {
             type: 'link',
             href: buildDocItemHref(item),
-            label: 'Permalink',
+            label: 'Kalıcı Bağlantı',
             surface: 'cta',
           },
         })),
         emptyState: {
-          title: 'No section content yet',
+          title: 'Henüz bölüm içeriği yok',
           description:
-            'This category is ready for future section modules, but no detail blocks are configured right now.',
+            'Bu kategori gelecekteki bölüm modülleri için hazır, ancak şu an detay bloğu yapılandırılmamış.',
           action: {
             type: 'link',
             href: buildDocsHubHref(),
-            label: 'Explore another category',
+            label: 'Başka bir kategori keşfet',
             surface: 'cta',
           },
         },
