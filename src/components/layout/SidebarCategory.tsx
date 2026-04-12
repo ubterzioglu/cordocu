@@ -32,7 +32,7 @@ export default function SidebarCategory({
           {icon}
         </span>
       )}
-      <span>{title}</span>
+      <span className="text-[0.625rem]">{title}</span>
     </Link>
   )
 }

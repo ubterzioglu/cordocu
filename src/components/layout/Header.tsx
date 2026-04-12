@@ -15,8 +15,11 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-[var(--docs-header-height)] border-b border-white/70 bg-white/85 shadow-[0_8px_32px_rgba(60,64,67,0.08)] backdrop-blur-xl">
-      <div className="flex h-full items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
+       <div className="flex h-full items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-4">
+          <span className="docs-chip hidden sm:inline-flex">
+            v1.0.0
+          </span>
           <button
             ref={menuButtonRef}
             type="button"
@@ -58,11 +61,6 @@ export default function Header({
               </span>
             </span>
           </Link>
-        </div>
-        <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-          <span className="docs-chip hidden sm:inline-flex">
-            v1.0.0
-          </span>
         </div>
       </div>
     </header>
