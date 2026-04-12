@@ -47,7 +47,7 @@ export default function DbStatusBadge() {
   return (
     <span
       title={tooltip}
-      className={`text-xs font-medium px-2 py-1 rounded cursor-default select-none transition-colors ${styles[state]}`}
+      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full px-2 py-1 text-[11px] font-medium cursor-default select-none transition-colors sm:text-xs ${styles[state]}`}
     >
       {labels[state]}
     </span>

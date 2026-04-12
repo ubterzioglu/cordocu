@@ -22,8 +22,8 @@ export default function MainContent({ categorySlug }: MainContentProps) {
   const searchHelperId = `${searchInputId}-helper`
 
   return (
-    <article className="space-y-10">
-      <div className="space-y-4">
+    <article className="space-y-8 sm:space-y-10">
+      <div className="space-y-3 sm:space-y-4">
         {contentView.backLink && (
           <Link
             href={contentView.backLink.href}
@@ -34,7 +34,7 @@ export default function MainContent({ categorySlug }: MainContentProps) {
           </Link>
         )}
 
-        <div className="docs-surface p-6 md:p-8">
+        <div className="docs-surface p-5 sm:p-6 md:p-8">
           <div
             className="pointer-events-none absolute -right-16 top-0 h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(66,133,244,0.22)_0%,_rgba(66,133,244,0)_72%)]"
             aria-hidden="true"
@@ -48,10 +48,10 @@ export default function MainContent({ categorySlug }: MainContentProps) {
               {contentView.eyebrow}
             </p>
           )}
-          <h1 className="mt-4 max-w-4xl text-3xl font-semibold tracking-tight text-gray-900 md:text-4xl">
+          <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
             {contentView.title}
           </h1>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-gray-600">
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
             {contentView.description}
           </p>
           {contentView.supportingText && (
@@ -70,8 +70,8 @@ export default function MainContent({ categorySlug }: MainContentProps) {
           )}
 
           {contentView.search && (
-            <div className="mt-8 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]">
-              <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="mt-8 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-5">
+              <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <label
                   htmlFor={searchInputId}
                   className="text-sm font-medium text-gray-700"
