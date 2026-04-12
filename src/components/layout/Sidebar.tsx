@@ -1,17 +1,11 @@
 import type { RefObject } from 'react'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Info } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
-import {
-  buildDocsHubHref,
-  createExpandedCategoryState,
-  getDocsRouteState,
-  syncExpandedCategoryState,
-} from '@/lib/docs-navigation'
+import { buildDocsHubHref } from '@/lib/docs-navigation'
 import type { DocCategorySlug } from '@/lib/docs-data'
 
 interface SidebarProps {
@@ -36,20 +30,11 @@ export default function Sidebar({
   onClose,
 }: SidebarProps) {
   const router = useRouter()
-  const { activeCategorySlug, activeItemId } = getDocsRouteState(router.asPath)
+  const activeSlug = router.asPath.split('/').filter(Boolean)[0] ?? ''
   const docsCategories = getDocsCategories().filter(
     (category) => !hiddenSidebarCategorySlugs.includes(category.slug)
   )
-  const [expandedCategories, setExpandedCategories] = useState(() =>
-    createExpandedCategoryState(activeCategorySlug)
-  )
   const isSidebarVisible = isDesktopViewport || isOpen
-
-  useEffect(() => {
-    setExpandedCategories((previousState) =>
-      syncExpandedCategoryState(previousState, activeCategorySlug)
-    )
-  }, [activeCategorySlug])
 
   return (
     <>
@@ -92,7 +77,7 @@ export default function Sidebar({
             </p>
           </div>
           <div className="space-y-1">
-            {docsCategories.map((category, index) => {
+            {docsCategories.map((category) => {
               const Icon = getDocIcon(category.iconKey)
 
               return (
@@ -101,17 +86,7 @@ export default function Sidebar({
                   slug={category.slug}
                   title={category.label}
                   icon={<Icon size={16} />}
-                  items={category.items}
-                  active={category.slug === activeCategorySlug}
-                  activeItemId={activeItemId}
-                  isExpanded={expandedCategories[category.slug]}
-                  buttonRef={index === 0 ? initialFocusRef : undefined}
-                  onToggle={() =>
-                    setExpandedCategories((previousState) => ({
-                      ...previousState,
-                      [category.slug]: !previousState[category.slug],
-                    }))
-                  }
+                  active={category.slug === activeSlug}
                   onItemSelect={onClose}
                 />
               )

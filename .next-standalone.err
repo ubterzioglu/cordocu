@@ -1,0 +1,156 @@
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://0.0.0.0:3000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\index.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderPageComponent (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1905:24)
+    at async NextNodeServer.renderToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1957:32)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:811:17)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
+ ⨯ Error: Cannot find module 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\_error.js'
+Require stack:
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1448:15)
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1234:25)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1548:12)
+    at mod.require (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next-server.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\server.js'
+  ]
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: /404 ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\404.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderErrorToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2096:30)
+    at async pipe.req.req (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2051:30)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:372:13)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:178:25)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://0.0.0.0:3000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\index.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderPageComponent (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1905:24)
+    at async NextNodeServer.renderToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1957:32)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:811:17)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
+ ⨯ Error: Cannot find module 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\_error.js'
+Require stack:
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1448:15)
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1234:25)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1548:12)
+    at mod.require (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next-server.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\server.js'
+  ]
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: /404 ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\404.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderErrorToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2096:30)
+    at async pipe.req.req (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2051:30)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:372:13)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:178:25)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
+Invariant: failed to load static page {
+  "page": "/",
+  "url": "/",
+  "initUrl": "http://0.0.0.0:3000/",
+  "didRewrite": false
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: / ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\index.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderPageComponent (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1905:24)
+    at async NextNodeServer.renderToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:1957:32)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:272:17)
+    at async NextNodeServer.handleRequestImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:811:17)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
+ ⨯ Error: Cannot find module 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\_error.js'
+Require stack:
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next.js
+- C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1448:15)
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1234:25)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1548:12)
+    at mod.require (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\require.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next-server.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\node_modules\\next\\dist\\server\\next.js',
+    'C:\\temp_private\\corteqs\\corteqs_dashboard\\.next\\standalone\\server.js'
+  ]
+}
+ ⨯ MissingStaticPage [Error]: Failed to load static file for page: /404 ENOENT: no such file or directory, open 'C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\.next\server\pages\404.html'
+    at C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\require.js:102:19
+    at async loadComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\load-components.js:98:26)
+    at async NextNodeServer.findPageComponentsImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\next-server.js:710:36)
+    at async NextNodeServer.renderErrorToResponseImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2096:30)
+    at async pipe.req.req (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:2051:30)
+    at async NextNodeServer.pipeImpl (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\base-server.js:915:25)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:174:21)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:372:13)
+    at async invokeRender (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:178:25)
+    at async handleRequest (C:\temp_private\corteqs\corteqs_dashboard\.next\standalone\node_modules\next\dist\server\lib\router-server.js:353:24)
