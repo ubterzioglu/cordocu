@@ -134,23 +134,105 @@ const bawaChatSectionDetail: Record<string, string> = {
 
 const whatsappBotSectionDetail: Record<string, string> = {
   'wa-genel-cerceve':
-    'WhatsApp gruplarında bir bot aracılığıyla reklam ve tanıtım yapmak, topluluk yönetimi ve doğrudan pazarlama için etkili bir yöntemdir. Ancak Meta\'nın spam ve otomatik mesajlaşma konusundaki katı kuralları nedeniyle bu süreci stratejik ve teknik olarak doğru kurgulamak gerekir. Temel ilke: botun grupta "değer" sunması ve reklamı bu değerin içine yerleştirmesi. TODO: Reklam modelinin spam algısı yaratmadan nasıl işleyeceğini netleştir; teknik kurgu ile topluluk deneyimini birlikte düşün.',
+    'WhatsApp gruplarında bir bot aracılığıyla reklam ve tanıtım yapmak, topluluk yönetimi ve doğrudan pazarlama için etkili bir yöntemdir.\n\n' +
+    'Meta\'nın spam ve otomatik mesajlaşma konusundaki katı kuralları nedeniyle bu süreci stratejik ve teknik olarak doğru kurgulamak gerekir.\n\n' +
+    'Temel ilke: botun grupta "değer" sunması ve reklamı bu değerin içine yerleştirmesi.\n\n' +
+    'TODO:\n' +
+    '- Reklam modelinin spam algısı yaratmadan nasıl işleyeceğini netleştir\n' +
+    '- Teknik kurgu ile topluluk deneyimini birlikte düşün',
   'wa-teknik-altyapi':
-    'İki temel yol — Resmi (WhatsApp Business API): Twilio, WATI, Interakt, MessageBird gibi Meta\'nın BSP\'leri üzerinden. Avantajlar: ban riski yok, güvenilir, yeşil tik. Dezavantajlar: ücretli, şablon mesaj onayı gerekiyor. Gayriresmi (Web Otomasyon): whatsapp-web.js veya Baileys kütüphaneleri, WhatsApp Web\'i simüle eder. Avantajlar: ücretsiz, esnek, onaysız her mesaj. Dezavantajlar: yüksek ban riski, kalıcı numara kapatma riski, sadece küçük ve samimi gruplarda kullanılmalı. TODO: Maliyet, esneklik ve ban riski arasında öncelik sıralamasını yap; kullanıcak sağlayıcı veya kütüphaneyi kısa listeye indir.',
+    'İki temel yol — Resmi (WhatsApp Business API): Twilio, WATI, Interakt, MessageBird gibi Meta\'nın BSP\'leri üzerinden.\n\n' +
+    'Avantajlar: ban riski yok, güvenilir, yeşil tik.\n\n' +
+    'Dezavantajlar: ücretli, şablon mesaj onayı gerekiyor.\n\n' +
+    'Gayriresmi (Web Otomasyon): whatsapp-web.js veya Baileys kütüphaneleri, WhatsApp Web\'i simüle eder.\n\n' +
+    'Avantajlar: ücretsiz, esnek, onaysız her mesaj.\n\n' +
+    'Dezavantajlar: yüksek ban riski, kalıcı numara kapatma riski, sadece küçük ve samimi gruplarda kullanılmalı.\n\n' +
+    'TODO:\n' +
+    '- Maliyet, esneklik ve ban riski arasında öncelik sıralamasını yap\n' +
+    '- Kullanılacak sağlayıcı veya kütüphaneyi kısa listeye indir',
   'wa-tanitim-senaryolari':
-    'Üç sağlıklı bot akışı — (1) Tetikleyici Komutlar: bot kendi kendine mesaj atmaz; kullanıcı !kampanyalar veya !katalog yazdığında güncel teklifleri paylaşır. (2) Zamanlanmış Cron Job: haftanın belirli gün/saatlerinde (örn. Cuma Fırsatları) tek bir özenli tanıtım mesajı. (3) DM\'e Yönlendirme (en sağlıklısı): grupta kısa merak uyandırıcı tanıtım + "Detaylar için bana özelden FIRSAT yazın" — grubu spamden korur, müşteriyi birebir sohbete çeker. TODO: tetikleyici komutları belirle, zamanlı paylaşım kuralını yazılı hale getir, DM yönlendirme mesaj şablonlarını hazırla.',
+    'Üç sağlıklı bot akışı:\n\n' +
+    '(1) Tetikleyici Komutlar: bot kendi kendine mesaj atmaz; kullanıcı !kampanyalar veya !katalog yazdığında güncel teklifleri paylaşır.\n\n' +
+    '(2) Zamanlanmış Cron Job: haftanın belirli gün/saatlerinde (örn. Cuma Fırsatları) tek bir özenli tanıtım mesajı.\n\n' +
+    '(3) DM\'e Yönlendirme (en sağlıklısı): grupta kısa merak uyandırıcı tanıtım + "Detaylar için bana özelden FIRSAT yazın" — grubu spamden korur, müşteriyi birebir sohbete çeker.\n\n' +
+    'TODO:\n' +
+    '- Tetikleyici komutları belirle\n' +
+    '- Zamanlı paylaşım kuralını yazılı hale getir\n' +
+    '- DM yönlendirme mesaj şablonlarını hazırla',
   'wa-uygulama-adimlari':
-    'Adım adım kurulum — (1) Numara Tahsisi: bot için kişisel numaralardan ayrı, sadece bu işe özel bir telefon numarası (mümkünse sanal). (2) Platform Kurulumu: bütçe ve risk analizine göre resmi API veya gayriresmi altyapı; Chatfuel ve ManyChat kod yazmadan WhatsApp API entegrasyonu sağlar. (3) Gruba Ekleme: numarayı gruba ekle; sadece tanıtım yapacaksa Admin yetkisi ver; duyuru grubunda bot düzenli yayın yapabilir. (4) Katalog Entegrasyonu: WhatsApp Business kataloğu yükle, bot tanıtımda doğrudan katalog linklerini paylaşsın. TODO: bot için ayrı numara edin, test ortamı hazırla, katalog link paylaşım akışını test et.',
+    'Adım adım kurulum:\n\n' +
+    '(1) Numara Tahsisi: bot için kişisel numaralardan ayrı, sadece bu işe özel bir telefon numarası (mümkünse sanal).\n\n' +
+    '(2) Platform Kurulumu: bütçe ve risk analizine göre resmi API veya gayriresmi altyapı; Chatfuel ve ManyChat kod yazmadan WhatsApp API entegrasyonu sağlar.\n\n' +
+    '(3) Gruba Ekleme: numarayı gruba ekle; sadece tanıtım yapacaksa Admin yetkisi ver; duyuru grubunda bot düzenli yayın yapabilir.\n\n' +
+    '(4) Katalog Entegrasyonu: WhatsApp Business kataloğu yükle, bot tanıtımında doğrudan katalog linklerini paylaşsın.\n\n' +
+    'TODO:\n' +
+    '- Bot için ayrı numara edin\n' +
+    '- Test ortamı hazırla\n' +
+    '- Katalog link paylaşım akışını test et',
   'wa-kritik-noktalar':
-    'Banlanmayı önlemek: aynı mesajı saniyeler içinde defalarca gönderme; gayriresmi yol kullanılıyorsa mesaj atma hızına random delay ekle (insan gibi davransın). Grup dinamiği: salt reklam içeren gruplar hızla erir; botu "müşteri hizmetleri asistanı" olarak konumlandır — örn. !kargo komutuyla kargo sorgulama. TODO: mesaj gönderim sıklığı ve limit kuralını iç politika olarak belirle, reklam dışı faydalı komutlar tasarla, grup üyelerinin botu neden kullanacağını netleştir.',
+    'Banlanmayı önlemek:\n\n' +
+    '- Aynı mesajı saniyeler içinde defalarca gönderme\n' +
+    '- Gayriresmi yol kullanılıyorsa mesaj atma hızına random delay ekle (insan gibi davransın)\n\n' +
+    'Grup dinamiği:\n\n' +
+    '- Salt reklam içeren gruplar hızla erir\n' +
+    '- Botu "müşteri hizmetleri asistanı" olarak konumlandır — örn. !kargo komutuyla kargo sorgulama\n\n' +
+    'TODO:\n' +
+    '- Mesaj gönderim sıklığı ve limit kuralını iç politika olarak belirle\n' +
+    '- Reklam dışı faydalı komutlar tasarla\n' +
+    '- Grup üyelerinin botu neden kullanacağını netleştir',
   'wa-optin-model':
-    'En sağlıklı model — (1) Duyuru: bot haftada bir gruba "Yeni fırsatları görmek ve Token kazanmak ister misiniz? Bana özelden KAZAN yazın!" mesajı atar. (2) Opt-in: kullanıcı KAZAN yazdığında bot bu kişiyi "Reklam Almak İsteyenler" listesine ekler. (3) Hedefli Gönderim: tanıtımlar gruba değil yalnızca bu listeye DM olarak gider; gruptaki diğerleri hiçbir şey görmez. (4) Opt-out: kullanıcı DUR yazarak abonelikten çıkabilir. TODO: opt-in duyuru metnini netleştir, KAZAN/DUR komutlarını sistemde tanımla, DM kampanya akışını tasarla, abonelik iptali mekanizmasını test et.',
+    'En sağlıklı model:\n\n' +
+    '(1) Duyuru: bot haftada bir gruba "Yeni fırsatları görmek ve Token kazanmak ister misiniz? Bana özelden KAZAN yazın!" mesajı atar.\n\n' +
+    '(2) Opt-in: kullanıcı KAZAN yazdığında bot bu kişiyi "Reklam Almak İsteyenler" listesine ekler.\n\n' +
+    '(3) Hedefli Gönderim: tanıtımlar gruba değil yalnızca bu listeye DM olarak gider; gruptaki diğerleri hiçbir şey görmez.\n\n' +
+    '(4) Opt-out: kullanıcı DUR yazarak abonelikten çıkabilir.\n\n' +
+    'TODO:\n' +
+    '- Opt-in duyuru metnini netleştir\n' +
+    '- KAZAN/DUR komutlarını sistemde tanımla\n' +
+    '- DM kampanya akışını tasarla\n' +
+    '- Abonelik iptali mekanizmasını test et',
   'wa-community-model':
-    'WhatsApp Topluluk (Community) yapısı — Ana grup sohbet ve genel konular için korunur. Topluluk altına "Fırsatlar ve Ödüller" adında ikinci bir alt grup açılır. Ana grupta yalnızca alt grup linki paylaşılır: "Reklamları görüp token kazanmak isteyenler bu alt gruba gelsin." Bot sadece bu alt gruba mesaj atar; ana gruba hiç dokunmaz. TODO: mevcut grubu topluluk yapısına taşıma uygunluğunu değerlendir, alt grup kurgusu oluştur, yönlendirme metnini hazırla.',
+    'WhatsApp Topluluk (Community) yapısı:\n\n' +
+    '- Ana grup sohbet ve genel konular için korunur\n' +
+    '- Topluluk altına "Fırsatlar ve Ödüller" adında ikinci bir alt grup açılır\n' +
+    '- Ana grupta yalnızca alt grup linki paylaşılır: "Reklamları görüp token kazanmak isteyenler bu alt gruba gelsin."\n' +
+    '- Bot sadece bu alt gruba mesaj atar; ana gruba hiç dokunmaz\n\n' +
+    'TODO:\n' +
+    '- Mevcut grubu topluluk yapısına taşıma uygunluğunu değerlendir\n' +
+    '- Alt grup kurgusu oluştur\n' +
+    '- Yönlendirme metnini hazırla',
   'wa-token-sistemi':
-    'Tıkla-Kazan altyapısı üç katmandan oluşur — (1) Hesap Eşleştirme: kullanıcının WhatsApp numarası ile platformdaki wallet adresi eşleştirilir (telefon numarasıyla kayıtta otomatik sağlanır). (2) Kişiye Özel Linkler: bot her kullanıcıya benzersiz link atar: siteniz.com/kampanya?user=905551234567&ref=kampanya_01. (3) Webhook ile Token Aktarımı: kullanıcı linke tıkladığında backend linkteki ID\'yi okur → anında wallet\'a X Token aktarır → ekranda "Tebrikler, X Token kazandınız!" gösterilir. Suistimal önleme: tekrar tıklama limiti, sahte tıklama tespiti, maksimum günlük ödül kuralları. TODO: numara-wallet eşleme mantığını tasarla, benzersiz link üretim yapısını kur, webhook endpoint geliştir, token API entegrasyonunu tanımla.',
+    'Tıkla-Kazan altyapısı üç katmandan oluşur:\n\n' +
+    '(1) Hesap Eşleştirme: kullanıcının WhatsApp numarası ile platformdaki wallet adresi eşleştirilir (telefon numarasıyla kayıtta otomatik sağlanır).\n\n' +
+    '(2) Kişiye Özel Linkler: bot her kullanıcıya benzersiz link atar: siteniz.com/kampanya?user=905551234567&ref=kampanya_01.\n\n' +
+    '(3) Webhook ile Token Aktarımı: kullanıcı linke tıkladığında backend linkteki ID\'yi okur → anında wallet\'a X Token aktarır → ekranda "Tebrikler, X Token kazandınız!" gösterilir.\n\n' +
+    'Suistimal önleme:\n\n' +
+    '- Tekrar tıklama limiti\n' +
+    '- Sahte tıklama tespiti\n' +
+    '- Maksimum günlük ödül kuralları\n\n' +
+    'TODO:\n' +
+    '- Numara-wallet eşleme mantığını tasarla\n' +
+    '- Benzersiz link üretim yapısını kur\n' +
+    '- Webhook endpoint geliştir\n' +
+    '- Token API entegrasyonunu tanımla',
   'wa-ozet-todo':
-    'Genel aksiyon listesi — Teknik: altyapıyı seç (resmi/gayriresmi), bot numarasını ayır, yazılım kur. Topluluk: grup içi ve DM akışlarını belirle, opt-in/opt-out yapısını kur, topluluk veya alt grup modelini değerlendir. Token: wallet eşleme sistemini tasarla, kişiye özel link üretimini kur, tıklama takibi ve token ödül altyapısını geliştir. Güvenlik: spam, ban ve kötüye kullanım risklerini azalt, random delay ve mesaj limit kurallarını belirle, veritabanı şeması ve API uçlarını tanımla.',
+    'Genel aksiyon listesi:\n\n' +
+    'Teknik:\n' +
+    '- Altyapıyı seç (resmi/gayriresmi)\n' +
+    '- Bot numarasını ayır\n' +
+    '- Yazılım kur\n\n' +
+    'Topluluk:\n' +
+    '- Grup içi ve DM akışlarını belirle\n' +
+    '- Opt-in/opt-out yapısını kur\n' +
+    '- Topluluk veya alt grup modelini değerlendir\n\n' +
+    'Token:\n' +
+    '- Wallet eşleme sistemini tasarla\n' +
+    '- Kişiye özel link üretimini kur\n' +
+    '- Tıklama takibi ve token ödül altyapısını geliştir\n\n' +
+    'Güvenlik:\n' +
+    '- Spam, ban ve kötüye kullanım risklerini azalt\n' +
+    '- Random delay ve mesaj limit kurallarını belirle\n' +
+    '- Veritabanı şeması ve API uçlarını tanımla',
 }
 
 const dijitalPazarlamaSectionDetail: Record<string, string> = {
@@ -228,43 +310,162 @@ const ekipSectionDetail: Record<string, string> = {
 
 const ambassadorSectionDetail: Record<string, string> = {
   'ambassador-profil':
-    'İdeal Marka Elçisi profili: Hiperaktif ve yüksek dışa dönüklük energy\'siyle hareket eder. Çalışkanlık ve sorumluluk duygusuyla sahada olur. İleri derecede çözüm odaklıdır, iyi eğitimli ve açık zihinlidir. "Hep öğrenci" mindset\'iyle sıfır ego taşır — statü değil, etki peşindedir.',
+    'İdeal Marka Elçisi profili:\n' +
+    '- Hiperaktif ve yüksek dışa dönüklük energy\'siyle hareket eder\n' +
+    '- Çalışkanlık ve sorumluluk duygusuyla sahada olur\n' +
+    '- İleri derecede çözüm odaklıdır, iyi eğitimli ve açık zihinlidir\n' +
+    '- "Hep öğrenci" mindset\'iyle sıfır ego taşır — statü değil, etki peşindedir',
   'ambassador-amac':
-    'Ambassador özelliği, CorteQS platformunda şehir bazlı büyüme ve kullanıcı kazanımı için tasarlanmıştır. Her şehir için bir veya birden fazla Marka Elçisi seçilir. Görevleri: yerel toplulukları yönetmek, danışman ve işletme onboarding süreçlerini yürütmek, platform kullanımını artırmak ve yerel fırsatları kullanıcılarla buluşturmak. Hedef: şehir bazlı bir "growth engine" oluşturmak, kullanıcıları doğrudan şehir ağına entegre etmek ve platformun ağ etkisini güçlendirmek.',
+    'Ambassador özelliği, CorteQS platformunda şehir bazlı büyüme ve kullanıcı kazanımı için tasarlanmıştır.\n\n' +
+    'Her şehir için bir veya birden fazla Marka Elçisi seçilir.\n\n' +
+    'Görevleri:\n' +
+    '- Yerel toplulukları yönetmek\n' +
+    '- Danışman ve işletme onboarding süreçlerini yürütmek\n' +
+    '- Platform kullanımını artırmak\n' +
+    '- Yerel fırsatları kullanıcılarla buluşturmak\n\n' +
+    'Hedef: şehir bazlı bir "growth engine" oluşturmak, kullanıcıları doğrudan şehir ağına entegre etmek ve platformun ağ etkisini güçlendirmek.',
   'ambassador-gorevler':
-    'Birincil görevler: kullanıcı ve danışman onboarding süreçlerini yönetmek; WhatsApp, Telegram, LinkedIn ve Instagram üzerinden topluluk aktivitelerini yürütmek. Operasyonel: aylık etkinlikler organize etmek, yeni kullanıcıları aktif hale getirmek, işletmelerle işbirliği fırsatlarını tanıtmak ve kullanıcı geri bildirimlerini toplamak. Performans takibi: kayıt sayısı, etkinlik katılımı, işlem hacmi. Sistem: performansa dayalı ödül / teşvik modeli.',
+    'Birincil görevler:\n' +
+    '- Kullanıcı ve danışman onboarding süreçlerini yönetmek\n' +
+    '- WhatsApp, Telegram, LinkedIn ve Instagram üzerinden topluluk aktivitelerini yürütmek\n\n' +
+    'Operasyonel:\n' +
+    '- Aylık etkinlikler organize etmek\n' +
+    '- Yeni kullanıcıları aktif hale getirmek\n' +
+    '- İşletmelerle işbirliği fırsatlarını tanıtmak\n' +
+    '- Kullanıcı geri bildirimlerini toplamak\n\n' +
+    'Performans takibi:\n' +
+    '- Kayıt sayısı, etkinlik katılımı, işlem hacmi\n\n' +
+    'Sistem: performansa dayalı ödül / teşvik modeli.',
   'ambassador-platform':
-    'Kullanıcılar şehir sayfasında Ambassador\'ı görebilir; "Connect with City Lead" gibi CTA\'lar ile doğrudan iletişime geçebilir. Ambassador araçları: özel dashboard ve raporlama ekranları. Platform üzerinden yapılan işlemler: kullanıcı onboarding, danışman ekleme, etkinlik oluşturma ve topluluk yönetimi. Sistem şeffaf ve takip edilebilir yapıda tutulur.',
+    'Kullanıcılar şehir sayfasında Ambassador\'ı görebilir; "Connect with City Lead" gibi CTA\'lar ile doğrudan iletişime geçebilir.\n\n' +
+    'Ambassador araçları:\n' +
+    '- Özel dashboard ve raporlama ekranları\n\n' +
+    'Platform üzerinden yapılan işlemler:\n' +
+    '- Kullanıcı onboarding\n' +
+    '- Danışman ekleme\n' +
+    '- Etkinlik oluşturma\n' +
+    '- Topluluk yönetimi\n\n' +
+    'Sistem şeffaf ve takip edilebilir yapıda tutulur.',
   'ambassador-sosyal-medya':
-    'Ambassador\'lar şehirlerindeki etkinlikleri ve haberleri derler, kendi Corteqs profillerinde yayınlar ve sosyal medyada paylaşarak platform linklerini büyütür. Bu içerik üretim akışı hem organik erişimi artırır hem de Ambassador\'ın şehir içindeki otorite statüsünü güçlendirir.',
+    'Ambassador\'lar şehirlerindeki etkinlikleri ve haberleri derler, kendi Corteqs profillerinde yayınlar ve sosyal medyada paylaşarak platform linklerini büyütür.\n\n' +
+    'Bu içerik üretim akışı hem organik erişimi artırır hem de Ambassador\'ın şehir içindeki otorite statüsünü güçlendirir.',
   'ambassador-gelir':
-    'Ambassador kuponu ile gelir paylaşımı: ücretli etkinlikler ve onboarding süreçleri kapsama girer. Örnek model — Yıllık subscription: ilk yıl %25, sonraki yıllarda %10 (kupon kullanımı ile). Event gelirleri: biletlerden %15. Not: yüzdeler şehir, yoğunluk ve gelir simülasyonuna göre yeniden kalibre edilecek.',
+    'Ambassador kuponu ile gelir paylaşımı: ücretli etkinlikler ve onboarding süreçleri kapsama girer.\n\n' +
+    'Örnek model — Yıllık subscription:\n' +
+    '- İlk yıl %25\n' +
+    '- Sonraki yıllarda %10 (kupon kullanımı ile)\n\n' +
+    'Event gelirleri: biletlerden %15.\n\n' +
+    'Not: yüzdeler şehir, yoğunluk ve gelir simülasyonuna göre yeniden kalibre edilecek.',
   'ambassador-operasyon':
-    'Ambassador yönetimi Corteqs altında bir WhatsApp grubu ile yürütülür; sisteme bot entegre edilerek platform iletişimi otomize edilir. Her 3 ayda bir düzenli etkinlikler düzenlenir: Piknik, Rakı Balık, Kebap, 29 Ekim, 10 Kasım, 19 Mayıs, Yılbaşı Partisi, Yaza Merhaba, spor etkinlikleri ve turnuvalar.',
+    'Ambassador yönetimi Corteqs altında bir WhatsApp grubu ile yürütülür; sisteme bot entegre edilerek platform iletişimi otomatize edilir.\n\n' +
+    'Her 3 ayda bir düzenli etkinlikler düzenlenir:\n' +
+    '- Piknik\n' +
+    '- Rakı Balık\n' +
+    '- Kabap\n' +
+    '- 29 Ekim\n' +
+    '- 10 Kasım\n' +
+    '- 19 Mayıs\n' +
+    '- Yılbaşı Partisi\n' +
+    '- Spor etkinlikleri ve turnuvalar.',
   'ambassador-tematik':
-    'Corteqs kategorilerine göre özel tematik geceler: Vize Danışmanları Gecesi, Gayrimenkul Danışmanları Gecesi, Doktorlar Gecesi, Dernekler/Vakıflar Gecesi. Ek formatlar: Speed Consulting (online/offline) ve Founder–Startup–Yatırımcı buluşmaları. Tüm etkinlikler platformda ilan edilir ve sponsor bulunur.',
+    'Corteqs kategorilerine göre özel tematik gece:\n' +
+    '- Vize Danışmanları Gecesi\n' +
+    '- Gayrimenkul Danışmanları Gecesi\n' +
+    '- Doktorlar Gecesi\n' +
+    '- Dernekler/Vakıflar Gecesi\n\n' +
+    'Ek formatlar:\n' +
+    '- Speed Consulting (online/offline)\n' +
+    '- Founder–Startup–Yatırımcı buluşmaları\n\n' +
+    'Tüm etkinlikler platformda ilan edilir ve sponsor bulunur.',
   'ambassador-partnerlik':
-    'Uluslararası zincir co-working alanları ile co-brand yapısı kurulabilir; üyelere özel indirim sağlanır. Alternatif olarak yerel anlaşmalar hayata geçirilir. Bu model Ambassador\'ın şehirdeki fiziksel varlığını ve profesyonel ağını pekiştirir.',
+    'Uluslararası zincir co-working alanları ile co-brand yapısı kurulabilir; üyelere özel indirim sağlanır.\n\n' +
+    'Alternatif olarak yerel anlaşmalar hayata geçirilir.\n\n' +
+    'Bu model Ambassador\'ın şehirdeki fiziksel varlığını ve profesyonel ağını pekiştirir.',
   'ambassador-organizasyon':
-    'Ambassador\'lar Marketing departmanına bağlıdır. Her Ambassador için bir POC (Point of Contact) atanır. POC\'un görevi: Ambassador\'ın etkisini maksimize etmek, veri akışını sağlamak ve kopmalar olduğunda sürekliliği korumak.',
+    'Ambassador\'lar Marketing departmanına bağlıdır.\n\n' +
+    'Her Ambassador için bir POC (Point of Contact) atanır.\n\n' +
+    'POC\'un görevi:\n' +
+    '- Ambassador\'ın etkisini maksimize etmek\n' +
+    '- Veri akışını sağlamak\n' +
+    '- Kopmalar olduğunda sürekliliği korumak.',
   'ambassador-scorecard':
-    'Seçim değerlendirmesi 1–5 arası puanlama ile yapılır. Kriter ağırlıkları: Network strength %30, Execution ability %25, Responsiveness %15, Reputation/trust %15, Motivation %15. Bu scorecard hem ilk seçimde hem de dönemsel performans değerlendirmelerinde kullanılır.',
+    'Seçim değerlendirmesi 1–5 arası puanlama ile yapılır.\n\n' +
+    'Kriter ağırlıkları:\n' +
+    '- Network strength %30\n' +
+    '- Execution ability %25\n' +
+    '- Responsiveness %15\n' +
+    '- Reputation/trust %15\n' +
+    '- Motivation %15\n\n' +
+    'Bu scorecard hem ilk seçimde hem de dönemsel performans değerlendirmelerinde kullanılır.',
   'ambassador-growth':
-    'Advisor Growth: 100 advisor listesi oluştur → 100\'üne ulaş → ilk 20\'yi onboard et → 50\'ye genişlet. Content & SEO: 10 SEO makalesi yaz, blog yayınla, topluluklarda dağıt. Community & Activation: LinkedIn haftalık paylaşım, WhatsApp grup paylaşımı, 50 erken kullanıcı onboarding. Monetization: fiyatlandırma modelini tanımla, ilk ücretli rezervasyonu test et. Scale: 100 advisor, 30+ SEO içerik, referral sistemi, yerel partnerlikler ve kullanıcı feedback döngüsü.',
+    'Advisor Growth:\n' +
+    '- 100 advisor listesi oluştur\n' +
+    '- 100\'üne ulaş\n' +
+    '- İlk 20\'yi onboard et\n' +
+    '- 50\'ye genişlet\n\n' +
+    'Content & SEO:\n' +
+    '- 10 SEO makalesi yaz\n' +
+    '- Blog yayınla\n' +
+    '- Topluluklarda dağıt\n\n' +
+    'Community & Activation:\n' +
+    '- LinkedIn haftalık paylaşım\n' +
+    '- WhatsApp grup paylaşımı\n' +
+    '- 50 erken kullanıcı onboarding\n\n' +
+    'Monetization:\n' +
+    '- Fiyatlandırma modelini tanımla\n' +
+    '- İlk ücretli rezervasyonu test et\n\n' +
+    'Scale:\n' +
+    '- 100 advisor\n' +
+    '- 30+ SEO içerik\n' +
+    '- Referral sistemi\n' +
+    '- Yerel partnerlikler\n' +
+    '- Kullanıcı feedback döngüsü.',
   'ambassador-legal':
-    'Şirket kur → ülke ve yapı seç (Estonya, Almanya, İngiltere seçenekleri) → iş bankası hesabı aç → Stripe / ödeme altyapısını kur → terms & conditions + privacy policy hazırla → temel muhasebe kurulumu → faturalama sistemi → vergi yapısı planlaması.',
+    'Şirket kur → ülke ve yapı seç (Estonya, Almanya, İngiltere seçenekleri)\n' +
+    '→ İş bankası hesabı aç\n' +
+    '→ Stripe / ödeme altyapısını kur\n' +
+    '→ Terms & conditions + privacy policy hazırla\n' +
+    '→ Temel muhasebe kurulumu\n' +
+    '→ Faturalama sistemi\n' +
+    '→ Vergi yapısı planlaması.',
   'ambassador-product':
-    'Advisor onboarding checklist\'i oluştur → kullanıcı onboarding checklist\'i oluştur → hizmet kategorilerini tanımla (vize, vergi, konut vb.) → advisor pitch script hazırla → outreach DM şablonları yaz → landing page copy oluştur → temel kullanıcı yolculuğunu tanımla (signup → booking).',
+    'Advisor onboarding checklist\'i oluştur\n' +
+    '→ Kullanıcı onboarding checklist\'i oluştur\n' +
+    '→ Hizmet kategorilerini tanımla (vize, vergi, konut vb.)\n' +
+    '→ Advisor pitch script hazırla\n' +
+    '→ Outreach DM şablonları yaz\n' +
+    '→ Landing page copy oluştur\n' +
+    '→ Temel kullanıcı yolculuğunu tanımla (signup → booking).',
   'ambassador-acquisition':
-    '20 kilit diaspora topluluğunu tespit et → WhatsApp / LinkedIn dağıtım listesi oluştur → 10 viral içerik hook\'u yaz → 3 farklı edinim kanalını test et.',
+    '20 kilit diaspora topluluğunu tespit et\n' +
+    '→ WhatsApp / LinkedIn dağıtım listesi oluştur\n' +
+    '→ 10 viral içerik hook\'u yaz\n' +
+    '→ 3 farklı edinim kanalı test et.',
   'ambassador-pricing':
-    'Komisyon yapısını tanımla → danışman tarafında fiyat duyarlılığını test et → kullanıcı tarafında fiyat duyarlılığını test et. Veriye dayalı kalibrasyonlar şehir bazlı gelir simülasyonlarıyla desteklenecek.',
+    'Komisyon yapısını tanımla\n' +
+    '→ Danışman tarafında fiyat duyarlılığını test et\n' +
+    '→ Kullanıcı tarafında fiyat duyarlılığını test et\n\n' +
+    'Veriye dayalı kalibrasyonlar şehir bazlı gelir simülasyonlarıyla desteklenecek.',
   'ambassador-partnerships':
-    '10 potansiyel partneri tespit et (banka, telco, havayolu) → partnership pitch hazırla → 10 partnere ulaş.',
+    '10 potansiyel partneri tespit et (banka, telco, havayolu)\n' +
+    '→ Partnership pitch hazırla\n' +
+    '→ 10 partnere ulaş.',
   'ambassador-branding':
-    'Temel marka varlıklarını oluştur (logo, kimlik) → sosyal medya hesaplarını kur → domain ve kurumsal e-posta altyapısını kur.',
+    'Temel marka varlıklarını oluştur (logo, kimlik)\n' +
+    '→ Sosyal medya hesaplarını kur\n' +
+    '→ Domain ve kurumsal e-posta altyapısını kur.',
   'ambassador-poc':
-    'Süreçte bir POC Twin eğitilecek. Veri kaynakları: tüm şehirlerden gelen veriler, etkinlik verileri, WhatsApp bot verileri ve best practice\'ler. Beslenme kaynakları: POC mesajları, toplantılar ve görüşmeler. Amaç: POC ayrıldığında Twin sistemi Ambassador topluluğunu otomatik şekilde yönetir ve bilgi kaybını sıfırlar.',
+    'Süreçte bir POC Twin eğitilecek.\n\n' +
+    'Veri kaynakları:\n' +
+    '- Tüm şehirlerden gelen veriler\n' +
+    '- Etkinlik verileri\n' +
+    '- WhatsApp bot verileri\n' +
+    '- Best practice\'ler\n\n' +
+    'Beslenme kaynakları:\n' +
+    '- POC mesajları\n' +
+    '- Toplantılar\n' +
+    '- Görüşmeler\n\n' +
+    'Amaç: POC ayrıldığında Twin sistemi Ambassador topluluğunu otomatik şekilde yönetir ve bilgi kaybını sıfırlar.',
 }
 
 const mvpSectionDetail: Record<string, string> = {

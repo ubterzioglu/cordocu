@@ -48,10 +48,10 @@ export default function Sidebar({
       )}
       <aside
         id="docs-sidebar"
-        className={`fixed left-0 top-[var(--docs-header-height)] z-40 h-[calc(100vh-var(--docs-header-height))] w-[min(calc(100vw-2.5rem),var(--docs-sidebar-width))] border-r border-white/70 bg-white/82 shadow-[18px_0_40px_rgba(60,64,67,0.08)] backdrop-blur-xl transition-transform duration-300 ease-in-out lg:w-[var(--docs-sidebar-width)] lg:translate-x-0 ${
+        className={`fixed left-0 top-[var(--docs-header-height)] z-40 h-[calc(100vh-var(--docs-header-height))] border-r border-white/70 bg-white/82 shadow-[18px_0_40px_rgba(60,64,67,0.08)] backdrop-blur-xl transition-all duration-300 ease-in-out lg:transition-transform ${
           isSidebarVisible
-            ? 'visible translate-x-0'
-            : 'invisible -translate-x-full lg:visible lg:translate-x-0'
+            ? 'w-[min(calc(100vw-2.5rem),var(--docs-sidebar-width))] visible translate-x-0'
+            : 'w-0 invisible -translate-x-full lg:w-[var(--docs-sidebar-width)] lg:translate-x-0 lg:invisible'
         }`}
       >
         <nav
