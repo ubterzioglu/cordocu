@@ -5,3 +5,4 @@ node_modules
 .secret.md
 secret.md
 supabase/.temp
+temp/
