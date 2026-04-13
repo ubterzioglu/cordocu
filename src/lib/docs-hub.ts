@@ -22,6 +22,7 @@ export type DocCategorySlug =
   | 'sosyalmedya'
   | 'insankaynaklari'
   | 'arge'
+  | 'toplantiozet'
 
 export type DocIconKey =
   | 'book'
@@ -1407,6 +1408,29 @@ export const docsCategories: DocCategoryDefinition[] = [
         href: '/arge',
         categorySlug: 'arge',
         featuredOrder: 47,
+      },
+    ],
+  },
+  {
+    slug: 'toplantiozet',
+    label: 'TOPLANTI ÖZET',
+    shortDescription: 'Tüm toplantı notları ve WA yazışmalarının birleştirilmiş, kategorize edilmiş özeti.',
+    iconKey: 'calendar',
+    defaultExpanded: false,
+    overview: {
+      title: 'Birleştirilmiş Toplantı & WA Maddeleri',
+      description:
+        '26 Şubat (T1), 12 Mart (T2), 9 Nisan (T3) toplantıları ve 13 Nisan WA yazışmalarından derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.',
+      ctaLabel: 'Özete Git',
+    },
+    items: [
+      {
+        id: 'toplantiozet-main',
+        label: 'Toplantı & WA Özet Tablosu',
+        description: 'Tüm maddeler ana liste, kategori kartları ve toplantı bazlı kartlar halinde.',
+        href: '/toplantiozet',
+        categorySlug: 'toplantiozet',
+        featuredOrder: 48,
       },
     ],
   },

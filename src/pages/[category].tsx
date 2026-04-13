@@ -16,7 +16,7 @@ interface CategoryPageProps {
 }
 
 // 'todolist' has its own dedicated page (pages/todolist.tsx) with Supabase integration
-const DEDICATED_PAGES = new Set(['todolist', 'links', 'mvpitems', 'sosyalmedya', 'insankaynaklari', 'arge'])
+const DEDICATED_PAGES = new Set(['todolist', 'links', 'mvpitems', 'sosyalmedya', 'insankaynaklari', 'arge', 'toplantiozet'])
 
 export const getStaticPaths: GetStaticPaths = async () => ({
   paths: getDocsCategorySlugs()
