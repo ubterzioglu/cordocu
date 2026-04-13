@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import DocsShell from '@/components/layout/DocsShell'
 import MvpManager from '@/components/mvp/MvpManager'
+import GeneralSummaryCard from '@/components/mvp/GeneralSummaryCard'
+import { SectionHeading } from '@/components/ui/SectionHeading'
 
 export default function MvpItemsPage() {
   return (
@@ -40,7 +42,39 @@ export default function MvpItemsPage() {
             </div>
           </div>
 
-          <MvpManager />
+          <GeneralSummaryCard
+  content={`
+<h3>MVP Hedefleri ve Stratejik Özet</h3>
+<p>
+Cortex projesi, diaspora topluluğuna yönelik merkezi bir platform hedeflemektedir. 
+Platform, doğrulanmış uzmanlar, kuruluşlar ve işletmeler için bir pazaryeri oluşturmayı amaçlamaktadır.
+</p>
+<ul>
+  <li><strong>Rezervasyon Sistemi:</strong> Etkinlik yönetimi ve biletleme</li>
+  <li><strong>Kullanıcı Kısıtlamaları:</strong> Güvenilirlik ve doğrulama mekanizmaları</li>
+  <li><strong>Audit Kayıtları:</strong> Finansal ve gelir modeli</li>
+  <li><strong>Veritabanı Tasarımı:</strong> Teknik altyapı ve veri yapısı</li>
+  <li><strong>MVP Hedefleri:</strong> 6-8 aylık geliştirme çizelgesi</li>
+  <li><strong>Reklam Modeli:</strong> Diaspora grupları ve influencer ortaklıkları</li>
+</ul>
+<p>
+Platform, AI destekli danışmanlık hizmetleri, premium abonelikler ve reklam gelirleri ile 
+sürdürülebilir bir iş modeli hedeflemektedir. 
+</p>
+<p>
+MVP hedefleri arasında AI Twins (yapay zeka destekli danışmanlık), 
+merkezi etkinlik yönetimi ve diaspora ağının entegrasyonu bulunmaktadır.
+</p>
+`}/>
+
+<div className="mt-8 space-y-6">
+  <SectionHeading
+    title="MVP LİSTESİ"
+    subtitle="Yapısal MVP Maddeleri"
+    accentColor="#A142F4"
+  />
+  <MvpManager />
+</div>
         </article>
       </div>
     </DocsShell>
