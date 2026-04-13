@@ -17,6 +17,11 @@ export type DocCategorySlug =
   | 'todolist'
   | 'roadmap'
   | 'projetakibi'
+  | 'links'
+  | 'mvpitems'
+  | 'sosyalmedya'
+  | 'insankaynaklari'
+  | 'arge'
 
 export type DocIconKey =
   | 'book'
@@ -1276,7 +1281,7 @@ export const docsCategories: DocCategoryDefinition[] = [
   {
     slug: 'projetakibi',
     label: 'Proje Takibi Şablonu',
-    shortDescription: 'Corteqs için hazırlanmış görev bazlı proje takip şablonu: 2 proje bloğu, 14 görev satırı, durum/öncelik anahtarları, maliyet ve saat takibi.',
+    shortDescription: 'Corteqs için hazırlanmış görev bazlı proje takip şablonu.',
     iconKey: 'layers',
     defaultExpanded: false,
     overview: {
@@ -1288,40 +1293,120 @@ export const docsCategories: DocCategoryDefinition[] = [
       {
         id: 'pt-genel-yapi',
         label: '1. Genel Yapı ve Amaç',
-        description: '1 sekme, 2 proje bloğu, 14 görev satırı, 9 maliyet verili satır. Küçük ekipler için sade single-page takip mantığı.',
+        description: 'Küçük ekipler için sade single-page takip mantığı.',
         href: '#pt-genel-yapi',
         categorySlug: 'projetakibi',
         featuredOrder: 40,
       },
+    ],
+  },
+  {
+    slug: 'links',
+    label: 'LİNKLER',
+    shortDescription: 'Faydalı linklerin merkezi yönetim tablosu.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'Link Yönetimi',
+      description: 'Faydalı linkleri ekleyin, düzenleyin ve paylaşın.',
+      ctaLabel: 'Linklere Git',
+    },
+    items: [
       {
-        id: 'pt-ust-bilgiler',
-        label: '2. Üst Bilgiler ve Anahtarlar',
-        description: 'Proje başlığı, yöneticisi, şirket adı, tarih alanları — şu an placeholder. Durum: Beklemede / Henüz Başlamadı / Devam Ediyor / Tamamlandı. Öncelik: Düşük / Orta / Yüksek.',
-        href: '#pt-ust-bilgiler',
-        categorySlug: 'projetakibi',
+        id: 'links-main',
+        label: 'Link Listesi',
+        description: 'Tüm linklerin CRUD tablosu.',
+        href: '/links',
+        categorySlug: 'links',
+        featuredOrder: 43,
       },
+    ],
+  },
+  {
+    slug: 'mvpitems',
+    label: 'MVP LİSTESİ',
+    shortDescription: 'MVP maddelerinin Supabase destekli merkezi listesi — MVP seviyesi ve sorumlu ataması.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'MVP Yaklaşımı — Yapısal Liste',
+      description: 'Tüm MVP maddeleri canlı CRUD tablosunda. MVP1/MVP2/MVP3 seviyesi ve sorumlu atayın.',
+      ctaLabel: 'MVP Listesine Git',
+    },
+    items: [
       {
-        id: 'pt-proje1',
-        label: '3. Proje 1 — Görevler',
-        description: '5 görev satırı: Beklemede (×2), Henüz Başlamadı, Devam Ediyor, Tamamlandı. Tamamlanma %: 56 / 50 / 22 / 11. Maliyet ve saat alanları büyük ölçüde boş.',
-        href: '#pt-proje1',
-        categorySlug: 'projetakibi',
-        featuredOrder: 41,
+        id: 'mvpitems-main',
+        label: 'MVP Yapısal Liste',
+        description: 'Merkezi MVP maddeleri tablosu.',
+        href: '/mvpitems',
+        categorySlug: 'mvpitems',
+        featuredOrder: 44,
       },
+    ],
+  },
+  {
+    slug: 'sosyalmedya',
+    label: 'SOSYAL MEDYA',
+    shortDescription: 'Sosyal medya kaynaklarının merkezi yönetim tablosu.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'Sosyal Medya Linkleri',
+      description: 'Sosyal medya kaynaklarını merkezi ve yönetilebilir tabloda toplayın.',
+      ctaLabel: 'Sosyal Medyaya Git',
+    },
+    items: [
       {
-        id: 'pt-proje2',
-        label: '4. Proje 2 — Görevler ve Maliyet',
-        description: '9 görev satırı. Toplam sabit maliyet: 810. Tahmini saat: 43. Fiili saat: 42. Büyük çoğunluğu Tamamlandı; 1 Beklemede, 1 Henüz Başlamadı, 1 Devam Ediyor.',
-        href: '#pt-proje2',
-        categorySlug: 'projetakibi',
-        featuredOrder: 42,
+        id: 'sosyalmedya-main',
+        label: 'Sosyal Medya Listesi',
+        description: 'Tüm sosyal medya linkleri.',
+        href: '/sosyalmedya',
+        categorySlug: 'sosyalmedya',
+        featuredOrder: 45,
       },
+    ],
+  },
+  {
+    slug: 'insankaynaklari',
+    label: 'İNSAN KAYNAKLARI',
+    shortDescription: 'CV yükleme ve yönetim sistemi.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'CV Yönetimi',
+      description: 'CV yükleyin, görüntüleyin ve yönetin. Supabase Storage mimarisi.',
+      ctaLabel: 'HR Modülüne Git',
+    },
+    items: [
       {
-        id: 'pt-eksikler',
-        label: '5. Eksikler ve Sonuç',
-        description: 'Proje adı, sahiplik ve görev ayrıntıları placeholder. Atanan sütunu boş. Dosya gerçek operasyon arşivi değil; gerçek verilerle beslenmesi gereken bir şablon.',
-        href: '#pt-eksikler',
-        categorySlug: 'projetakibi',
+        id: 'insankaynaklari-main',
+        label: 'CV Yönetimi',
+        description: 'CV yükleme ve listeleme.',
+        href: '/insankaynaklari',
+        categorySlug: 'insankaynaklari',
+        featuredOrder: 46,
+      },
+    ],
+  },
+  {
+    slug: 'arge',
+    label: 'ARGE',
+    shortDescription: 'Araştırma, doküman ve fikir içeriklerinin yönetildiği modül.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'ARGE Modülü',
+      description: 'Linkler, açıklama kartları ve dosya upload ile ARGE içerik yönetimi.',
+      ctaLabel: 'ARGE\'ye Git',
+    },
+    items: [
+      {
+        id: 'arge-main',
+        label: 'ARGE Yönetimi',
+        description: 'Linkler, kartlar ve dosyalar.',
+        href: '/arge',
+        categorySlug: 'arge',
+        featuredOrder: 47,
       },
     ],
   },

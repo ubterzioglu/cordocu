@@ -1,3 +1,6 @@
+'use client'
+
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, Search } from 'lucide-react'
 import ContentCard from '../ui/ContentCard'
@@ -5,6 +8,7 @@ import SectionHeading from '../ui/SectionHeading'
 import {
   getDocsCategoryContentView,
   getDocsHubContentView,
+  getDocsCategories,
   type ContentViewSection,
   type DocCategorySlug,
 } from '@/lib/docs-data'
@@ -15,11 +19,17 @@ interface MainContentProps {
 }
 
 export default function MainContent({ categorySlug }: MainContentProps) {
-  const contentView = categorySlug
-    ? getDocsCategoryContentView(categorySlug)
-    : getDocsHubContentView()
-  const searchInputId = `${contentView.mode}-search-preview`
-  const searchHelperId = `${searchInputId}-helper`
+  const isHub = !categorySlug
+
+  if (isHub) {
+    return <HubContent />
+  }
+
+  return <CategoryContent categorySlug={categorySlug} />
+}
+
+function CategoryContent({ categorySlug }: { categorySlug: DocCategorySlug }) {
+  const contentView = getDocsCategoryContentView(categorySlug)
 
   return (
     <article className="space-y-8 sm:space-y-10">
@@ -68,31 +78,103 @@ export default function MainContent({ categorySlug }: MainContentProps) {
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      {contentView.sections.map((section) => (
+        <SectionRenderer key={section.id} section={section} />
+      ))}
+    </article>
+  )
+}
+
+function HubContent() {
+  const contentView = getDocsHubContentView()
+  const [searchQuery, setSearchQuery] = useState('')
+  const categories = getDocsCategories()
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return []
+    const q = searchQuery.toLowerCase()
+    const results: { id: string; title: string; description: string; categoryLabel: string; href: string }[] = []
+    for (const cat of categories) {
+      for (const item of cat.items) {
+        if (
+          item.label.toLowerCase().includes(q) ||
+          item.description.toLowerCase().includes(q)
+        ) {
+          results.push({
+            id: item.id,
+            title: item.label,
+            description: item.description,
+            categoryLabel: cat.label,
+            href: item.href,
+          })
+        }
+      }
+      if (
+        cat.label.toLowerCase().includes(q) ||
+        cat.shortDescription.toLowerCase().includes(q) ||
+        cat.overview.title.toLowerCase().includes(q) ||
+        cat.overview.description.toLowerCase().includes(q)
+      ) {
+        const alreadyAdded = results.some((r) => r.id === `${cat.slug}-category`)
+        if (!alreadyAdded) {
+          results.push({
+            id: `${cat.slug}-category`,
+            title: cat.overview.title,
+            description: cat.overview.description,
+            categoryLabel: cat.label,
+            href: `/${cat.slug}`,
+          })
+        }
+      }
+    }
+    return results
+  }, [searchQuery, categories])
+
+  const hasSearch = searchQuery.trim().length > 0
+
+  return (
+    <article className="space-y-8 sm:space-y-10">
+      <div className="space-y-3 sm:space-y-4">
+        <div className="docs-surface p-5 sm:p-6 md:p-8">
+          <div
+            className="pointer-events-none absolute -right-16 top-0 h-44 w-44 rounded-full bg-[radial-gradient(circle,_rgba(66,133,244,0.22)_0%,_rgba(66,133,244,0)_72%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(52,168,83,0.14)_0%,_rgba(52,168,83,0)_74%)]"
+            aria-hidden="true"
+          />
+          <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+            {contentView.title}
+          </h1>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
+            {contentView.description}
+          </p>
 
           {contentView.search && (
             <div className="mt-8 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-5">
               <div className="mb-3 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                 <label
-                  htmlFor={searchInputId}
+                  htmlFor="hub-search-active"
                   className="text-sm font-medium text-gray-700"
                 >
                   {contentView.search.label}
                 </label>
-                <span className="inline-flex items-center rounded-full bg-[rgba(251,188,5,0.14)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[rgba(166,118,0,0.92)]">
-                  Placeholder UI
-                </span>
               </div>
               <div className="relative">
                 <input
-                  id={searchInputId}
+                  id="hub-search-active"
                   type="text"
                   placeholder={contentView.search.placeholder}
-                  readOnly
-                  name="docs-search-preview"
+                  name="docs-search"
                   autoComplete="off"
-                  aria-readonly="true"
-                  aria-describedby={searchHelperId}
-                  className="w-full rounded-2xl border border-[rgba(66,133,244,0.12)] bg-white py-3.5 pl-11 pr-4 text-sm text-gray-500 shadow-[0_10px_20px_rgba(60,64,67,0.04)] focus-visible:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  aria-describedby="hub-search-active-helper"
+                  className="w-full rounded-2xl border border-[rgba(66,133,244,0.12)] bg-white py-3.5 pl-11 pr-4 text-sm text-gray-800 shadow-[0_10px_20px_rgba(60,64,67,0.04)] focus-visible:border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 />
                 <Search
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-500"
@@ -100,78 +182,117 @@ export default function MainContent({ categorySlug }: MainContentProps) {
                   aria-hidden="true"
                 />
               </div>
-              <p id={searchHelperId} className="mt-3 text-sm text-gray-500">
-                {contentView.search.helperText}
+              <p id="hub-search-active-helper" className="mt-3 text-sm text-gray-500">
+                Tüm dokümanlar ve kategorilerde aramak için yazın.
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {contentView.sections.map((section) => (
-        <section
-          key={section.id}
-          aria-labelledby={`section-heading-${section.id}`}
-          className="space-y-5"
-        >
+      {hasSearch ? (
+        <section className="space-y-5" aria-labelledby="search-results-heading">
           <SectionHeading
-            id={`section-heading-${section.id}`}
-            title={section.title}
-            description={section.description}
+            id="search-results-heading"
+            title={`Arama Sonuçları (${searchResults.length})`}
+            description={`"${searchQuery}" için eşleşen sonuçlar.`}
           />
-
-          {section.cards.length > 0 ? (
-            <div className={getGridClasses(section)}>
-              {section.cards.map((card) => {
-                const Icon = card.iconKey ? getDocIcon(card.iconKey) : null
-
-                return (
-                  <ContentCard
-                    key={card.id}
-                    title={card.title}
-                    description={card.description}
-                    detail={card.detail}
-                    badge={card.badge}
-                    eyebrow={card.eyebrow}
-                    density={card.density}
-                    anchorId={card.anchorId}
-                    icon={Icon ? <Icon size={20} /> : undefined}
-                    action={
-                      card.action?.type === 'link'
-                        ? {
-                            type: 'link',
-                            href: card.action.href,
-                            label: card.action.label,
-                            surface: card.action.surface,
-                          }
-                        : undefined
-                    }
-                  />
-                )
-              })}
+          {searchResults.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {searchResults.map((result) => (
+                <ContentCard
+                  key={result.id}
+                  title={result.title}
+                  description={result.description}
+                  badge={result.categoryLabel}
+                  density="compact"
+                  action={{
+                    type: 'link',
+                    href: result.href,
+                    label: 'Bölümü Aç',
+                    surface: 'card',
+                  }}
+                />
+              ))}
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-sm text-gray-500">
-              <h3 className="text-base font-semibold text-gray-900">
-                {section.emptyState?.title ?? 'No content available'}
-              </h3>
-              <p className="mt-2 max-w-2xl">
-                {section.emptyState?.description ??
-                  'This section is intentionally empty for now.'}
-              </p>
-              {section.emptyState?.action?.type === 'link' && (
-                <Link
-                  href={section.emptyState.action.href}
-                  className="mt-4 inline-flex items-center gap-2 rounded-md text-sm font-medium text-primary-600 transition-colors hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                >
-                  {section.emptyState.action.label}
-                </Link>
-              )}
+              <h3 className="text-base font-semibold text-gray-900">Sonuç bulunamadı</h3>
+              <p className="mt-2 max-w-2xl">Farklı anahtar kelimelerle tekrar arayın.</p>
             </div>
           )}
         </section>
-      ))}
+      ) : (
+        contentView.sections.map((section) => (
+          <SectionRenderer key={section.id} section={section} />
+        ))
+      )}
     </article>
+  )
+}
+
+function SectionRenderer({ section }: { section: ContentViewSection }) {
+  return (
+    <section
+      aria-labelledby={`section-heading-${section.id}`}
+      className="space-y-5"
+    >
+      <SectionHeading
+        id={`section-heading-${section.id}`}
+        title={section.title}
+        description={section.description}
+      />
+
+      {section.cards.length > 0 ? (
+        <div className={getGridClasses(section)}>
+          {section.cards.map((card) => {
+            const Icon = card.iconKey ? getDocIcon(card.iconKey) : null
+
+            return (
+              <ContentCard
+                key={card.id}
+                title={card.title}
+                description={card.description}
+                detail={card.detail}
+                badge={card.badge}
+                eyebrow={card.eyebrow}
+                density={card.density}
+                anchorId={card.anchorId}
+                icon={Icon ? <Icon size={20} /> : undefined}
+                action={
+                  card.action?.type === 'link'
+                    ? {
+                        type: 'link',
+                        href: card.action.href,
+                        label: card.action.label,
+                        surface: card.action.surface,
+                      }
+                    : undefined
+                }
+              />
+            )
+          })}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-sm text-gray-500">
+          <h3 className="text-base font-semibold text-gray-900">
+            {section.emptyState?.title ?? 'No content available'}
+          </h3>
+          <p className="mt-2 max-w-2xl">
+            {section.emptyState?.description ??
+              'This section is intentionally empty for now.'}
+          </p>
+          {section.emptyState?.action?.type === 'link' && (
+            <Link
+              href={section.emptyState.action.href}
+              className="mt-4 inline-flex items-center gap-2 rounded-md text-sm font-medium text-primary-600 transition-colors hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            >
+              {section.emptyState.action.label}
+            </Link>
+          )}
+        </div>
+      )}
+    </section>
   )
 }
 

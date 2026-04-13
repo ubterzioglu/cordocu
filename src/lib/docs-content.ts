@@ -700,25 +700,33 @@ export function getDocsHubContentView(): ContentView {
     },
     sections: [
       {
-        id: 'overview-categories',
-        title: 'Kategoriye Göre Gözat',
+        id: 'why-this-page',
+        title: 'Bu Sayfa Neden Var?',
         description:
-          'Her kart, paylaşımlı kabuk ve bölüm yapısını koruyarak ayrı bir kategori rotası açar.',
+          'Bu dokümantasyon merkezinin amacı, rolü ve sağladığı faydalar.',
         columns: 2,
-        cards: docsOverviewCards.map((card) => ({
-          id: card.id,
-          title: card.title,
-          description: card.description,
-          badge: card.categoryLabel,
-          iconKey: card.iconKey,
-          density: 'default',
-          action: {
-            type: 'link',
-            href: buildDocCategoryHref(card.categorySlug),
-            label: card.ctaLabel,
-            surface: 'card',
+        cards: [
+          {
+            id: 'why-purpose',
+            title: 'Amaç',
+            description: 'Tüm proje dokümanlarını, görevleri ve kaynakları tek merkezde toplamak.',
           },
-        })),
+          {
+            id: 'why-role',
+            title: 'Dokümantasyondaki Rolü',
+            description: 'WhatsApp, Notion ve Drive dağınıklığını çözerek tek doğruluk kaynağı olmak.',
+          },
+          {
+            id: 'why-benefit',
+            title: 'Kullanıcıya Faydası',
+            description: 'Yeni katılan biri "neredeyiz, ne yaptık, sonuç neydi" sorularını tek ekrandan yanıtlar.',
+          },
+          {
+            id: 'why-problem',
+            title: 'Çözdüğü Problem',
+            description: 'Bilgi parçalanmasını önler, karar geçmişini korur, ekip hizalamasını sağlar.',
+          },
+        ],
       },
       {
         id: 'overview-quick-links',
