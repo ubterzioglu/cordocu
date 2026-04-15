@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import DocsShell from '@/components/layout/DocsShell'
 import MvpManager from '@/components/mvp/MvpManager'
 import GeneralSummaryCard from '@/components/mvp/GeneralSummaryCard'
-import { SectionHeading } from '@/components/ui/SectionHeading'
+import SectionHeading from '@/components/ui/SectionHeading'
 
 export default function MvpItemsPage() {
   return (
@@ -70,8 +70,7 @@ merkezi etkinlik yönetimi ve diaspora ağının entegrasyonu bulunmaktadır.
 <div className="mt-8 space-y-6">
   <SectionHeading
     title="MVP LİSTESİ"
-    subtitle="Yapısal MVP Maddeleri"
-    accentColor="#A142F4"
+    description="Yapısal MVP Maddeleri"
   />
   <MvpManager />
 </div>
