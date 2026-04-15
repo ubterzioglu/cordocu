@@ -1,7 +1,7 @@
 'use client'
 
 import AccordionCard from '../ui/AccordionCard'
-import { SectionHeading } from '../ui/SectionHeading'
+import SectionHeading from '../ui/SectionHeading'
 
 interface GeneralSummaryCardProps {
   content: string
@@ -12,8 +12,7 @@ export default function GeneralSummaryCard({ content }: GeneralSummaryCardProps)
     <div className="space-y-6">
       <SectionHeading
         title="GENEL ÖZET"
-        subtitle="MVP hedefleri ve stratejik özet"
-        accentColor="#A142F4"
+        description="MVP hedefleri ve stratejik özet"
       />
       
       <AccordionCard
