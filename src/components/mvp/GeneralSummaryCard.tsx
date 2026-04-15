@@ -1,6 +1,6 @@
 'use client'
 
-import { AccordionCard } from '../ui/AccordionCard'
+import AccordionCard from '../ui/AccordionCard'
 import { SectionHeading } from '../ui/SectionHeading'
 
 interface GeneralSummaryCardProps {
