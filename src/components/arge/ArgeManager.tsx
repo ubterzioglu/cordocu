@@ -129,8 +129,8 @@ export default function ArgeManager() {
           title: linkForm.title.trim(),
           description: linkForm.description.trim() || null,
           url: linkForm.url.trim(),
-          card_id: linkForm.cardId || null,
           created_by: linkForm.createdBy,
+          ...(linkForm.cardId ? { card_id: linkForm.cardId } : {}),
         })
         .select('*')
         .single()
@@ -207,8 +207,8 @@ export default function ArgeManager() {
           description: fileForm.description.trim() || null,
           file_path: filePath,
           file_name: selectedFile.name,
-          card_id: fileForm.cardId || null,
           created_by: fileForm.createdBy,
+          ...(fileForm.cardId ? { card_id: fileForm.cardId } : {}),
         })
         .select('*')
         .single()
@@ -316,8 +316,12 @@ export default function ArgeManager() {
         prev.map((link) => (link.id === linkId ? mapArgeLinkRow(data as ArgeLinkRow) : link))
       )
     } catch (updateError) {
-      setError(
+      const message =
         updateError instanceof Error ? updateError.message : 'Kart ataması güncellenemedi.'
+      setError(
+        message.includes('card_id')
+          ? 'Kart ataması için veritabanında son migration henüz uygulanmamış.'
+          : message
       )
     } finally {
       setIsSubmitting(false)
@@ -344,8 +348,12 @@ export default function ArgeManager() {
         prev.map((file) => (file.id === fileId ? mapArgeFileRow(data as ArgeFileRow) : file))
       )
     } catch (updateError) {
-      setError(
+      const message =
         updateError instanceof Error ? updateError.message : 'Kart ataması güncellenemedi.'
+      setError(
+        message.includes('card_id')
+          ? 'Kart ataması için veritabanında son migration henüz uygulanmamış.'
+          : message
       )
     } finally {
       setIsSubmitting(false)
