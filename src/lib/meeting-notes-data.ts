@@ -75,6 +75,32 @@ function mapRow(row: MeetingNoteRow): MeetingNoteItem {
   }
 }
 
+function normalizeMeetingNoteText(value: string): string {
+  return value
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFKC')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function dedupeMeetingNotes(items: MeetingNoteItem[]): MeetingNoteItem[] {
+  const seen = new Set<string>()
+
+  return items.filter((item) => {
+    const dedupeKey = [
+      normalizeMeetingNoteText(item.content),
+      normalizeMeetingNoteText(item.date),
+    ].join('::')
+
+    if (seen.has(dedupeKey)) {
+      return false
+    }
+
+    seen.add(dedupeKey)
+    return true
+  })
+}
+
 export async function fetchMeetingNotes(): Promise<MeetingNoteItem[]> {
   const supabase = getSupabaseBrowserClient()
   if (!supabase) return []
@@ -85,5 +111,5 @@ export async function fetchMeetingNotes(): Promise<MeetingNoteItem[]> {
     .order('sort_order', { ascending: true })
 
   if (error || !data) return []
-  return (data as MeetingNoteRow[]).map(mapRow)
+  return dedupeMeetingNotes((data as MeetingNoteRow[]).map(mapRow))
 }
