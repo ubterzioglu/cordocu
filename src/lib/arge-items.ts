@@ -6,6 +6,7 @@ export interface ArgeLinkRow {
   title: string
   description: string | null
   url: string
+  card_id: string | null
   created_by: ArgeAuthor
   created_at: string
 }
@@ -15,6 +16,7 @@ export interface ArgeLink {
   title: string
   description: string | null
   url: string
+  cardId: string | null
   createdBy: ArgeAuthor
   createdAt: string
 }
@@ -43,6 +45,7 @@ export interface ArgeFileRow {
   description: string | null
   file_path: string
   file_name: string
+  card_id: string | null
   created_by: ArgeAuthor
   created_at: string
 }
@@ -53,6 +56,7 @@ export interface ArgeFile {
   description: string | null
   filePath: string
   fileName: string
+  cardId: string | null
   createdBy: ArgeAuthor
   createdAt: string
 }
@@ -61,6 +65,7 @@ export interface ArgeLinkFormState {
   title: string
   description: string
   url: string
+  cardId: string
   createdBy: ArgeAuthor
 }
 
@@ -74,11 +79,12 @@ export interface ArgeCardFormState {
 export interface ArgeFileFormState {
   title: string
   description: string
+  cardId: string
   createdBy: ArgeAuthor
 }
 
 export function createEmptyArgeLinkFormState(): ArgeLinkFormState {
-  return { title: '', description: '', url: '', createdBy: 'UBT' }
+  return { title: '', description: '', url: '', cardId: '', createdBy: 'UBT' }
 }
 
 export function createEmptyArgeCardFormState(): ArgeCardFormState {
@@ -86,11 +92,11 @@ export function createEmptyArgeCardFormState(): ArgeCardFormState {
 }
 
 export function createEmptyArgeFileFormState(): ArgeFileFormState {
-  return { title: '', description: '', createdBy: 'UBT' }
+  return { title: '', description: '', cardId: '', createdBy: 'UBT' }
 }
 
 export function mapArgeLinkRow(row: ArgeLinkRow): ArgeLink {
-  return { id: row.id, title: row.title, description: row.description, url: row.url, createdBy: row.created_by, createdAt: row.created_at }
+  return { id: row.id, title: row.title, description: row.description, url: row.url, cardId: row.card_id, createdBy: row.created_by, createdAt: row.created_at }
 }
 
 export function mapArgeCardRow(row: ArgeCardRow): ArgeCard {
@@ -98,5 +104,5 @@ export function mapArgeCardRow(row: ArgeCardRow): ArgeCard {
 }
 
 export function mapArgeFileRow(row: ArgeFileRow): ArgeFile {
-  return { id: row.id, title: row.title, description: row.description, filePath: row.file_path, fileName: row.file_name, createdBy: row.created_by, createdAt: row.created_at }
+  return { id: row.id, title: row.title, description: row.description, filePath: row.file_path, fileName: row.file_name, cardId: row.card_id, createdBy: row.created_by, createdAt: row.created_at }
 }
