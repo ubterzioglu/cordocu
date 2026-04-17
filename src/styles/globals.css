@@ -18,6 +18,12 @@
     --docs-shadow-strong: 0 24px 60px rgba(60, 64, 67, 0.14);
   }
 
+  .dark {
+    --docs-border-soft: rgba(66, 133, 244, 0.18);
+    --docs-shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.3);
+    --docs-shadow-strong: 0 24px 60px rgba(0, 0, 0, 0.5);
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -28,6 +34,14 @@
       radial-gradient(circle at top right, rgba(234, 67, 53, 0.1), transparent 22rem),
       linear-gradient(180deg, #f7faff 0%, #ffffff 28%, #f8fafc 100%);
     @apply text-gray-900 antialiased;
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at top left, rgba(66, 133, 244, 0.08), transparent 26rem),
+      radial-gradient(circle at top right, rgba(234, 67, 53, 0.06), transparent 22rem),
+      linear-gradient(180deg, #0f172a 0%, #1e293b 28%, #0f172a 100%);
+    color: #e2e8f0;
   }
 }
 
@@ -62,6 +76,10 @@
     backdrop-filter: blur(14px);
   }
 
+  .dark .docs-surface {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.97) 0%, rgba(15, 23, 42, 0.94) 100%);
+  }
+
   .docs-surface::before {
     content: '';
     position: absolute;
@@ -82,6 +100,12 @@
     border-color: rgba(66, 133, 244, 0.16);
     background: rgba(255, 255, 255, 0.92);
     color: #5f6368;
+  }
+
+  .dark .docs-chip {
+    background: rgba(30, 41, 59, 0.92);
+    border-color: rgba(66, 133, 244, 0.24);
+    color: #94a3b8;
   }
 
   .docs-chip::before {
@@ -123,10 +147,20 @@
     background: rgba(255, 255, 255, 0.68);
   }
 
+  .dark .sidebar-item {
+    background: rgba(30, 41, 59, 0.68);
+    color: #94a3b8;
+  }
+
   .sidebar-item:hover {
     border-color: rgba(66, 133, 244, 0.1);
     background: rgba(66, 133, 244, 0.06);
     color: #1f2937;
+  }
+
+  .dark .sidebar-item:hover {
+    background: rgba(66, 133, 244, 0.12);
+    color: #e2e8f0;
   }
 
   .sidebar-item.active {
@@ -134,6 +168,12 @@
     border-color: rgba(66, 133, 244, 0.14);
     background: linear-gradient(90deg, rgba(66, 133, 244, 0.12), rgba(255, 255, 255, 0.96));
     box-shadow: inset 0 0 0 1px rgba(66, 133, 244, 0.06);
+  }
+
+  .dark .sidebar-item.active {
+    background: linear-gradient(90deg, rgba(66, 133, 244, 0.18), rgba(30, 41, 59, 0.96));
+    color: #93c5fd;
+    border-color: rgba(66, 133, 244, 0.28);
   }
 
   .sidebar-category {
@@ -153,6 +193,10 @@
       box-shadow 180ms ease,
       border-color 180ms ease,
       background-color 180ms ease;
+  }
+
+  .dark .content-card {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.98) 0%, rgba(15, 23, 42, 0.96) 100%);
   }
 
   .content-card::before {
