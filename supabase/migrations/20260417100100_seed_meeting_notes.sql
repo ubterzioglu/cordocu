@@ -1,3 +1,5 @@
+delete from meeting_notes where source in ('T1', 'T2', 'T3', 'WA', 'NO');
+
 insert into meeting_notes (title, content, date, category, source, sort_order) values
 
 -- T1 — 26 Subat
