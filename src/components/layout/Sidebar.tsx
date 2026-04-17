@@ -70,7 +70,7 @@ export default function Sidebar({
               <span className="h-5 w-5" aria-hidden="true">
                 <Info size={16} />
               </span>
-              <span>HOME</span>
+              <span>ARA</span>
             </Link>
           </div>
           <div className="space-y-1">
