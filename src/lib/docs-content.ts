@@ -672,9 +672,13 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
   const category = getDocCategory(categorySlug)
   const isAmbassadorCategory = categorySlug === 'ambassador'
   const isTeamCategory = categorySlug === 'ekip'
+  const isDigitalMarketingCategory = categorySlug === 'dijitalpazarlama'
   const isRoadmapCategory = categorySlug === 'roadmap'
   const useBulletCardLayout =
-    isAmbassadorCategory || isTeamCategory || isRoadmapCategory
+    isAmbassadorCategory ||
+    isTeamCategory ||
+    isDigitalMarketingCategory ||
+    isRoadmapCategory
 
   const buildBulletDetail = (description: string, detail: string): string => {
     const lines = `${description}\n\n${detail}`
@@ -785,12 +789,6 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
           badge: category.label,
           eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
           density: 'detail',
-          action: {
-            type: 'link',
-            href: buildDocItemHref(item),
-            label: 'Kalıcı Bağlantı',
-            surface: 'cta',
-          },
         })),
         emptyState: {
           title: 'Henüz bölüm içeriği yok',

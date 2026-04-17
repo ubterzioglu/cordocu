@@ -315,7 +315,7 @@ export default function AdvisorSocialMediaManager() {
                     return (
                       <tr
                         key={item.id}
-                        className="align-top transition-colors hover:bg-[rgba(66,133,244,0.03)]"
+                        className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
                         <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? (
@@ -404,8 +404,8 @@ export default function AdvisorSocialMediaManager() {
                             item.addedBy
                           )}
                         </td>
-                        <td className="px-4 py-3.5 last:pr-6">
-                          <div className="flex flex-wrap items-center gap-2">
+                        <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
+                          <div className="flex flex-nowrap items-center gap-2">
                             {rowIsEditing ? (
                               <>
                                 <button

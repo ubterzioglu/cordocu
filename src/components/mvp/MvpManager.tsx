@@ -275,7 +275,7 @@ export default function MvpManager() {
                   {items.map((item) => {
                     const rowIsEditing = editingId === item.id
                     return (
-                      <tr key={item.id} className="align-top transition-colors hover:bg-[rgba(66,133,244,0.03)]">
+                      <tr key={item.id} className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]">
                         <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? <input type="text" value={editingState.konu} onChange={(e) => setEditingState((s) => ({ ...s, konu: e.target.value }))} className={INPUT_CLS} /> : item.konu}
                         </td>
@@ -307,8 +307,8 @@ export default function MvpManager() {
                             </select>
                           )}
                         </td>
-                        <td className="px-4 py-3.5 last:pr-6">
-                          <div className="flex flex-wrap items-center gap-2">
+                        <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
+                          <div className="flex flex-nowrap items-center gap-2">
                             {rowIsEditing ? (
                               <>
                                 <button type="button" onClick={() => void handleUpdate(item.id)} disabled={isSubmitting} className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}><Save size={14} /> Kaydet</button>

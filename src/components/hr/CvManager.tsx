@@ -251,7 +251,7 @@ export default function CvManager() {
                   {cvs.map((cv) => {
                     const rowIsEditing = editingId === cv.id
                     return (
-                      <tr key={cv.id} className="align-top transition-colors hover:bg-[rgba(66,133,244,0.03)]">
+                      <tr key={cv.id} className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]">
                         <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? (
                             <div className="flex gap-2">
@@ -264,8 +264,8 @@ export default function CvManager() {
                           {rowIsEditing ? <input type="text" value={editingState.role} onChange={(e) => setEditingState((s) => ({ ...s, role: e.target.value }))} className={INPUT_CLS} /> : (cv.role ?? <span className="text-gray-300">—</span>)}
                         </td>
                         <td className="px-4 py-3.5 text-gray-600 text-xs">{cv.fileName}</td>
-                        <td className="px-4 py-3.5 last:pr-6">
-                          <div className="flex flex-wrap items-center gap-2">
+                        <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
+                          <div className="flex flex-nowrap items-center gap-2">
                             {rowIsEditing ? (
                               <>
                                 <button type="button" onClick={() => void handleUpdate(cv.id)} disabled={isSubmitting} className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}><Save size={14} /> Kaydet</button>
