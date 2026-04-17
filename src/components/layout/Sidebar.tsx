@@ -72,9 +72,6 @@ export default function Sidebar({
               </span>
               <span>HOME</span>
             </Link>
-            <p className="docs-kicker">
-              İçindekiler
-            </p>
           </div>
           <div className="space-y-1">
             {docsCategories.map((category) => {

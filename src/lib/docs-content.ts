@@ -655,11 +655,9 @@ export interface ContentView {
 export function getDocsHubContentView(): ContentView {
   return {
     mode: 'hub-overview',
-    title: 'İçindekiler',
-    description:
-      'Kategoriye göre dokümanlara göz at, ardından aynı paylaşımlı içerik düzeninden bölüm rotalarına gir.',
-    supportingText:
-      'Arama alanı şu an yalnızca görsel amaçlıdır. Gezinti, kategori rotaları ve bölüm kartları üzerinden yapılmalıdır.',
+    title: '',
+    description: '',
+    supportingText: '',
     search: {
       label: 'Ara',
       placeholder: 'Dokümanlarda ara…',
@@ -673,8 +671,10 @@ export function getDocsHubContentView(): ContentView {
 export function getDocCategoryContentView(categorySlug: DocCategorySlug): ContentView {
   const category = getDocCategory(categorySlug)
   const isAmbassadorCategory = categorySlug === 'ambassador'
+  const isTeamCategory = categorySlug === 'ekip'
   const isRoadmapCategory = categorySlug === 'roadmap'
-  const useBulletCardLayout = isAmbassadorCategory || isRoadmapCategory
+  const useBulletCardLayout =
+    isAmbassadorCategory || isTeamCategory || isRoadmapCategory
 
   const buildBulletDetail = (description: string, detail: string): string => {
     const lines = `${description}\n\n${detail}`
