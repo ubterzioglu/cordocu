@@ -300,6 +300,8 @@ function getGridClasses(section: ContentViewSection): string {
   switch (section.columns) {
     case 1:
       return 'grid grid-cols-1 gap-4'
+    case 5:
+      return 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5'
     case 3:
       return 'grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3'
     case 2:

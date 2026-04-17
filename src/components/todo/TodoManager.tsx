@@ -439,7 +439,7 @@ export default function TodoManager() {
                             formatTodoDate(todo.neZaman)
                           )}
                         </td>
-                        <td className="max-w-sm px-4 py-3.5 text-gray-600">
+                        <td className="w-[38%] px-4 py-3.5 text-gray-600">
                           {rowIsEditing ? (
                             <textarea
                               value={editingState.ayrinti}
@@ -449,7 +449,7 @@ export default function TodoManager() {
                                   ayrinti: e.target.value,
                                 }))
                               }
-                              rows={2}
+                              rows={4}
                               className={INPUT_CLS}
                             />
                           ) : (
@@ -610,7 +610,7 @@ export default function TodoManager() {
                           onChange={(e) =>
                             setEditingState((s) => ({ ...s, ayrinti: e.target.value }))
                           }
-                          rows={2}
+                          rows={4}
                           className={INPUT_CLS}
                         />
                       </div>

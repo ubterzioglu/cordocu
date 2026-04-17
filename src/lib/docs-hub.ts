@@ -3,6 +3,7 @@ export type DocCategorySlug =
   | 'toplantiozet'
   | 'todolist'
   | 'sosyalmedya'
+  | 'danismanlarsm'
   | 'insankaynaklari'
   | 'arge'
   | 'mvpitems'
@@ -205,6 +206,28 @@ export const docsCategories: DocCategoryDefinition[] = [
         href: '/sosyalmedya',
         categorySlug: 'sosyalmedya',
         featuredOrder: 45,
+      },
+    ],
+  },
+  {
+    slug: 'danismanlarsm',
+    label: 'DANIŞMANLAR / SM',
+    shortDescription: 'Danışman ve sosyal medya odaklı kaynakların ayrı yönetim tablosu.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'Danışmanlar/SM Linkleri',
+      description: 'Danışman ve sosyal medya odaklı linkleri ayrı modülde yönetin.',
+      ctaLabel: 'Danışmanlar/SM Modülüne Git',
+    },
+    items: [
+      {
+        id: 'danismanlarsm-main',
+        label: 'Danışmanlar/SM Listesi',
+        description: 'Danışmanlar ve sosyal medya kaynakları için ayrı liste.',
+        href: '/danismanlarsm',
+        categorySlug: 'danismanlarsm',
+        featuredOrder: 46,
       },
     ],
   },

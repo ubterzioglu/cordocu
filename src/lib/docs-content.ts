@@ -628,7 +628,7 @@ export interface ContentViewSection {
   id: string
   title: string
   description?: string
-  columns?: 1 | 2 | 3
+  columns?: 1 | 2 | 3 | 5
   cards: ContentViewCard[]
   emptyState?: ContentViewEmptyState
 }
@@ -753,6 +753,30 @@ export function getDocsHubContentView(): ContentView {
 
 export function getDocCategoryContentView(categorySlug: DocCategorySlug): ContentView {
   const category = getDocCategory(categorySlug)
+  const isAmbassadorCategory = categorySlug === 'ambassador'
+  const isRoadmapCategory = categorySlug === 'roadmap'
+  const useBulletCardLayout = isAmbassadorCategory || isRoadmapCategory
+
+  const buildBulletDetail = (description: string, detail: string): string => {
+    const lines = `${description}\n\n${detail}`
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+
+    return lines
+      .map((line) => {
+        if (line.startsWith('- ')) {
+          return line
+        }
+
+        if (line.startsWith('→ ')) {
+          return `- ${line.slice(2)}`
+        }
+
+        return `- ${line}`
+      })
+      .join('\n')
+  }
 
   return {
     mode: 'category-detail',
@@ -776,18 +800,20 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
               title: 'Bölüm Haritası',
               description:
                 'Özet kartlar, bu kategorideki içerik bloklarına en hızlı erişim yolunu sunar.',
-              columns: 3 as const,
+              columns: useBulletCardLayout ? (5 as const) : (3 as const),
               cards: category.items.map((item, index) => ({
                 id: `${item.id}-summary`,
                 title: item.label,
-                description: item.description,
-                badge: category.label,
-                eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
+                description: useBulletCardLayout ? '' : item.description,
+                badge: useBulletCardLayout ? undefined : category.label,
+                eyebrow: useBulletCardLayout
+                  ? undefined
+                  : `Bölüm ${String(index + 1).padStart(2, '0')}`,
                 density: 'compact' as const,
                 action: {
                   type: 'link' as const,
                   href: buildDocItemHref(item),
-                  label: 'Bölüme Git',
+                  label: useBulletCardLayout ? '' : 'Bölüme Git',
                   surface: 'card' as const,
                 },
               })),
@@ -815,22 +841,28 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
           id: item.id,
           anchorId: item.id,
           title: item.label,
-          description: item.description,
-          detail:
-            whatsappBotSectionDetail[item.id] ??
-            projeTakibiSectionDetail[item.id] ??
-            roadmapSectionDetail[item.id] ??
-            todoListSectionDetail[item.id] ??
-            capTableSectionDetail[item.id] ??
-            kortexDocsSectionDetail[item.id] ??
-            notionKararlarSectionDetail[item.id] ??
-            bawaChatSectionDetail[item.id] ??
-            dijitalPazarlamaSectionDetail[item.id] ??
-            toplantiSectionDetail[item.id] ??
-            ambassadorSectionDetail[item.id] ??
-            ekipSectionDetail[item.id] ??
-            mvpSectionDetail[item.id] ??
-            'Bu bölüm içeriği henüz eklenmedi.',
+          description: useBulletCardLayout ? '' : item.description,
+          detail: (() => {
+            const detail =
+              whatsappBotSectionDetail[item.id] ??
+              projeTakibiSectionDetail[item.id] ??
+              roadmapSectionDetail[item.id] ??
+              todoListSectionDetail[item.id] ??
+              capTableSectionDetail[item.id] ??
+              kortexDocsSectionDetail[item.id] ??
+              notionKararlarSectionDetail[item.id] ??
+              bawaChatSectionDetail[item.id] ??
+              dijitalPazarlamaSectionDetail[item.id] ??
+              toplantiSectionDetail[item.id] ??
+              ambassadorSectionDetail[item.id] ??
+              ekipSectionDetail[item.id] ??
+              mvpSectionDetail[item.id] ??
+              'Bu bölüm içeriği henüz eklenmedi.'
+
+            return useBulletCardLayout
+              ? buildBulletDetail(item.description, detail)
+              : detail
+          })(),
           badge: category.label,
           eyebrow: `Bölüm ${String(index + 1).padStart(2, '0')}`,
           density: 'detail',

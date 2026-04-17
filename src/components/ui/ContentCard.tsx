@@ -135,9 +135,11 @@ export default function ContentCard({
             <h3 className={titleClasses}>
               {title}
             </h3>
-            <p className={descriptionClasses}>
-              {description}
-            </p>
+            {description ? (
+              <p className={descriptionClasses}>
+                {description}
+              </p>
+            ) : null}
             {detail && (
               <div className="text-sm leading-6 text-gray-500">
                 {detail.split('\n').map((line, i) => {
@@ -147,15 +149,15 @@ export default function ContentCard({
                   }
                   const isBullet = trimmed.startsWith('- ')
                   return (
-                    <div key={i} className={isBullet ? 'pl-4 relative' : ''}>
-                      {trimmed}
+                    <div key={i} className={isBullet ? 'pl-4 relative before:absolute before:left-0 before:text-gray-400 before:content-[\"•\"]' : ''}>
+                      {isBullet ? trimmed.slice(2) : trimmed}
                     </div>
                   )
                 })}
               </div>
             )}
           </div>
-          {actionMarkup && actionSurface === 'card' && (
+          {actionMarkup && actionSurface === 'card' && action?.label && (
             <div className="pt-1">
               {actionMarkup}
             </div>
