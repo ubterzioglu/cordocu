@@ -19,7 +19,6 @@ export type DocCategorySlug =
   | 'planung'
   | 'architecture'
   | 'tests'
-  | 'mvp'
 
 export type DocIconKey =
   | 'book'
@@ -1026,30 +1025,6 @@ export const docsCategories: DocCategoryDefinition[] = [
         description: 'Uçtan uca kullanıcı yolculuğu kapsamı ve tarayıcı otomasyon notları.',
         href: '#tests-e2e-tests',
         categorySlug: 'tests',
-      },
-    ],
-  },
-  {
-    slug: 'mvp',
-    label: 'MVP YAKLAŞIMI',
-    shortDescription: 'Birleştirilmiş MVP ürün, içerik ve gereksinim dökümanı — Kortex / Türk Diaspora Ağı.',
-    iconKey: 'book',
-    defaultExpanded: false,
-    overview: {
-      title: 'MVP Approach (Merged Documentation)',
-      description:
-        'İki ayrı kaynak dokümanı birleştirilerek hazırlanan Kortex / Türk Diaspora Ağı ürün vizyonu, MVP gereksinimleri, içerik yapısı ve teknik karar başlıkları.',
-      ctaLabel: "MVP docs'a git",
-    },
-    items: [
-      {
-        id: 'mvp-tum-icerik',
-        label: 'MVP — Tam İçerik (26 Başlık)',
-        description:
-          'Platform tanımı, problem/çözüm, hedef kitle, başarı metrikleri, bilgi mimarisi, kullanıcı rolleri, claim sistemi, kategoriler, listing, arama, içerik toplama, harita, çok dilli, topluluk, etkinlik, yorum, moderasyon, UI/UX, teknik altyapı, hosting, pazarlama, gelir, analitik, yol haritası, açık kararlar, CTO aksiyonları.',
-        href: '#mvp-tum-icerik',
-        categorySlug: 'mvp',
-        featuredOrder: 5,
       },
     ],
   },

@@ -10,11 +10,14 @@ import {
   createEmptyTodoFormState,
   formatTodoDate,
   mapTodoRow,
+  sortTodoItems,
   toTodoFormState,
   type TodoFormState,
   type TodoItem,
   type TodoItemRow,
 } from '@/lib/todo-items'
+
+const TODO_SELECT = 'id, konu, kim, ne_zaman, ayrinti, durum'
 
 const ASSIGNEE_CARDS = [
   { assignee: 'UBT' as const, color: '#1A6DC2' },
@@ -72,14 +75,14 @@ export default function TodoManager() {
     try {
       const { data, error: fetchErr } = await supabase
         .from('todo_items')
-        .select('id, konu, kim, ne_zaman, ayrinti, durum, created_at, updated_at')
-        .order('created_at', { ascending: false })
+        .select(TODO_SELECT)
+        .order('ne_zaman', { ascending: true, nullsFirst: false })
 
       if (fetchErr) {
         throw fetchErr
       }
 
-      setTodos((data as TodoItemRow[]).map(mapTodoRow))
+      setTodos(sortTodoItems((data as TodoItemRow[]).map(mapTodoRow)))
     } catch (loadError) {
       setError(
         loadError instanceof Error ? loadError.message : 'Todo listesi yüklenemedi.'
@@ -112,14 +115,14 @@ export default function TodoManager() {
       const { data, error: insertErr } = await supabase
         .from('todo_items')
         .insert(insertPayload)
-        .select('id, konu, kim, ne_zaman, ayrinti, durum, created_at, updated_at')
+        .select(TODO_SELECT)
         .single()
 
       if (insertErr || !data) {
         throw insertErr ?? new Error('Todo eklenemedi.')
       }
 
-      setTodos((prev) => [mapTodoRow(data as TodoItemRow), ...prev])
+      setTodos((prev) => sortTodoItems([mapTodoRow(data as TodoItemRow), ...prev]))
       setFormState(createEmptyTodoFormState())
     } catch (createError) {
       setError(createError instanceof Error ? createError.message : 'Todo eklenemedi.')
@@ -158,7 +161,7 @@ export default function TodoManager() {
         .from('todo_items')
         .update(updatePayload)
         .eq('id', todoId)
-        .select('id, konu, kim, ne_zaman, ayrinti, durum, created_at, updated_at')
+        .select(TODO_SELECT)
         .single()
 
       if (updateErr || !data) {
@@ -166,7 +169,9 @@ export default function TodoManager() {
       }
 
       setTodos((prev) =>
-        prev.map((t) => (t.id === todoId ? mapTodoRow(data as TodoItemRow) : t))
+        sortTodoItems(
+          prev.map((t) => (t.id === todoId ? mapTodoRow(data as TodoItemRow) : t))
+        )
       )
       cancelEdit()
     } catch (updateError) {

@@ -65,6 +65,7 @@ export default function CvManager() {
     }
     setIsSubmitting(true)
     setError(null)
+    let uploadedFilePath: string | null = null
     try {
       const fileExt = selectedFile.name.split('.').pop()
       const filePath = `${crypto.randomUUID()}.${fileExt}`
@@ -74,6 +75,7 @@ export default function CvManager() {
         .upload(filePath, selectedFile)
 
       if (uploadErr) throw uploadErr
+      uploadedFilePath = filePath
 
       const insertPayload = {
         first_name: formState.firstName,
@@ -95,6 +97,9 @@ export default function CvManager() {
       setFormState(createEmptyCvFormState())
       setSelectedFile(null)
     } catch (createError) {
+      if (uploadedFilePath) {
+        await supabase.storage.from('cv-files').remove([uploadedFilePath])
+      }
       setError(createError instanceof Error ? createError.message : 'CV yüklenemedi.')
     } finally {
       setIsSubmitting(false)

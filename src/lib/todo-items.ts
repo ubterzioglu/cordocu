@@ -16,8 +16,8 @@ export interface TodoItemRow {
   ne_zaman: string | null
   ayrinti: string | null
   durum: TodoStatus
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface TodoItem {
@@ -27,8 +27,8 @@ export interface TodoItem {
   neZaman: string | null
   ayrinti: string | null
   durum: TodoStatus
-  createdAt: string
-  updatedAt: string
+  createdAt: string | null
+  updatedAt: string | null
 }
 
 export interface TodoFormState {
@@ -57,8 +57,8 @@ export function mapTodoRow(row: TodoItemRow): TodoItem {
     neZaman: row.ne_zaman,
     ayrinti: row.ayrinti,
     durum: row.durum,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    createdAt: row.created_at ?? null,
+    updatedAt: row.updated_at ?? null,
   }
 }
 
@@ -70,6 +70,24 @@ export function toTodoFormState(item: TodoItem): TodoFormState {
     ayrinti: item.ayrinti ?? '',
     durum: item.durum,
   }
+}
+
+export function sortTodoItems(items: TodoItem[]): TodoItem[] {
+  return [...items].sort((left, right) => {
+    if (left.neZaman && right.neZaman) {
+      return left.neZaman.localeCompare(right.neZaman)
+    }
+
+    if (left.neZaman) {
+      return -1
+    }
+
+    if (right.neZaman) {
+      return 1
+    }
+
+    return left.konu.localeCompare(right.konu, 'tr')
+  })
 }
 
 export function formatTodoDate(value: string | null): string {
