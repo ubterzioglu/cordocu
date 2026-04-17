@@ -14,5 +14,7 @@ where id in (
   where duplicate_rank > 1
 );
 
-create unique index if not exists idx_meeting_notes_content_date_unique
+drop index if exists idx_meeting_notes_content_date_unique;
+
+create unique index idx_meeting_notes_content_date_unique
 on public.meeting_notes (lower(trim(content)), lower(trim(date)));
