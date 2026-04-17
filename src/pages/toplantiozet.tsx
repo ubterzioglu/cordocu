@@ -31,13 +31,12 @@ export default function ToplantiOzetPage() {
                 Birleştirilmiş Toplantı &amp; WA Maddeleri
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
-                26 Şubat (T1), 12 Mart (T2), 9 Nisan (T3) toplantıları ve 13 Nisan WA yazışmalarından
+                26 Şubat (T1), 12 Mart (T2), 9 Nisan (T3), 17 Nisan (T4) toplantıları ve 13 Nisan + 17 Nisan WA yazışmalarından
                 derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
-                <span className="docs-chip">113 madde</span>
                 <span className="docs-chip">6 kategori</span>
-                <span className="docs-chip">5 kaynak</span>
+                <span className="docs-chip">6 kaynak</span>
               </div>
             </div>
           </div>
