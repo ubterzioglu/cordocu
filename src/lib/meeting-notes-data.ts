@@ -1,6 +1,6 @@
 import { getSupabaseBrowserClient } from './supabase'
 
-export type MeetingSource = 'T1' | 'T2' | 'T3' | 'WA' | 'NO'
+export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'WA' | 'NO'
 
 export interface MeetingNoteItem {
   id: string
@@ -35,6 +35,7 @@ export const MEETING_SOURCES: MeetingNoteSource[] = [
   { key: 'T1', label: 'Toplantı 1', date: '26 Şubat' },
   { key: 'T2', label: 'Toplantı 2', date: '12 Mart' },
   { key: 'T3', label: 'Toplantı 3', date: '9 Nisan' },
+  { key: 'T4', label: 'Toplantı 4', date: '17 Nisan' },
   { key: 'WA', label: 'WhatsApp Yazışmaları', date: '13 Nisan WA' },
   { key: 'NO', label: 'Notion Kararlar', date: '17 Nisan' },
 ]
@@ -43,6 +44,7 @@ export const SOURCE_COLORS: Record<MeetingSource, string> = {
   T1: '#4285F4',
   T2: '#34A853',
   T3: '#EA4335',
+  T4: '#7E57C2',
   WA: '#FA7B17',
   NO: '#8B5CF6',
 }
@@ -112,4 +114,77 @@ export async function fetchMeetingNotes(): Promise<MeetingNoteItem[]> {
 
   if (error || !data) return []
   return dedupeMeetingNotes((data as MeetingNoteRow[]).map(mapRow))
+}
+
+export interface MeetingNoteFormState {
+  content: string
+  category: string
+  source: MeetingSource
+  date: string
+}
+
+export function createEmptyMeetingNoteFormState(): MeetingNoteFormState {
+  return {
+    content: '',
+    category: MEETING_CATEGORIES[0].id,
+    source: 'T1',
+    date: '',
+  }
+}
+
+const NOTE_SELECT = 'id, title, content, date, category, source, sort_order'
+
+export async function createMeetingNote(
+  note: MeetingNoteFormState
+): Promise<MeetingNoteItem | null> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) return null
+
+  const { data, error } = await supabase
+    .from('meeting_notes')
+    .insert({
+      title: note.content.slice(0, 80),
+      content: note.content,
+      date: note.date,
+      category: note.category,
+      source: note.source,
+      sort_order: 9999,
+    })
+    .select(NOTE_SELECT)
+    .single()
+
+  if (error || !data) return null
+  return mapRow(data as MeetingNoteRow)
+}
+
+export async function updateMeetingNote(
+  id: string,
+  updates: Pick<MeetingNoteItem, 'content' | 'category' | 'source' | 'date'>
+): Promise<MeetingNoteItem | null> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) return null
+
+  const { data, error } = await supabase
+    .from('meeting_notes')
+    .update({
+      title: updates.content.slice(0, 80),
+      content: updates.content,
+      category: updates.category,
+      source: updates.source,
+      date: updates.date,
+    })
+    .eq('id', id)
+    .select(NOTE_SELECT)
+    .single()
+
+  if (error || !data) return null
+  return mapRow(data as MeetingNoteRow)
+}
+
+export async function deleteMeetingNote(id: string): Promise<boolean> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) return false
+
+  const { error } = await supabase.from('meeting_notes').delete().eq('id', id)
+  return !error
 }

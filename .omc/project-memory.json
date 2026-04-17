@@ -164,6 +164,169 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "",
+      "accessCount": 10,
+      "lastAccessed": 1776419633804,
+      "type": "directory"
+    },
+    {
+      "path": "src\\components\\todo\\TodoManager.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1776425760694,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\advisorsocialmedia\\AdvisorSocialMediaManager.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1776419992482,
+      "type": "file"
+    },
+    {
+      "path": "src\\styles\\globals.css",
+      "accessCount": 3,
+      "lastAccessed": 1776419023998,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\todolist.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776425751156,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\meeting-notes-data.ts",
+      "accessCount": 3,
+      "lastAccessed": 1776425918586,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\AccordionCard.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776419748731,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\todo-items.ts",
+      "accessCount": 2,
+      "lastAccessed": 1776425750997,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\meetingnotes\\NoteItem.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776425943393,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\ContentCard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776418971746,
+      "type": "file"
+    },
+    {
+      "path": "tailwind.config.js",
+      "accessCount": 1,
+      "lastAccessed": 1776418981327,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\layout\\DocsShell.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776419016366,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 1,
+      "lastAccessed": 1776419016984,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\advisor-social-media-items.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776419636777,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260417130000_create_advisor_social_media_links.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776419636839,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\danismanlarsm.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776419637303,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\sosyalmedya.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776419651549,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\docs-hub.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776419651682,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\socialmedia\\SocialMediaManager.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776419655516,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\docs-content.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776419655913,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\social-media-items.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776419664134,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260413120000_create_social_media_links.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776419664582,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260417140000_seed_todo_items_ubt.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425801875,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\toplantiozet.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776425813642,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\meetingnotes\\MeetingNotesManager.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776425820971,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260417100000_create_meeting_notes.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425837497,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260417134000_add_t4_meeting_source.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425848476,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }
