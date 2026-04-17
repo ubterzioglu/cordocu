@@ -1,6 +1,4 @@
 import {
-  docsOverviewCards,
-  docsQuickLinks,
   getDocCategory,
   getDocItemById,
   type DocCategorySlug,
@@ -655,36 +653,6 @@ export interface ContentView {
 }
 
 export function getDocsHubContentView(): ContentView {
-  const quickLinkCards = docsQuickLinks.reduce<ContentViewCard[]>(
-    (cards, quickLink) => {
-      const item = getDocItemById(quickLink.id)
-
-      if (!item) {
-        return cards
-      }
-
-      const category = getDocCategory(item.categorySlug)
-
-      cards.push({
-        id: quickLink.id,
-        title: item.label,
-        description: item.description,
-        badge: category.label,
-        eyebrow: 'Hızlı Bağlantı',
-        density: 'compact',
-        action: {
-          type: 'link',
-          href: buildDocItemHref(item),
-          label: 'Bölümü Aç',
-          surface: 'card',
-        },
-      })
-
-      return cards
-    },
-    []
-  )
-
   return {
     mode: 'hub-overview',
     title: 'İçindekiler',
@@ -698,56 +666,7 @@ export function getDocsHubContentView(): ContentView {
       helperText:
         'Arama henüz aktif bir özellik değildir; yalnızca görsel amaçlıdır.',
     },
-    sections: [
-      {
-        id: 'why-this-page',
-        title: 'Bu Sayfa Neden Var?',
-        description:
-          'Bu dokümantasyon merkezinin amacı, rolü ve sağladığı faydalar.',
-        columns: 2,
-        cards: [
-          {
-            id: 'why-purpose',
-            title: 'Amaç',
-            description: 'Tüm proje dokümanlarını, görevleri ve kaynakları tek merkezde toplamak.',
-          },
-          {
-            id: 'why-role',
-            title: 'Dokümantasyondaki Rolü',
-            description: 'WhatsApp, Notion ve Drive dağınıklığını çözerek tek doğruluk kaynağı olmak.',
-          },
-          {
-            id: 'why-benefit',
-            title: 'Kullanıcıya Faydası',
-            description: 'Yeni katılan biri "neredeyiz, ne yaptık, sonuç neydi" sorularını tek ekrandan yanıtlar.',
-          },
-          {
-            id: 'why-problem',
-            title: 'Çözdüğü Problem',
-            description: 'Bilgi parçalanmasını önler, karar geçmişini korur, ekip hizalamasını sağlar.',
-          },
-        ],
-      },
-      {
-        id: 'overview-quick-links',
-        title: 'Hızlı Bağlantılar',
-        description:
-          'Sık kullanılan başlangıç noktaları için sabitlenmiş rotalar.',
-        columns: 3,
-        cards: quickLinkCards,
-        emptyState: {
-          title: 'Hızlı bağlantılar henüz yapılandırılmadı',
-          description:
-            'Öne çıkan giriş noktaları daha sonra kart yapısı değiştirilmeden eklenebilir.',
-          action: {
-            type: 'link',
-            href: buildDocsHubHref(),
-            label: 'Ana sayfada kal',
-            surface: 'cta',
-          },
-        },
-      },
-    ],
+    sections: [],
   }
 }
 
