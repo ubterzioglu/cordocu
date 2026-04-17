@@ -16,7 +16,6 @@ export default function LinksPage() {
                 className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(52,168,83,0.14)_0%,_rgba(52,168,83,0)_74%)]"
                 aria-hidden="true"
               />
-              <p className="docs-kicker">LİNKLER</p>
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
                 Link Yönetimi
               </h1>

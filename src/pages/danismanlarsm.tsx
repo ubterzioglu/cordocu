@@ -16,7 +16,9 @@ export default function DanismanlarSmPage() {
                 className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(15,157,88,0.14)_0%,_rgba(15,157,88,0)_74%)]"
                 aria-hidden="true"
               />
-              <p className="docs-kicker">DANIŞMANLAR / SM</p>
+              <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+                Danışmanlar ve SM
+              </h1>
             </div>
           </div>
           <AdvisorSocialMediaManager />

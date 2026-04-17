@@ -192,11 +192,6 @@ export default function CvManager() {
 
   return (
     <section className="space-y-6" aria-labelledby="cv-manager-heading">
-      <div className="space-y-2">
-        <h2 id="cv-manager-heading" className="text-xl font-semibold text-gray-900">CV Yönetimi</h2>
-        <p className="max-w-3xl text-sm text-gray-500">CV yükleyin, görüntüleyin, indirin veya silin.</p>
-      </div>
-
       <AccordionCard
         defaultOpenId="new-cv"
         items={[{

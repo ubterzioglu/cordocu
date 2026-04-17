@@ -16,18 +16,9 @@ export default function ToplantiOzetPage() {
                 className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(234,67,53,0.14)_0%,_rgba(234,67,53,0)_74%)]"
                 aria-hidden="true"
               />
-              <p className="docs-kicker">TOPLANTI NOTLARI ÖZET</p>
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                Birleştirilmiş Toplantı &amp; WA Maddeleri
+                Toplantı Özetleri ve WA Konuşma Özetleri
               </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
-                26 Şubat (T1), 12 Mart (T2), 9 Nisan (T3), 17 Nisan (T4) toplantıları ve 13 Nisan + 17 Nisan WA yazışmalarından
-                derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
-                <span className="docs-chip">6 kategori</span>
-                <span className="docs-chip">6 kaynak</span>
-              </div>
             </div>
           </div>
 
