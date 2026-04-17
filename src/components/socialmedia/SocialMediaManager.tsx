@@ -147,11 +147,6 @@ export default function SocialMediaManager() {
 
   return (
     <section className="space-y-6" aria-labelledby="social-media-manager-heading">
-      <div className="space-y-2">
-        <h2 id="social-media-manager-heading" className="text-xl font-semibold text-gray-900">Sosyal Medya Linkleri</h2>
-        <p className="max-w-3xl text-sm text-gray-500">Sosyal medya kaynaklarını ekleyin, düzenleyin veya silin.</p>
-      </div>
-
       <AccordionCard
         defaultOpenId="new-social"
         items={[{
