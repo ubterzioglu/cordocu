@@ -1,6 +1,6 @@
 import { getSupabaseBrowserClient } from './supabase'
 
-export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'WA' | 'NO'
+export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'WA' | 'NO' | 'MAN'
 
 export interface MeetingNoteItem {
   id: string
@@ -38,6 +38,7 @@ export const MEETING_SOURCES: MeetingNoteSource[] = [
   { key: 'T4', label: 'Toplantı 4', date: '17 Nisan' },
   { key: 'WA', label: 'WhatsApp Yazışmaları', date: '13 Nisan WA' },
   { key: 'NO', label: 'Notion Kararlar', date: '17 Nisan' },
+  { key: 'MAN', label: 'Manuel', date: 'Dashboard' },
 ]
 
 export const SOURCE_COLORS: Record<MeetingSource, string> = {
@@ -47,6 +48,7 @@ export const SOURCE_COLORS: Record<MeetingSource, string> = {
   T4: '#7E57C2',
   WA: '#FA7B17',
   NO: '#8B5CF6',
+  MAN: '#1A73E8',
 }
 
 export function getCategoryById(categoryId: string): MeetingNoteCategory | undefined {
@@ -127,7 +129,7 @@ export function createEmptyMeetingNoteFormState(): MeetingNoteFormState {
   return {
     content: '',
     category: MEETING_CATEGORIES[0].id,
-    source: 'T1',
+    source: 'MAN',
     date: '',
   }
 }

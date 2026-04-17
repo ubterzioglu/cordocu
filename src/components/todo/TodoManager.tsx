@@ -339,6 +339,58 @@ export default function TodoManager() {
         ]}
       />
 
+      {!isLoading && (
+        <div className="space-y-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+            Kişiye Göre Görevler
+          </p>
+          <AccordionCard
+            items={ASSIGNEE_CARDS.map(({ assignee, color }) => {
+              const assigneeTodos = todosByAssignee[assignee] ?? []
+              return {
+                id: `assignee-${assignee}`,
+                title: assignee,
+                badge: `${assigneeTodos.length} görev`,
+                accentColor: color,
+                children:
+                  assigneeTodos.length === 0 ? (
+                    <p className="text-sm italic text-gray-400">
+                      Henüz görev atanmadı.
+                    </p>
+                  ) : (
+                    <ul className="divide-y divide-[rgba(66,133,244,0.06)]">
+                      {assigneeTodos.map((todo) => (
+                        <li
+                          key={todo.id}
+                          className="flex items-center justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="font-medium text-gray-900">{todo.konu}</span>
+                          <div className="flex shrink-0 items-center gap-2">
+                            {todo.neZaman && (
+                              <span className="text-xs text-gray-400">
+                                {formatTodoDate(todo.neZaman)}
+                              </span>
+                            )}
+                            <span
+                              className="rounded px-1.5 py-0.5 text-[11px] font-semibold"
+                              style={{
+                                color: STATUS_COLORS[todo.durum] ?? '#888888',
+                                background: `${STATUS_COLORS[todo.durum] ?? '#888888'}18`,
+                              }}
+                            >
+                              {todo.durum}
+                            </span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+              }
+            })}
+          />
+        </div>
+      )}
+
       {error && (
         <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
@@ -686,58 +738,6 @@ export default function TodoManager() {
         )}
       </div>
 
-      {/* Kişiye Göre Görevler */}
-      {!isLoading && (
-        <div className="space-y-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">
-            Kişiye Göre Görevler
-          </p>
-          <AccordionCard
-            items={ASSIGNEE_CARDS.map(({ assignee, color }) => {
-              const assigneeTodos = todosByAssignee[assignee] ?? []
-              return {
-                id: `assignee-${assignee}`,
-                title: assignee,
-                badge: `${assigneeTodos.length} görev`,
-                accentColor: color,
-                children:
-                  assigneeTodos.length === 0 ? (
-                    <p className="text-sm italic text-gray-400">
-                      Henüz görev atanmadı.
-                    </p>
-                  ) : (
-                    <ul className="divide-y divide-[rgba(66,133,244,0.06)]">
-                      {assigneeTodos.map((todo) => (
-                        <li
-                          key={todo.id}
-                          className="flex items-center justify-between gap-3 py-2 text-sm"
-                        >
-                          <span className="font-medium text-gray-900">{todo.konu}</span>
-                          <div className="flex shrink-0 items-center gap-2">
-                            {todo.neZaman && (
-                              <span className="text-xs text-gray-400">
-                                {formatTodoDate(todo.neZaman)}
-                              </span>
-                            )}
-                            <span
-                              className="rounded px-1.5 py-0.5 text-[11px] font-semibold"
-                              style={{
-                                color: STATUS_COLORS[todo.durum] ?? '#888888',
-                                background: `${STATUS_COLORS[todo.durum] ?? '#888888'}18`,
-                              }}
-                            >
-                              {todo.durum}
-                            </span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ),
-              }
-            })}
-          />
-        </div>
-      )}
     </section>
   )
 }

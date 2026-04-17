@@ -63,6 +63,7 @@ export function SourceBadge({ source }: { source: string }) {
     T4: '#7E57C2',
     WA: '#FA7B17',
     NO: '#8B5CF6',
+    MAN: '#1A73E8',
   }
   const color = colors[source] ?? '#666'
   return (

@@ -284,22 +284,12 @@ export default function MeetingNotesManager() {
                     <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
                       Kaynak
                     </span>
-                    <select
-                      value={createFormState.source}
-                      onChange={(e) =>
-                        setCreateFormState((s) => ({
-                          ...s,
-                          source: e.target.value as MeetingSource,
-                        }))
-                      }
-                      className={INPUT_CLS}
-                    >
-                      {MEETING_SOURCES.map((s) => (
-                        <option key={s.key} value={s.key}>
-                          {s.label} — {s.date}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      value="Manuel"
+                      readOnly
+                      className={`${INPUT_CLS} bg-gray-50 text-gray-600`}
+                    />
                   </label>
                   <label className="space-y-2">
                     <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
