@@ -35,9 +35,9 @@ export default function ToplantiOzetPage() {
                 derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
-                <span className="docs-chip">60 madde</span>
-                <span className="docs-chip">8 kategori</span>
-                <span className="docs-chip">4 kaynak</span>
+                <span className="docs-chip">113 madde</span>
+                <span className="docs-chip">6 kategori</span>
+                <span className="docs-chip">5 kaynak</span>
               </div>
             </div>
           </div>
