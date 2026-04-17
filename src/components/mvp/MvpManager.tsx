@@ -385,67 +385,52 @@ export default function MvpManager() {
       </div>
 
       {!isLoading && (
-        <div className="space-y-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-500">MVP Kartları</p>
-          <AccordionCard
-            items={[
-              {
-                id: 'mvp1-card',
-                title: 'MVP1',
-                badge: `${mvp1Items.length} madde`,
-                accentColor: MVP_COLORS.MVP1,
-                children: mvp1Items.length === 0 ? (
-                  <p className="text-sm italic text-gray-400">Henüz MVP1 maddesi yok.</p>
-                ) : (
-                  <ul className="divide-y divide-[rgba(66,133,244,0.06)]">
-                    {mvp1Items.map((item) => (
-                      <li key={item.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-                        <span className="font-medium text-gray-900">{item.konu}</span>
-                        <span className="text-xs text-gray-400">{item.ayrinti ?? ''}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ),
-              },
-              {
-                id: 'mvp2-card',
-                title: 'MVP2',
-                badge: `${mvp2Items.length} madde`,
-                accentColor: MVP_COLORS.MVP2,
-                children: mvp2Items.length === 0 ? (
-                  <p className="text-sm italic text-gray-400">Henüz MVP2 maddesi yok.</p>
-                ) : (
-                  <ul className="divide-y divide-[rgba(66,133,244,0.06)]">
-                    {mvp2Items.map((item) => (
-                      <li key={item.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-                        <span className="font-medium text-gray-900">{item.konu}</span>
-                        <span className="text-xs text-gray-400">{item.ayrinti ?? ''}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ),
-              },
-              {
-                id: 'mvp3-card',
-                title: 'MVP3',
-                badge: `${mvp3Items.length} madde`,
-                accentColor: MVP_COLORS.MVP3,
-                children: mvp3Items.length === 0 ? (
-                  <p className="text-sm italic text-gray-400">Henüz MVP3 maddesi yok.</p>
-                ) : (
-                  <ul className="divide-y divide-[rgba(66,133,244,0.06)]">
-                    {mvp3Items.map((item) => (
-                      <li key={item.id} className="flex items-center justify-between gap-3 py-2 text-sm">
-                        <span className="font-medium text-gray-900">{item.konu}</span>
-                        <span className="text-xs text-gray-400">{item.ayrinti ?? ''}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ),
-              },
-            ]}
-          />
-        </div>
+        <AccordionCard
+          items={[
+            {
+              id: 'new-mvp',
+              title: 'Yeni Madde Ekle',
+              accentColor: '#1A6DC2',
+              children: (
+                <form
+                  onSubmit={handleCreate}
+                  className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_0.8fr_1.2fr_0.7fr_0.7fr]"
+                >
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Konu</span>
+                    <input type="text" value={formState.konu} onChange={(e) => setFormState((s) => ({ ...s, konu: e.target.value }))} placeholder="Başlık" className={INPUT_CLS} required />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Sub</span>
+                    <input type="text" value={formState.sub} onChange={(e) => setFormState((s) => ({ ...s, sub: e.target.value }))} placeholder="Alt başlık" className={INPUT_CLS} />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Ayrıntı</span>
+                    <input type="text" value={formState.ayrinti} onChange={(e) => setFormState((s) => ({ ...s, ayrinti: e.target.value }))} placeholder="Madde metni" className={INPUT_CLS} />
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">MVP</span>
+                    <select value={formState.mvpLevel} onChange={(e) => setFormState((s) => ({ ...s, mvpLevel: e.target.value as MvpFormState['mvpLevel'] }))} className={INPUT_CLS}>
+                      {MVP_LEVELS.map((l) => (<option key={l} value={l}>{l}</option>))}
+                    </select>
+                  </label>
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Kim</span>
+                    <select value={formState.addedBy} onChange={(e) => setFormState((s) => ({ ...s, addedBy: e.target.value as MvpFormState['addedBy'] }))} className={INPUT_CLS}>
+                      {MVP_AUTHORS.map((a) => (<option key={a} value={a}>{a}</option>))}
+                    </select>
+                  </label>
+                  <div className="flex items-end sm:col-span-2 lg:col-span-5">
+                    <button type="submit" disabled={isSubmitting} className="w-full rounded-xl bg-primary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60">
+                      <Plus size={16} className="mr-1 inline" aria-hidden="true" />
+                      {isSubmitting ? 'Kaydediliyor...' : 'Yeni ekle'}
+                    </button>
+                  </div>
+                </form>
+              ),
+            },
+          ]}
+        />
       )}
     </section>
   )

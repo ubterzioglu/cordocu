@@ -1,25 +1,25 @@
 export type DocCategorySlug =
   | 'general'
+  | 'toplantiozet'
+  | 'todolist'
+  | 'sosyalmedya'
+  | 'insankaynaklari'
+  | 'arge'
+  | 'mvpitems'
+  | 'ambassador'
+  | 'ekip'
+  | 'dijitalpazarlama'
+  | 'whatsappbot'
+  | 'roadmap'
+  | 'projetakibi'
+  | 'links'
+  | 'kortexdocs'
+  | 'captable'
   | 'testfall'
   | 'planung'
   | 'architecture'
   | 'tests'
   | 'mvp'
-  | 'ambassador'
-  | 'ekip'
-  | 'dijitalpazarlama'
-  | 'whatsappbot'
-  | 'kortexdocs'
-  | 'captable'
-  | 'todolist'
-  | 'roadmap'
-  | 'projetakibi'
-  | 'links'
-  | 'mvpitems'
-  | 'sosyalmedya'
-  | 'insankaynaklari'
-  | 'arge'
-  | 'toplantiozet'
 
 export type DocIconKey =
   | 'book'
@@ -77,7 +77,7 @@ export const defaultDocItemId = 'general-overview'
 export const docsCategories: DocCategoryDefinition[] = [
   {
     slug: 'general',
-    label: 'GENEL',
+    label: 'İÇİNDEKİLER',
     shortDescription: 'Platform genel bakışı, başlangıç rehberi ve kurulum referansları.',
     iconKey: 'home',
     defaultExpanded: true,
@@ -113,168 +113,165 @@ export const docsCategories: DocCategoryDefinition[] = [
     ],
   },
   {
-    slug: 'testfall',
-    label: 'TEST SENARYOLARI',
-    shortDescription: 'Belgelenmiş test senaryoları, durumlar ve çalıştırma çıktıları.',
-    iconKey: 'file-text',
-    defaultExpanded: false,
-    overview: {
-      title: 'Test Senaryoları',
-      description: 'Örnekler ve en iyi uygulamalarla kapsamlı test senaryosu dokümantasyonu.',
-      ctaLabel: 'Test dokümanlarını incele',
-    },
-    items: [
-      {
-        id: 'testfall-test-cases',
-        label: 'Test Durumları',
-        description: 'Beklenen ürün davranışlarını tanımlayan birincil test durumları.',
-        href: '#testfall-test-cases',
-        categorySlug: 'testfall',
-        featuredOrder: 3,
-      },
-      {
-        id: 'testfall-test-scenarios',
-        label: 'Test Senaryoları',
-        description: 'Senaryo tabanlı yürütme yolları ve bağlama özgü varyasyonlar.',
-        href: '#testfall-test-scenarios',
-        categorySlug: 'testfall',
-      },
-      {
-        id: 'testfall-test-results',
-        label: 'Test Sonuçları',
-        description: 'Gözlemlenen çıktılar, kontrol noktaları ve sonuç takip notları.',
-        href: '#testfall-test-results',
-        categorySlug: 'testfall',
-      },
-    ],
-  },
-  {
-    slug: 'planung',
-    label: 'PLANLAMA',
-    shortDescription: 'Kilometre taşları, planlama bağlamı ve teslimat sıralaması.',
+    slug: 'toplantiozet',
+    label: 'TOPLANTI ÖZET',
+    shortDescription: 'Tüm toplantı notları ve WA yazışmalarının birleştirilmiş, kategorize edilmiş özeti.',
     iconKey: 'calendar',
     defaultExpanded: false,
     overview: {
-      title: 'Proje Planlaması',
-      description: 'Planlama kaynakları, kilometre taşı takibi ve proje zaman çizelgesi yönetimi.',
-      ctaLabel: 'Planlama dokümanlarına göz at',
+      title: 'Birleştirilmiş Toplantı & WA Maddeleri',
+      description:
+        'T1, T2, T3 toplantıları, WA yazışmaları ve Notion Kararlar (NO) kaynaklarından derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.',
+      ctaLabel: 'Özete Git',
     },
     items: [
       {
-        id: 'planung-project-planning',
-        label: 'Proje Planlaması',
-        description: 'Hedefleri, kapsamı ve sıralamayı çerçeveleyen temel planlama belgeleri.',
-        href: '#planung-project-planning',
-        categorySlug: 'planung',
-      },
-      {
-        id: 'planung-milestones',
-        label: 'Kilometre Taşları',
-        description: 'Fazlar genelinde kontrol noktası tanımları ve teslimat beklentileri.',
-        href: '#planung-milestones',
-        categorySlug: 'planung',
-      },
-      {
-        id: 'planung-timeline',
-        label: 'Zaman Çizelgesi',
-        description: 'Büyük girişim adımları için kronolojik teslimat görünümü.',
-        href: '#planung-timeline',
-        categorySlug: 'planung',
+        id: 'toplantiozet-main',
+        label: 'Toplantı & WA Özet Tablosu',
+        description: 'Tüm maddeler ana liste, kategori kartları ve toplantı bazlı kartlar halinde.',
+        href: '/toplantiozet',
+        categorySlug: 'toplantiozet',
+        featuredOrder: 48,
       },
     ],
   },
   {
-    slug: 'architecture',
-    label: 'MİMARİ',
-    shortDescription: 'Sistem tasarımı, bileşen sınırları ve veri akışı.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    overview: {
-      title: 'Mimari Genel Bakış',
-      description: 'Sistem mimarisi, bileşen diyagramları ve teknik özellikler.',
-      ctaLabel: 'Mimari dokümanları keşfet',
-    },
-    items: [
-      {
-        id: 'architecture-system-design',
-        label: 'Sistem Tasarımı',
-        description: 'Üst düzey mimari ve alt sistem sorumlulukları.',
-        href: '#architecture-system-design',
-        categorySlug: 'architecture',
-        featuredOrder: 4,
-      },
-      {
-        id: 'architecture-components',
-        label: 'Bileşenler',
-        description: 'Dokümantasyon merkezi için bileşen envanteri ve sınırları.',
-        href: '#architecture-components',
-        categorySlug: 'architecture',
-      },
-      {
-        id: 'architecture-data-flow',
-        label: 'Veri Akışı',
-        description: 'Yapılandırma, içerik meta verisi ve gelecekteki veri kaynaklarının nasıl bağlandığı.',
-        href: '#architecture-data-flow',
-        categorySlug: 'architecture',
-      },
-    ],
-  },
-  {
-    slug: 'tests',
-    label: 'TESTLER',
-    shortDescription: 'Birim, entegrasyon ve uçtan uca kapsama yayılan test stratejileri.',
+    slug: 'todolist',
+    label: 'To Do List',
+    shortDescription: 'Canlı görev takip tablosu — Konu, Görev, Sorumlu, Zaman ve Durum kolonlarıyla DB\'ye bağlı.',
     iconKey: 'test-tube',
     defaultExpanded: false,
     overview: {
-      title: 'Test Rehberi',
-      description: 'Birim testleri, entegrasyon testleri ve uçtan uca test stratejileri.',
-      ctaLabel: 'Test dokümanlarını aç',
+      title: 'To Do List',
+      description: 'Tüm görevler tek tabloda: Konu / Görev / Sorumlu / Zaman / Durum. Supabase\'e bağlı, yeni görev eklenebilir.',
+      ctaLabel: 'Görevlere Bak',
     },
     items: [
       {
-        id: 'tests-unit-tests',
-        label: 'Birim Testleri',
-        description: 'Yalıtılmış bileşen ve yardımcı program doğrulama rehberi.',
-        href: '#tests-unit-tests',
-        categorySlug: 'tests',
+        id: 'todo-product-backlog',
+        label: '1. Product Backlog (25 Görev)',
+        description: 'Setup, Auth, Profiles, Listing, Search, Booking, Payment, Notification, Admin, CMS, SEO, UX, Analytics, Security, Mobile, Referral, Scaling.',
+        href: '#todo-product-backlog',
+        categorySlug: 'todolist',
+        featuredOrder: 37,
       },
       {
-        id: 'tests-integration-tests',
-        label: 'Entegrasyon Testleri',
-        description: 'Bileşenler arası ve servis düzeyinde doğrulama rehberi.',
-        href: '#tests-integration-tests',
-        categorySlug: 'tests',
+        id: 'todo-gtm-backlog',
+        label: '2. GTM & Ops Backlog (19 Görev)',
+        description: 'Supply (advisor listesi, outreach, onboarding), Content (SEO, blog), Growth (LinkedIn, WhatsApp), Revenue, Partnership, Ops (feedback loop, destek).',
+        href: '#todo-gtm-backlog',
+        categorySlug: 'todolist',
+        featuredOrder: 38,
       },
       {
-        id: 'tests-e2e-tests',
-        label: 'Uçtan Uca Testler',
-        description: 'Uçtan uca kullanıcı yolculuğu kapsamı ve tarayıcı otomasyon notları.',
-        href: '#tests-e2e-tests',
-        categorySlug: 'tests',
+        id: 'todo-eksikler-oneri',
+        label: '3. Eksikler ve İyileştirme Önerileri',
+        description: 'Owner, due date, dependency ve progress alanları eksik. Backlog yapısı execution tracker\'a dönüştürülmeli.',
+        href: '#todo-eksikler-oneri',
+        categorySlug: 'todolist',
+      },
+      {
+        id: 'todo-notion-gorev-tablosu',
+        label: '4. Notion Görev Tablosu',
+        description: '9 görevlik Notion tracker: Dij. Paz. Planı, Lansman, Gelir Modeli, Bütçe, Cap Table, Ambassador Mock, Proje Yönetimi, Ekip Datası. 1 Done, 3 In progress, 5 Not started.',
+        href: '#todo-notion-gorev-tablosu',
+        categorySlug: 'todolist',
+        featuredOrder: 39,
+      },
+      {
+        id: 'todo-notion-brainstorm',
+        label: '5. Notion Brainstorm Notları',
+        description: 'Core team kararları (Burak + Barış), ürün fikirleri (WhatsApp bot, Ambassador, JukeBox, haberler, hospital booking) ve networking bağlantıları.',
+        href: '#todo-notion-brainstorm',
+        categorySlug: 'todolist',
       },
     ],
   },
   {
-    slug: 'mvp',
-    label: 'MVP YAKLAŞIMI',
-    shortDescription: 'Birleştirilmiş MVP ürün, içerik ve gereksinim dökümanı — Kortex / Türk Diaspora Ağı.',
+    slug: 'sosyalmedya',
+    label: 'SOSYAL MEDYA',
+    shortDescription: 'Sosyal medya kaynaklarının merkezi yönetim tablosu.',
     iconKey: 'book',
     defaultExpanded: false,
     overview: {
-      title: 'MVP Approach (Merged Documentation)',
-      description:
-        'İki ayrı kaynak dokümanı birleştirilerek hazırlanan Kortex / Türk Diaspora Ağı ürün vizyonu, MVP gereksinimleri, içerik yapısı ve teknik karar başlıkları.',
-      ctaLabel: "MVP docs'a git",
+      title: 'Sosyal Medya Linkleri',
+      description: 'Sosyal medya kaynaklarını merkezi ve yönetilebilir tabloda toplayın.',
+      ctaLabel: 'Sosyal Medyaya Git',
     },
     items: [
       {
-        id: 'mvp-tum-icerik',
-        label: 'MVP — Tam İçerik (26 Başlık)',
-        description:
-          'Platform tanımı, problem/çözüm, hedef kitle, başarı metrikleri, bilgi mimarisi, kullanıcı rolleri, claim sistemi, kategoriler, listing, arama, içerik toplama, harita, çok dilli, topluluk, etkinlik, yorum, moderasyon, UI/UX, teknik altyapı, hosting, pazarlama, gelir, analitik, yol haritası, açık kararlar, CTO aksiyonları.',
-        href: '#mvp-tum-icerik',
-        categorySlug: 'mvp',
-        featuredOrder: 5,
+        id: 'sosyalmedya-main',
+        label: 'Sosyal Medya Listesi',
+        description: 'Tüm sosyal medya linkleri.',
+        href: '/sosyalmedya',
+        categorySlug: 'sosyalmedya',
+        featuredOrder: 45,
+      },
+    ],
+  },
+  {
+    slug: 'insankaynaklari',
+    label: 'İNSAN KAYNAKLARI',
+    shortDescription: 'CV yükleme ve yönetim sistemi.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'CV Yönetimi',
+      description: 'CV yükleyin, görüntüleyin ve yönetin. Supabase Storage mimarisi.',
+      ctaLabel: 'HR Modülüne Git',
+    },
+    items: [
+      {
+        id: 'insankaynaklari-main',
+        label: 'CV Yönetimi',
+        description: 'CV yükleme ve listeleme.',
+        href: '/insankaynaklari',
+        categorySlug: 'insankaynaklari',
+        featuredOrder: 46,
+      },
+    ],
+  },
+  {
+    slug: 'arge',
+    label: 'ARGE',
+    shortDescription: 'Araştırma, doküman ve fikir içeriklerinin yönetildiği modül.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'ARGE Modülü',
+      description: 'Linkler, açıklama kartları ve dosya upload ile ARGE içerik yönetimi.',
+      ctaLabel: 'ARGE\'ye Git',
+    },
+    items: [
+      {
+        id: 'arge-main',
+        label: 'ARGE Yönetimi',
+        description: 'Linkler, kartlar ve dosyalar.',
+        href: '/arge',
+        categorySlug: 'arge',
+        featuredOrder: 47,
+      },
+    ],
+  },
+  {
+    slug: 'mvpitems',
+    label: 'MVP LİSTESİ',
+    shortDescription: 'MVP maddelerinin Supabase destekli merkezi listesi — MVP seviyesi ve sorumlu ataması.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'MVP Yaklaşımı — Yapısal Liste',
+      description: 'Tüm MVP maddeleri canlı CRUD tablosunda. MVP1/MVP2/MVP3 seviyesi ve sorumlu atayın.',
+      ctaLabel: 'MVP Listesine Git',
+    },
+    items: [
+      {
+        id: 'mvpitems-main',
+        label: 'MVP Yapısal Liste',
+        description: 'Merkezi MVP maddeleri tablosu.',
+        href: '/mvpitems',
+        categorySlug: 'mvpitems',
+        featuredOrder: 44,
       },
     ],
   },
@@ -684,6 +681,101 @@ export const docsCategories: DocCategoryDefinition[] = [
     ],
   },
   {
+    slug: 'roadmap',
+    label: 'Roadmap',
+    shortDescription: '12 aylık stratejik roadmap — MVP\'den Seed Ready\'e faz bazlı büyüme planı.',
+    iconKey: 'calendar',
+    defaultExpanded: false,
+    overview: {
+      title: '12 Aylık Roadmap',
+      description: 'M1 MVP\'den M12 Seed Ready\'e uzanan stratejik büyüme planı: advisor hedefleri, kullanıcı büyümesi ve gelir kilometre taşları.',
+      ctaLabel: 'Roadmap\'e Bak',
+    },
+    items: [
+      {
+        id: 'todo-roadmap-ozet',
+        label: '1. 12 Aylık Roadmap Özeti',
+        description: 'M1 MVP (20 advisor / 50 kullanıcı) → M12 Seed Ready (500 advisor / 20K kullanıcı / $100K revenue).',
+        href: '#todo-roadmap-ozet',
+        categorySlug: 'roadmap',
+        featuredOrder: 35,
+      },
+      {
+        id: 'todo-mvp-phase',
+        label: '2. MVP Fazı (M1–M2)',
+        description: 'Platform canlı, booking sistemi, ilk 20–50 advisor onboarding, 10 SEO içerik, ilk satış.',
+        href: '#todo-mvp-phase',
+        categorySlug: 'roadmap',
+        featuredOrder: 36,
+      },
+      {
+        id: 'todo-launch-phase',
+        label: '3. Launch Fazı (M3)',
+        description: 'Stripe entegrasyonu, onboarding optimizasyonu, GA kurulumu, güvenlik, mobil optimizasyon, $1K revenue.',
+        href: '#todo-launch-phase',
+        categorySlug: 'roadmap',
+      },
+      {
+        id: 'todo-growth-pmf',
+        label: '4. Growth ve PMF Fazı (M4–M6)',
+        description: 'Referral sistemi, içerik ölçekleme, community dağıtımı, $3K–$10K revenue, 1K–2K kullanıcı, retention odağı.',
+        href: '#todo-growth-pmf',
+        categorySlug: 'roadmap',
+      },
+      {
+        id: 'todo-scale-expansion',
+        label: '5. Scale ve Expansion Fazı (M7–M11)',
+        description: 'Yeni şehirler, B2B anlaşmalar, partnership, perks katmanı, otomasyon, $15K–$80K revenue, 3K–15K kullanıcı.',
+        href: '#todo-scale-expansion',
+        categorySlug: 'roadmap',
+      },
+    ],
+  },
+  {
+    slug: 'projetakibi',
+    label: 'Proje Takibi Şablonu',
+    shortDescription: 'Corteqs için hazırlanmış görev bazlı proje takip şablonu.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'Proje Takibi Şablonu',
+      description: 'Tek sayfada proje kimliği, görev durumu, öncelik, ilerleme yüzdesi, sabit maliyet ve saat takibini bir araya getiren Corteqs proje yönetim şablonu.',
+      ctaLabel: 'Yapıyı İncele',
+    },
+    items: [
+      {
+        id: 'pt-genel-yapi',
+        label: '1. Genel Yapı ve Amaç',
+        description: 'Küçük ekipler için sade single-page takip mantığı.',
+        href: '#pt-genel-yapi',
+        categorySlug: 'projetakibi',
+        featuredOrder: 40,
+      },
+    ],
+  },
+  {
+    slug: 'links',
+    label: 'LİNKLER',
+    shortDescription: 'Faydalı linklerin merkezi yönetim tablosu.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'Link Yönetimi',
+      description: 'Faydalı linkleri ekleyin, düzenleyin ve paylaşın.',
+      ctaLabel: 'Linklere Git',
+    },
+    items: [
+      {
+        id: 'links-main',
+        label: 'Link Listesi',
+        description: 'Tüm linklerin CRUD tablosu.',
+        href: '/links',
+        categorySlug: 'links',
+        featuredOrder: 43,
+      },
+    ],
+  },
+  {
     slug: 'kortexdocs',
     label: 'Kortex — CTO, Pitch & PRD Dokümanları',
     shortDescription: 'CTO Handoff, Yatırımcı Pitch özeti ve Product Requirements Document yapılandırılmış halde.',
@@ -796,260 +888,168 @@ export const docsCategories: DocCategoryDefinition[] = [
     ],
   },
   {
-    slug: 'todolist',
-    label: 'To Do List',
-    shortDescription: 'Canlı görev takip tablosu — Konu, Görev, Sorumlu, Zaman ve Durum kolonlarıyla DB\'ye bağlı.',
+    slug: 'testfall',
+    label: 'TEST SENARYOLARI',
+    shortDescription: 'Belgelenmiş test senaryoları, durumlar ve çalıştırma çıktıları.',
+    iconKey: 'file-text',
+    defaultExpanded: false,
+    overview: {
+      title: 'Test Senaryoları',
+      description: 'Örnekler ve en iyi uygulamalarla kapsamlı test senaryosu dokümantasyonu.',
+      ctaLabel: 'Test dokümanlarını incele',
+    },
+    items: [
+      {
+        id: 'testfall-test-cases',
+        label: 'Test Durumları',
+        description: 'Beklenen ürün davranışlarını tanımlayan birincil test durumları.',
+        href: '#testfall-test-cases',
+        categorySlug: 'testfall',
+        featuredOrder: 3,
+      },
+      {
+        id: 'testfall-test-scenarios',
+        label: 'Test Senaryoları',
+        description: 'Senaryo tabanlı yürütme yolları ve bağlama özgü varyasyonlar.',
+        href: '#testfall-test-scenarios',
+        categorySlug: 'testfall',
+      },
+      {
+        id: 'testfall-test-results',
+        label: 'Test Sonuçları',
+        description: 'Gözlemlenen çıktılar, kontrol noktaları ve sonuç takip notları.',
+        href: '#testfall-test-results',
+        categorySlug: 'testfall',
+      },
+    ],
+  },
+  {
+    slug: 'planung',
+    label: 'PLANLAMA',
+    shortDescription: 'Kilometre taşları, planlama bağlamı ve teslimat sıralaması.',
+    iconKey: 'calendar',
+    defaultExpanded: false,
+    overview: {
+      title: 'Proje Planlaması',
+      description: 'Planlama kaynakları, kilometre taşı takibi ve proje zaman çizelgesi yönetimi.',
+      ctaLabel: 'Planlama dokümanlarına göz at',
+    },
+    items: [
+      {
+        id: 'planung-project-planning',
+        label: 'Proje Planlaması',
+        description: 'Hedefleri, kapsamı ve sıralamayı çerçeveleyen temel planlama belgeleri.',
+        href: '#planung-project-planning',
+        categorySlug: 'planung',
+      },
+      {
+        id: 'planung-milestones',
+        label: 'Kilometre Taşları',
+        description: 'Fazlar genelinde kontrol noktası tanımları ve teslimat beklentileri.',
+        href: '#planung-milestones',
+        categorySlug: 'planung',
+      },
+      {
+        id: 'planung-timeline',
+        label: 'Zaman Çizelgesi',
+        description: 'Büyük girişim adımları için kronolojik teslimat görünümü.',
+        href: '#planung-timeline',
+        categorySlug: 'planung',
+      },
+    ],
+  },
+  {
+    slug: 'architecture',
+    label: 'MİMARİ',
+    shortDescription: 'Sistem tasarımı, bileşen sınırları ve veri akışı.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'Mimari Genel Bakış',
+      description: 'Sistem mimarisi, bileşen diyagramları ve teknik özellikler.',
+      ctaLabel: 'Mimari dokümanları keşfet',
+    },
+    items: [
+      {
+        id: 'architecture-system-design',
+        label: 'Sistem Tasarımı',
+        description: 'Üst düzey mimari ve alt sistem sorumlulukları.',
+        href: '#architecture-system-design',
+        categorySlug: 'architecture',
+        featuredOrder: 4,
+      },
+      {
+        id: 'architecture-components',
+        label: 'Bileşenler',
+        description: 'Dokümantasyon merkezi için bileşen envanteri ve sınırları.',
+        href: '#architecture-components',
+        categorySlug: 'architecture',
+      },
+      {
+        id: 'architecture-data-flow',
+        label: 'Veri Akışı',
+        description: 'Yapılandırma, içerik meta verisi ve gelecekteki veri kaynaklarının nasıl bağlandığı.',
+        href: '#architecture-data-flow',
+        categorySlug: 'architecture',
+      },
+    ],
+  },
+  {
+    slug: 'tests',
+    label: 'TESTLER',
+    shortDescription: 'Birim, entegrasyon ve uçtan uca kapsama yayılan test stratejileri.',
     iconKey: 'test-tube',
     defaultExpanded: false,
     overview: {
-      title: 'To Do List',
-      description: 'Tüm görevler tek tabloda: Konu / Görev / Sorumlu / Zaman / Durum. Supabase\'e bağlı, yeni görev eklenebilir.',
-      ctaLabel: 'Görevlere Bak',
+      title: 'Test Rehberi',
+      description: 'Birim testleri, entegrasyon testleri ve uçtan uca test stratejileri.',
+      ctaLabel: 'Test dokümanlarını aç',
     },
     items: [
       {
-        id: 'todo-product-backlog',
-        label: '1. Product Backlog (25 Görev)',
-        description: 'Setup, Auth, Profiles, Listing, Search, Booking, Payment, Notification, Admin, CMS, SEO, UX, Analytics, Security, Mobile, Referral, Scaling.',
-        href: '#todo-product-backlog',
-        categorySlug: 'todolist',
-        featuredOrder: 37,
+        id: 'tests-unit-tests',
+        label: 'Birim Testleri',
+        description: 'Yalıtılmış bileşen ve yardımcı program doğrulama rehberi.',
+        href: '#tests-unit-tests',
+        categorySlug: 'tests',
       },
       {
-        id: 'todo-gtm-backlog',
-        label: '2. GTM & Ops Backlog (19 Görev)',
-        description: 'Supply (advisor listesi, outreach, onboarding), Content (SEO, blog), Growth (LinkedIn, WhatsApp), Revenue, Partnership, Ops (feedback loop, destek).',
-        href: '#todo-gtm-backlog',
-        categorySlug: 'todolist',
-        featuredOrder: 38,
+        id: 'tests-integration-tests',
+        label: 'Entegrasyon Testleri',
+        description: 'Bileşenler arası ve servis düzeyinde doğrulama rehberi.',
+        href: '#tests-integration-tests',
+        categorySlug: 'tests',
       },
       {
-        id: 'todo-eksikler-oneri',
-        label: '3. Eksikler ve İyileştirme Önerileri',
-        description: 'Owner, due date, dependency ve progress alanları eksik. Backlog yapısı execution tracker\'a dönüştürülmeli.',
-        href: '#todo-eksikler-oneri',
-        categorySlug: 'todolist',
-      },
-      {
-        id: 'todo-notion-gorev-tablosu',
-        label: '4. Notion Görev Tablosu',
-        description: '9 görevlik Notion tracker: Dij. Paz. Planı, Lansman, Gelir Modeli, Bütçe, Cap Table, Ambassador Mock, Proje Yönetimi, Ekip Datası. 1 Done, 3 In progress, 5 Not started.',
-        href: '#todo-notion-gorev-tablosu',
-        categorySlug: 'todolist',
-        featuredOrder: 39,
-      },
-      {
-        id: 'todo-notion-brainstorm',
-        label: '5. Notion Brainstorm Notları',
-        description: 'Core team kararları (Burak + Barış), ürün fikirleri (WhatsApp bot, Ambassador, JukeBox, haberler, hospital booking) ve networking bağlantıları.',
-        href: '#todo-notion-brainstorm',
-        categorySlug: 'todolist',
+        id: 'tests-e2e-tests',
+        label: 'Uçtan Uca Testler',
+        description: 'Uçtan uca kullanıcı yolculuğu kapsamı ve tarayıcı otomasyon notları.',
+        href: '#tests-e2e-tests',
+        categorySlug: 'tests',
       },
     ],
   },
   {
-    slug: 'roadmap',
-    label: 'Roadmap',
-    shortDescription: '12 aylık stratejik roadmap — MVP\'den Seed Ready\'e faz bazlı büyüme planı.',
-    iconKey: 'calendar',
-    defaultExpanded: false,
-    overview: {
-      title: '12 Aylık Roadmap',
-      description: 'M1 MVP\'den M12 Seed Ready\'e uzanan stratejik büyüme planı: advisor hedefleri, kullanıcı büyümesi ve gelir kilometre taşları.',
-      ctaLabel: 'Roadmap\'e Bak',
-    },
-    items: [
-      {
-        id: 'todo-roadmap-ozet',
-        label: '1. 12 Aylık Roadmap Özeti',
-        description: 'M1 MVP (20 advisor / 50 kullanıcı) → M12 Seed Ready (500 advisor / 20K kullanıcı / $100K revenue).',
-        href: '#todo-roadmap-ozet',
-        categorySlug: 'roadmap',
-        featuredOrder: 35,
-      },
-      {
-        id: 'todo-mvp-phase',
-        label: '2. MVP Fazı (M1–M2)',
-        description: 'Platform canlı, booking sistemi, ilk 20–50 advisor onboarding, 10 SEO içerik, ilk satış.',
-        href: '#todo-mvp-phase',
-        categorySlug: 'roadmap',
-        featuredOrder: 36,
-      },
-      {
-        id: 'todo-launch-phase',
-        label: '3. Launch Fazı (M3)',
-        description: 'Stripe entegrasyonu, onboarding optimizasyonu, GA kurulumu, güvenlik, mobil optimizasyon, $1K revenue.',
-        href: '#todo-launch-phase',
-        categorySlug: 'roadmap',
-      },
-      {
-        id: 'todo-growth-pmf',
-        label: '4. Growth ve PMF Fazı (M4–M6)',
-        description: 'Referral sistemi, içerik ölçekleme, community dağıtımı, $3K–$10K revenue, 1K–2K kullanıcı, retention odağı.',
-        href: '#todo-growth-pmf',
-        categorySlug: 'roadmap',
-      },
-      {
-        id: 'todo-scale-expansion',
-        label: '5. Scale ve Expansion Fazı (M7–M11)',
-        description: 'Yeni şehirler, B2B anlaşmalar, partnership, perks katmanı, otomasyon, $15K–$80K revenue, 3K–15K kullanıcı.',
-        href: '#todo-scale-expansion',
-        categorySlug: 'roadmap',
-      },
-    ],
-  },
-  {
-    slug: 'projetakibi',
-    label: 'Proje Takibi Şablonu',
-    shortDescription: 'Corteqs için hazırlanmış görev bazlı proje takip şablonu.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    overview: {
-      title: 'Proje Takibi Şablonu',
-      description: 'Tek sayfada proje kimliği, görev durumu, öncelik, ilerleme yüzdesi, sabit maliyet ve saat takibini bir araya getiren Corteqs proje yönetim şablonu.',
-      ctaLabel: 'Yapıyı İncele',
-    },
-    items: [
-      {
-        id: 'pt-genel-yapi',
-        label: '1. Genel Yapı ve Amaç',
-        description: 'Küçük ekipler için sade single-page takip mantığı.',
-        href: '#pt-genel-yapi',
-        categorySlug: 'projetakibi',
-        featuredOrder: 40,
-      },
-    ],
-  },
-  {
-    slug: 'links',
-    label: 'LİNKLER',
-    shortDescription: 'Faydalı linklerin merkezi yönetim tablosu.',
+    slug: 'mvp',
+    label: 'MVP YAKLAŞIMI',
+    shortDescription: 'Birleştirilmiş MVP ürün, içerik ve gereksinim dökümanı — Kortex / Türk Diaspora Ağı.',
     iconKey: 'book',
     defaultExpanded: false,
     overview: {
-      title: 'Link Yönetimi',
-      description: 'Faydalı linkleri ekleyin, düzenleyin ve paylaşın.',
-      ctaLabel: 'Linklere Git',
-    },
-    items: [
-      {
-        id: 'links-main',
-        label: 'Link Listesi',
-        description: 'Tüm linklerin CRUD tablosu.',
-        href: '/links',
-        categorySlug: 'links',
-        featuredOrder: 43,
-      },
-    ],
-  },
-  {
-    slug: 'mvpitems',
-    label: 'MVP LİSTESİ',
-    shortDescription: 'MVP maddelerinin Supabase destekli merkezi listesi — MVP seviyesi ve sorumlu ataması.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    overview: {
-      title: 'MVP Yaklaşımı — Yapısal Liste',
-      description: 'Tüm MVP maddeleri canlı CRUD tablosunda. MVP1/MVP2/MVP3 seviyesi ve sorumlu atayın.',
-      ctaLabel: 'MVP Listesine Git',
-    },
-    items: [
-      {
-        id: 'mvpitems-main',
-        label: 'MVP Yapısal Liste',
-        description: 'Merkezi MVP maddeleri tablosu.',
-        href: '/mvpitems',
-        categorySlug: 'mvpitems',
-        featuredOrder: 44,
-      },
-    ],
-  },
-  {
-    slug: 'sosyalmedya',
-    label: 'SOSYAL MEDYA',
-    shortDescription: 'Sosyal medya kaynaklarının merkezi yönetim tablosu.',
-    iconKey: 'book',
-    defaultExpanded: false,
-    overview: {
-      title: 'Sosyal Medya Linkleri',
-      description: 'Sosyal medya kaynaklarını merkezi ve yönetilebilir tabloda toplayın.',
-      ctaLabel: 'Sosyal Medyaya Git',
-    },
-    items: [
-      {
-        id: 'sosyalmedya-main',
-        label: 'Sosyal Medya Listesi',
-        description: 'Tüm sosyal medya linkleri.',
-        href: '/sosyalmedya',
-        categorySlug: 'sosyalmedya',
-        featuredOrder: 45,
-      },
-    ],
-  },
-  {
-    slug: 'insankaynaklari',
-    label: 'İNSAN KAYNAKLARI',
-    shortDescription: 'CV yükleme ve yönetim sistemi.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    overview: {
-      title: 'CV Yönetimi',
-      description: 'CV yükleyin, görüntüleyin ve yönetin. Supabase Storage mimarisi.',
-      ctaLabel: 'HR Modülüne Git',
-    },
-    items: [
-      {
-        id: 'insankaynaklari-main',
-        label: 'CV Yönetimi',
-        description: 'CV yükleme ve listeleme.',
-        href: '/insankaynaklari',
-        categorySlug: 'insankaynaklari',
-        featuredOrder: 46,
-      },
-    ],
-  },
-  {
-    slug: 'arge',
-    label: 'ARGE',
-    shortDescription: 'Araştırma, doküman ve fikir içeriklerinin yönetildiği modül.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    overview: {
-      title: 'ARGE Modülü',
-      description: 'Linkler, açıklama kartları ve dosya upload ile ARGE içerik yönetimi.',
-      ctaLabel: 'ARGE\'ye Git',
-    },
-    items: [
-      {
-        id: 'arge-main',
-        label: 'ARGE Yönetimi',
-        description: 'Linkler, kartlar ve dosyalar.',
-        href: '/arge',
-        categorySlug: 'arge',
-        featuredOrder: 47,
-      },
-    ],
-  },
-  {
-    slug: 'toplantiozet',
-    label: 'TOPLANTI ÖZET',
-    shortDescription: 'Tüm toplantı notları ve WA yazışmalarının birleştirilmiş, kategorize edilmiş özeti.',
-    iconKey: 'calendar',
-    defaultExpanded: false,
-    overview: {
-      title: 'Birleştirilmiş Toplantı & WA Maddeleri',
+      title: 'MVP Approach (Merged Documentation)',
       description:
-        '26 Şubat (T1), 12 Mart (T2), 9 Nisan (T3) toplantıları ve 13 Nisan WA yazışmalarından derlenen tüm maddeler — kategorilere ve kaynaklara göre düzenlenmiş.',
-      ctaLabel: 'Özete Git',
+        'İki ayrı kaynak dokümanı birleştirilerek hazırlanan Kortex / Türk Diaspora Ağı ürün vizyonu, MVP gereksinimleri, içerik yapısı ve teknik karar başlıkları.',
+      ctaLabel: "MVP docs'a git",
     },
     items: [
       {
-        id: 'toplantiozet-main',
-        label: 'Toplantı & WA Özet Tablosu',
-        description: 'Tüm maddeler ana liste, kategori kartları ve toplantı bazlı kartlar halinde.',
-        href: '/toplantiozet',
-        categorySlug: 'toplantiozet',
-        featuredOrder: 48,
+        id: 'mvp-tum-icerik',
+        label: 'MVP — Tam İçerik (26 Başlık)',
+        description:
+          'Platform tanımı, problem/çözüm, hedef kitle, başarı metrikleri, bilgi mimarisi, kullanıcı rolleri, claim sistemi, kategoriler, listing, arama, içerik toplama, harita, çok dilli, topluluk, etkinlik, yorum, moderasyon, UI/UX, teknik altyapı, hosting, pazarlama, gelir, analitik, yol haritası, açık kararlar, CTO aksiyonları.',
+        href: '#mvp-tum-icerik',
+        categorySlug: 'mvp',
+        featuredOrder: 5,
       },
     ],
   },
