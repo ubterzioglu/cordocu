@@ -737,6 +737,39 @@ export function getDocsHubContentView(): ContentView {
 
 export function getDocCategoryContentView(categorySlug: DocCategorySlug): ContentView {
   const category = getDocCategory(categorySlug)
+
+  if (categorySlug === 'general') {
+    const updateItems = generalSectionDetail['general-updates'] ?? ''
+    const lines = updateItems
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+
+    const changelogLines = lines.map((line) => {
+      if (line.startsWith('- ')) return line
+      return `- ${line}`
+    })
+
+    return {
+      mode: 'category-detail',
+      title: 'Genel Dokümantasyon',
+      description: category.overview.description,
+      sections: [
+        {
+          id: 'general-changelog',
+          title: '19.04.2026',
+          columns: 1,
+          cards: changelogLines.map((line, index) => ({
+            id: `general-changelog-${index}`,
+            title: line.replace(/^- /, ''),
+            description: '',
+            density: 'compact' as const,
+          })),
+        },
+      ],
+    }
+  }
+
   const isAmbassadorCategory = categorySlug === 'ambassador'
   const isTeamCategory = categorySlug === 'ekip'
   const isDigitalMarketingCategory = categorySlug === 'dijitalpazarlama'

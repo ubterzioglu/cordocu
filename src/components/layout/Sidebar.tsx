@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Info } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
-import SidebarItem from './SidebarItem'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
 import { buildDocsHubHref } from '@/lib/docs-navigation'
@@ -73,15 +72,6 @@ export default function Sidebar({
               </span>
               <span>ARA</span>
             </Link>
-            <div className="pl-3">
-              <SidebarItem
-                href={{ categorySlug: 'general', id: 'general-updates' }}
-                label="Güncellemeler"
-                description="Son iki günde yapilan guncellemeler ve eklentiler."
-                active={router.asPath.includes('/general') && router.asPath.includes('general-updates')}
-                onClick={onClose}
-              />
-            </div>
           </div>
           <div className="space-y-1">
             {docsCategories.map((category) => {

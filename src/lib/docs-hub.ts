@@ -72,7 +72,7 @@ export interface DocQuickLink {
 }
 
 export const defaultDocCategorySlug: DocCategorySlug = 'general'
-export const defaultDocItemId = 'general-updates'
+export const defaultDocItemId = ''
 
 export const docsCategories: DocCategoryDefinition[] = [
   {
@@ -86,15 +86,7 @@ export const docsCategories: DocCategoryDefinition[] = [
       description: 'Platforma genel bakış, başlangıç rehberleri ve temel kavramlar.',
       ctaLabel: 'Genel dokümanlara git',
     },
-    items: [
-      {
-        id: 'general-updates',
-        label: 'Güncellemeler / Eklentiler',
-        description: 'Son iki günde yapılan güncellemeler ve eklenen başlıca geliştirmeler.',
-        href: '#general-updates',
-        categorySlug: 'general',
-      },
-    ],
+    items: [],
   },
   {
     slug: 'toplantiozet',
