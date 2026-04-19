@@ -536,3 +536,53 @@ TODO 8 (commit — kullanıcı onayı ile)
 ---
 
 **Plan bu dosyada sabitlenmiştir. Uygulama başka bir agent tarafından, bu dokümanı kaynak alarak yapılacaktır. Bu dosyadaki TODO'lara sırasıyla uyulmalı, her TODO'nun "Bitiş kriteri" karşılanmalıdır.**
+
+---
+
+## 10. Uygulama Güncelleme Geçmişi
+
+### 2026-04-19 — Sprint Güncellemeleri
+
+#### MVP Konu Bazlı Kart Görünümü (Planın uygulanması)
+
+- **`src/lib/mvp-items.ts`** — `KonuGroup`, `MvpLevelCounts` tipleri eklendi; `MVP_LEVEL_ORDER`, `MVP_COLORS`, `INPUT_CLS`, `BTN_CLS` sabitleri lib'e taşındı; `groupItemsByKonu()` fonksiyonu yazıldı (normalizasyon: `trim().toLowerCase()`, Türkçe alfabetik sıralama, `__diger__` en sonda).
+- **`src/components/mvp/KonuCard.tsx`** — Yeni presentational bileşen oluşturuldu. Her konu grubu için: MVP dağılım rozetleri (renkli chip), desktop tablo, mobil kart listesi, inline CRUD (düzenle/sil/MVP seviye-kim değiştirme).
+- **`src/components/mvp/MvpManager.tsx`** — Eski MVP1/MVP2/MVP3 özet accordion'u, tek liste tablo ve mobil kart blokları kaldırıldı. Yerine `konuGroups` memo'su + `KonuCard` map'lemesi eklendi. Dosya 437→240 satıra düştü. Atanmadi itemi olan kartlar default açık geliyor.
+
+#### Akordeon İçerik Sayfaları (qapply komutu ile toplu dönüşüm)
+
+- **`src/pages/dijitalpazarlama.tsx`** — Yeni dedicated sayfa oluşturuldu. 7 akordeon kart (genel amaç, yapı, içerik yönetimi, süreç akışı, kampanya yönetimi, kampanya süreci, operasyonel hale getirme). Eski static `ContentCard` gösterimi kaldırıldı.
+- **`src/pages/roadmap.tsx`** — Yeni dedicated sayfa oluşturuldu. 10 akordeon kart (stratejik amaç, faz yapısı, MVP, Launch, Growth/PMF, Scale/Expansion, M12 Seed Ready, metrik mantığı, operasyonel kullanım, büyüme mantığı).
+- **`src/pages/whatsappbot.tsx`** — Yeni dedicated sayfa oluşturuldu. 9 akordeon kart (genel amaç, teknik altyapı, tanıtım senaryoları, kurulum, kritik noktalar, opt-in/DM, topluluk modeli, token sistemi, TODO listesi).
+- **`src/pages/ambassador.tsx`** — Yeni dedicated sayfa oluşturuldu. 19 akordeon kart (amaç, profil özellikleri, görevler, konumlanma, sosyal medya, gelir modeli, operasyon, etkinlikler, partnerlik, organizasyon, seçim, growth, legal, product/funnel, kullanıcı edinme, fiyatlandırma, partnerlik süreci, branding, POC Twin).
+- **`src/pages/ekip.tsx`** — Yeni dedicated sayfa oluşturuldu. 10 akordeon kart (amaç, ekip yapısı, işe alım tablosu, ESOP dağılımı, ücret bantları, bütçe hesaplama, görev tanımları, eksikler, değerlendirme, sonraki adım).
+- **`src/pages/[category].tsx`** — `DEDICATED_PAGES` set'ine `dijitalpazarlama`, `roadmap`, `whatsappbot`, `ambassador`, `ekip` eklendi.
+- **`src/lib/docs-content.ts`** — `isDigitalMarketingCategory`, `isRoadmapCategory` flag'leri kaldırıldı (dedicated sayfalara geçtikleri için).
+- **`.kilo/command/qapply.md`** — Akordeon içerik sayfası oluşturma şablonu kaydedildi (komut adı: `qapply`).
+
+#### Arge Modülü Geliştirmeleri (önceki sprint)
+
+- **`src/components/arge/ArgeManager.tsx`** — Link ekleme, dosya yükleme, kart detay görünümü akordeonları eklendi. Supabase CRUD genişletildi.
+
+#### Toplantı Özetleri Geliştirmeleri (önceki sprint)
+
+- **`src/components/meetingnotes/MeetingNotesManager.tsx`** — T4 source eklendi, manuel kaynak desteği, kategori bazlı filtreleme akordeonları, deduplikasyon mantığı.
+- **`src/components/meetingnotes/NoteItem.tsx`** — Kart görünümü iyileştirmeleri.
+
+#### Danışman Sosyal Medya Modülü (önceki sprint)
+
+- **`src/components/advisorsocialmedia/AdvisorSocialMediaManager.tsx`** — Yeni modül oluşturuldu.
+- **`src/lib/advisor-social-media-items.ts`** — Tip tanımları ve yardımcı fonksiyonlar.
+- **`src/pages/danismanlarsm.tsx`** — Dedicated sayfa.
+
+#### Links Modülü ve Seed Verileri
+
+- **`src/components/links/LinkManager.tsx`** — Tür (type) sütunu eklendi, departman bazlı seed verileri.
+- **`src/lib/link-items.ts`** — Tip güncellemeleri.
+- **`supabase/migrations/20260419123000_seed_department_links.sql`** — Departman bazlı link seed verileri.
+- **`supabase/migrations/20260419133000_add_links_type.sql`** — Links tablosuna type sütunu eklendi.
+
+#### Sidebar ve Navigasyon
+
+- **`src/components/layout/Sidebar.tsx`** — Sidebar sıralama ve kategori eklemeleri.
+- **`src/lib/docs-hub.ts`** — Yeni kategori tanımları ve sidebar güncellemeleri.
