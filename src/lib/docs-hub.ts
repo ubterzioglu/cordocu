@@ -72,7 +72,7 @@ export interface DocQuickLink {
 }
 
 export const defaultDocCategorySlug: DocCategorySlug = 'general'
-export const defaultDocItemId = 'general-overview'
+export const defaultDocItemId = 'general-updates'
 
 export const docsCategories: DocCategoryDefinition[] = [
   {
@@ -87,29 +87,6 @@ export const docsCategories: DocCategoryDefinition[] = [
       ctaLabel: 'Genel dokümanlara git',
     },
     items: [
-      {
-        id: 'general-overview',
-        label: 'Genel Bakış',
-        description: 'Ürünün üst düzey özeti ve dokümantasyon merkezine giriş noktası.',
-        href: '#general-overview',
-        categorySlug: 'general',
-        featuredOrder: 1,
-      },
-      {
-        id: 'general-getting-started',
-        label: 'Başlarken',
-        description: 'Yeni okuyucular ve katkıda bulunanlar için önerilen ilk adımlar.',
-        href: '#general-getting-started',
-        categorySlug: 'general',
-        featuredOrder: 2,
-      },
-      {
-        id: 'general-installation',
-        label: 'Kurulum',
-        description: 'Yerel kurulum notları, ön gereksinimler ve kurulum rehberi.',
-        href: '#general-installation',
-        categorySlug: 'general',
-      },
       {
         id: 'general-updates',
         label: 'Güncellemeler / Eklentiler',

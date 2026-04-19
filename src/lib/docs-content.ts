@@ -7,14 +7,12 @@ import {
 
 const generalSectionDetail: Record<string, string> = {
   'general-updates':
-    '- Son iki günde ARGE modulu kart, link ve dosya akisini tek yapida toplayacak sekilde genisletildi.\n' +
-    '- ARGE tarafinda karta bagli link ve dosya mantigi eklendi; bagli icerikler kart altindan toplu gorunur hale getirildi.\n' +
-    '- Insan Kaynaklari sayfasina ise alim metodolojisini anlatan yeni bir bilgi karti eklendi.\n' +
-    '- WhatsApp Bot, Ekip ve Dijital Pazarlama sayfalarindaki aciklama kartlari daha okunabilir, madde madde yapiya donusturuldu.\n' +
-    '- Links bolumu Dosyalar ve Linkler olarak yeniden adlandirildi ve ust alan sadeleştirildi.\n' +
-    '- Links kayitlari departman bazli toplanacak sekilde duzenlendi ve bu kayitlar icin seed migration eklendi.\n' +
-    '- Links modulune tur alani eklenerek mevcut kayitlarin Dosya olarak siniflandirilmasi icin altyapi hazirlandi.\n' +
-    '- Cesitli yonetim ekranlarinda kucuk UI duzeltmeleri ve form davranisi iyilestirmeleri yapildi.',
+    '- ARGE sayfasi kart, link ve dosya mantigini birlikte yonetecek sekilde buyutuldu; bagli icerikler kart altinda toplu gorunmeye basladi.\n' +
+    '- Insan Kaynaklari sayfasina ise alim metodolojisini anlatan yeni bir ust kart eklendi.\n' +
+    '- WhatsApp Bot, Ekip ve Dijital Pazarlama sayfalarindaki aciklama kartlari daha okunabilir olacak sekilde madde madde duzenlendi.\n' +
+    '- Links sayfasi Dosyalar ve Linkler olarak yeniden adlandirildi ve ust kisim sadeleştirildi.\n' +
+    '- Links listesine Tur sutunu eklendi; mevcut kayitlar Dosya olarak siniflandirildi.\n' +
+    '- Links kayitlari departman bazli duzene gore guncellendi ve ilgili seed yapisi eklendi.',
 }
 
 const projeTakibiSectionDetail: Record<string, string> = {
