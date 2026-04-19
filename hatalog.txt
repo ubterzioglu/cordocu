@@ -1,0 +1,258 @@
+2026-Apr-19 18:29:58.544361 Docker 29.3.0 with BuildKit and Buildx detected on deployment server (localhost).
+2026-Apr-19 18:29:58.549942 Starting deployment of ubterzioglu/cordocu:master to localhost.
+2026-Apr-19 18:29:58.701476 Preparing container with helper image: ghcr.io/coollabsio/coolify-helper:1.0.12
+2026-Apr-19 18:29:58.794417 [DEBUG] [CMD]: docker stop -t 30 kdyk0iayiu3hy9hb5fh2hjf2
+2026-Apr-19 18:29:58.794417 [DEBUG] Error response from daemon: No such container: kdyk0iayiu3hy9hb5fh2hjf2
+2026-Apr-19 18:29:58.900104 [DEBUG] [CMD]: docker run -d --network coolify --name kdyk0iayiu3hy9hb5fh2hjf2  --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/coollabsio/coolify-helper:1.0.12
+2026-Apr-19 18:29:58.900104 [DEBUG] 3902bc52044813bc203fb8e8c4ef8a851eac05d8142e546407ba144847bb9af8
+2026-Apr-19 18:30:00.392942 [DEBUG] [CMD]: docker exec kdyk0iayiu3hy9hb5fh2hjf2 bash -c 'GIT_SSH_COMMAND="ssh -o ConnectTimeout=30 -p 22 -o Port=22 -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git ls-remote https://x-access-token:<REDACTED>@github.com/ubterzioglu/cordocu.git refs/heads/master'
+2026-Apr-19 18:30:00.392942 [DEBUG] 4de06bc9fb4fcc763fbb5ae6e39e4db3d4a3dc35	refs/heads/master
+2026-Apr-19 18:30:00.591892 ----------------------------------------
+2026-Apr-19 18:30:00.597444 Importing ubterzioglu/cordocu:master (commit sha 4de06bc9fb4fcc763fbb5ae6e39e4db3d4a3dc35) to /artifacts/kdyk0iayiu3hy9hb5fh2hjf2.
+2026-Apr-19 18:30:00.725909 [DEBUG] [CMD]: docker exec kdyk0iayiu3hy9hb5fh2hjf2 bash -c 'git clone --depth=1 --recurse-submodules --shallow-submodules -b '\''master'\'' '\''https://x-access-token:<REDACTED>@github.com/ubterzioglu/cordocu.git'\'' '\''/artifacts/kdyk0iayiu3hy9hb5fh2hjf2'\'' && cd '\''/artifacts/kdyk0iayiu3hy9hb5fh2hjf2'\'' && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git fetch --depth=1 origin '\''4de06bc9fb4fcc763fbb5ae6e39e4db3d4a3dc35'\'' && git -c advice.detachedHead=false checkout '\''4de06bc9fb4fcc763fbb5ae6e39e4db3d4a3dc35'\'' >/dev/null 2>&1 && cd '\''/artifacts/kdyk0iayiu3hy9hb5fh2hjf2'\'' && if [ -f .gitmodules ]; then git submodule sync && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git submodule update --init --recursive --depth=1; fi && cd '\''/artifacts/kdyk0iayiu3hy9hb5fh2hjf2'\'' && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git lfs pull'
+2026-Apr-19 18:30:00.725909 [DEBUG] Cloning into '/artifacts/kdyk0iayiu3hy9hb5fh2hjf2'...
+2026-Apr-19 18:30:02.784395 [DEBUG] From https://github.com/ubterzioglu/cordocu
+2026-Apr-19 18:<REDACTED>@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+2026-Apr-19 18:30:05.559949 [DEBUG] #4 DONE 0.0s
+2026-Apr-19 18:30:05.559949 [DEBUG] 
+2026-Apr-19 18:30:05.559949 [DEBUG] #5 [internal] load build context
+2026-Apr-19 18:30:05.559949 [DEBUG] #5 transferring context: 30.02MB 0.1s done
+2026-Apr-19 18:30:05.713726 [DEBUG] #5 DONE 0.1s
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #6 [deps 5/5] RUN npm ci --prefer-offline
+2026-Apr-19 18:30:05.713726 [DEBUG] #6 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #7 [builder 2/5] WORKDIR /app
+2026-Apr-19 18:30:05.713726 [DEBUG] #7 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #8 [deps 3/5] WORKDIR /app
+2026-Apr-19 18:30:05.713726 [DEBUG] #8 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #9 [deps 4/5] COPY package.json package-lock.json ./
+2026-Apr-19 18:30:05.713726 [DEBUG] #9 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #10 [deps 2/5] RUN apk add --no-cache libc6-compat
+2026-Apr-19 18:30:05.713726 [DEBUG] #10 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #11 [builder 3/5] COPY --from=deps /app/node_modules ./node_modules
+2026-Apr-19 18:30:05.713726 [DEBUG] #11 CACHED
+2026-Apr-19 18:30:05.713726 [DEBUG] 
+2026-Apr-19 18:30:05.713726 [DEBUG] #12 [builder 4/5] COPY . .
+2026-Apr-19 18:30:05.713726 [DEBUG] #12 DONE 0.1s
+2026-Apr-19 18:30:05.865470 [DEBUG] #13 [builder 5/5] RUN mkdir -p public && npm run build
+2026-Apr-19 18:30:06.056169 [DEBUG] #13 0.341
+2026-Apr-19 18:30:06.056169 [DEBUG] #13 0.341 > cordocu@1.0.0 build
+2026-Apr-19 18:30:06.056169 [DEBUG] #13 0.341 > next build
+2026-Apr-19 18:30:06.056169 [DEBUG] #13 0.341
+2026-Apr-19 18:30:06.589891 [DEBUG] #13 0.875   ▲ Next.js 14.2.0
+2026-Apr-19 18:30:06.742012 [DEBUG] #13 0.876
+2026-Apr-19 18:30:06.742012 [DEBUG] #13 0.877    Linting and checking validity of types ...
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/advisorsocialmedia/AdvisorSocialMediaManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 41:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/contacts/ContactManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 48:6  Warning: React Hook useEffect has a missing dependency: 'loadContacts'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/hr/CvManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 36:6  Warning: React Hook useEffect has a missing dependency: 'loadCvs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/links/LinkManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 37:6  Warning: React Hook useEffect has a missing dependency: 'loadLinks'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/mvp/MvpManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 49:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/socialmedia/SocialMediaManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 37:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 ./src/components/todo/TodoManager.tsx
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 63:6  Warning: React Hook useEffect has a missing dependency: 'loadTodos'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380
+2026-Apr-19 18:30:09.094663 [DEBUG] #13 3.380 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+2026-Apr-19 18:<REDACTED>@/lib/docs-data"' has no exported member 'sidebarUpdates'.
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743   10 |   getDocsHubContentView,
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743   11 |   getDocsCategories,
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743 > 12 |   sidebarUpdates,
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743      |   ^
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743   13 |   type ContentViewSection,
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743   14 |   type DocCategorySlug,
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.743   15 | } from '@/lib/docs-data'
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.802 npm notice
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.802 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.802 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+2026-Apr-19 18:<REDACTED>@11.12.1
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 5.802 npm notice
+2026-Apr-19 18:30:11.568796 [DEBUG] #13 ERROR: process "/bin/sh -c mkdir -p public && npm run build" did not complete successfully: exit code: 1
+2026-Apr-19 18:30:11.583534 [DEBUG] ------
+2026-Apr-19 18:30:11.583534 [DEBUG] > [builder 5/5] RUN mkdir -p public && npm run build:
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.743 > 12 |   sidebarUpdates,
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.743      |   ^
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.743   13 |   type ContentViewSection,
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.743   14 |   type DocCategorySlug,
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.743   15 | } from '@/lib/docs-data'
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.802 npm notice
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.802 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.802 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+2026-Apr-19 18:<REDACTED>@11.12.1
+2026-Apr-19 18:30:11.583534 [DEBUG] 5.802 npm notice
+2026-Apr-19 18:30:11.583534 [DEBUG] ------
+2026-Apr-19 18:30:11.586097 [DEBUG] 
+2026-Apr-19 18:30:11.588375 [DEBUG] 9 warnings found (use docker --debug to expand):
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 54)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 5)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 23)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 24)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 25)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 52)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 6)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 7)
+2026-Apr-19 18:30:11.588375 [DEBUG] - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 53)
+2026-Apr-19 18:30:11.590659 [DEBUG] Dockerfile:46
+2026-Apr-19 18:30:11.590659 [DEBUG] --------------------
+2026-Apr-19 18:30:11.590659 [DEBUG] 44 |     # Some deployments have no public/ directory; create it so the runner stage
+2026-Apr-19 18:30:11.590659 [DEBUG] 45 |     # can always copy a stable path from the builder image.
+2026-Apr-19 18:30:11.590659 [DEBUG] 46 | >>> RUN mkdir -p public && npm run build
+2026-Apr-19 18:30:11.590659 [DEBUG] 47 |
+2026-Apr-19 18:30:11.590659 [DEBUG] 48 |     # ─── Stage 3: runner ─────────────────────────────────────────────────────────
+2026-Apr-19 18:30:11.590659 [DEBUG] --------------------
+2026-Apr-19 18:30:11.590659 [DEBUG] ERROR: failed to build: failed to solve: process "/bin/sh -c mkdir -p public && npm run build" did not complete successfully: exit code: 1
+2026-Apr-19 18:30:11.597740 [DEBUG] exit status 1
+2026-Apr-19 18:30:11.645810 ========================================
+2026-Apr-19 18:30:11.651137 Deployment failed: Command execution failed (exit code 1): docker exec kdyk0iayiu3hy9hb5fh2hjf2 bash -c 'bash /artifacts/build.sh'
+2026-Apr-19 18:30:11.651137 Error: #0 building with "default" instance using docker driver
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #1 [internal] load build definition from Dockerfile
+2026-Apr-19 18:30:11.651137 #1 transferring dockerfile: 4.60kB 0.0s done
+2026-Apr-19 18:30:11.651137 #1 DONE 0.0s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #2 [internal] load metadata for docker.io/library/node:20-alpine
+2026-Apr-19 18:30:11.651137 #2 DONE 0.4s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #3 [internal] load .dockerignore
+2026-Apr-19 18:30:11.651137 #3 transferring context: 140B done
+2026-Apr-19 18:30:11.651137 #3 DONE 0.0s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #4 [deps 1/5] FROM docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293
+2026-Apr-19 18:30:11.651137 #4 DONE 0.0s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #5 [internal] load build context
+2026-Apr-19 18:30:11.651137 #5 transferring context: 30.02MB 0.1s done
+2026-Apr-19 18:30:11.651137 #5 DONE 0.1s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #6 [deps 5/5] RUN npm ci --prefer-offline
+2026-Apr-19 18:30:11.651137 #6 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #7 [builder 2/5] WORKDIR /app
+2026-Apr-19 18:30:11.651137 #7 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #8 [deps 3/5] WORKDIR /app
+2026-Apr-19 18:30:11.651137 #8 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #9 [deps 4/5] COPY package.json package-lock.json ./
+2026-Apr-19 18:30:11.651137 #9 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #10 [deps 2/5] RUN apk add --no-cache libc6-compat
+2026-Apr-19 18:30:11.651137 #10 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #11 [builder 3/5] COPY --from=deps /app/node_modules ./node_modules
+2026-Apr-19 18:30:11.651137 #11 CACHED
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #12 [builder 4/5] COPY . .
+2026-Apr-19 18:30:11.651137 #12 DONE 0.1s
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 #13 [builder 5/5] RUN mkdir -p public && npm run build
+2026-Apr-19 18:30:11.651137 #13 0.341
+2026-Apr-19 18:30:11.651137 #13 0.341 > cordocu@1.0.0 build
+2026-Apr-19 18:30:11.651137 #13 0.341 > next build
+2026-Apr-19 18:30:11.651137 #13 0.341
+2026-Apr-19 18:30:11.651137 #13 0.875   ▲ Next.js 14.2.0
+2026-Apr-19 18:30:11.651137 #13 0.876
+2026-Apr-19 18:30:11.651137 #13 0.877    Linting and checking validity of types ...
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/advisorsocialmedia/AdvisorSocialMediaManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 41:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/contacts/ContactManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 48:6  Warning: React Hook useEffect has a missing dependency: 'loadContacts'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/hr/CvManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 36:6  Warning: React Hook useEffect has a missing dependency: 'loadCvs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/links/LinkManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 37:6  Warning: React Hook useEffect has a missing dependency: 'loadLinks'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/mvp/MvpManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 49:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/socialmedia/SocialMediaManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 37:6  Warning: React Hook useEffect has a missing dependency: 'loadItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 ./src/components/todo/TodoManager.tsx
+2026-Apr-19 18:30:11.651137 #13 3.380 63:6  Warning: React Hook useEffect has a missing dependency: 'loadTodos'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-Apr-19 18:30:11.651137 #13 3.380
+2026-Apr-19 18:30:11.651137 #13 3.380 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+2026-Apr-19 18:<REDACTED>@/lib/docs-data"' has no exported member 'sidebarUpdates'.
+2026-Apr-19 18:30:11.651137 #13 5.743
+2026-Apr-19 18:30:11.651137 #13 5.743   10 |   getDocsHubContentView,
+2026-Apr-19 18:30:11.651137 #13 5.743   11 |   getDocsCategories,
+2026-Apr-19 18:30:11.651137 #13 5.743 > 12 |   sidebarUpdates,
+2026-Apr-19 18:30:11.651137 #13 5.743      |   ^
+2026-Apr-19 18:30:11.651137 #13 5.743   13 |   type ContentViewSection,
+2026-Apr-19 18:30:11.651137 #13 5.743   14 |   type DocCategorySlug,
+2026-Apr-19 18:30:11.651137 #13 5.743   15 | } from '@/lib/docs-data'
+2026-Apr-19 18:30:11.651137 #13 5.802 npm notice
+2026-Apr-19 18:30:11.651137 #13 5.802 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+2026-Apr-19 18:30:11.651137 #13 5.802 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+2026-Apr-19 18:<REDACTED>@11.12.1
+2026-Apr-19 18:30:11.651137 #13 5.802 npm notice
+2026-Apr-19 18:30:11.651137 #13 ERROR: process "/bin/sh -c mkdir -p public && npm run build" did not complete successfully: exit code: 1
+2026-Apr-19 18:30:11.651137 ------
+2026-Apr-19 18:30:11.651137 > [builder 5/5] RUN mkdir -p public && npm run build:
+2026-Apr-19 18:30:11.651137 5.743 > 12 |   sidebarUpdates,
+2026-Apr-19 18:30:11.651137 5.743      |   ^
+2026-Apr-19 18:30:11.651137 5.743   13 |   type ContentViewSection,
+2026-Apr-19 18:30:11.651137 5.743   14 |   type DocCategorySlug,
+2026-Apr-19 18:30:11.651137 5.743   15 | } from '@/lib/docs-data'
+2026-Apr-19 18:30:11.651137 5.802 npm notice
+2026-Apr-19 18:30:11.651137 5.802 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+2026-Apr-19 18:30:11.651137 5.802 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+2026-Apr-19 18:<REDACTED>@11.12.1
+2026-Apr-19 18:30:11.651137 5.802 npm notice
+2026-Apr-19 18:30:11.651137 ------
+2026-Apr-19 18:30:11.651137 
+2026-Apr-19 18:30:11.651137 9 warnings found (use docker --debug to expand):
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 54)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 5)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 23)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 24)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 25)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_SERVICE_ROLE_KEY") (line 52)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 6)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_DB_PASSWORD") (line 7)
+2026-Apr-19 18:30:11.651137 - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "SUPABASE_ACCESS_TOKEN") (line 53)
+2026-Apr-19 18:30:11.651137 Dockerfile:46
+2026-Apr-19 18:30:11.651137 --------------------
+2026-Apr-19 18:30:11.651137 44 |     # Some deployments have no public/ directory; create it so the runner stage
+2026-Apr-19 18:30:11.651137 45 |     # can always copy a stable path from the builder image.
+2026-Apr-19 18:30:11.651137 46 | >>> RUN mkdir -p public && npm run build
+2026-Apr-19 18:30:11.651137 47 |
+2026-Apr-19 18:30:11.651137 48 |     # ─── Stage 3: runner ─────────────────────────────────────────────────────────
+2026-Apr-19 18:30:11.651137 --------------------
+2026-Apr-19 18:30:11.651137 ERROR: failed to build: failed to solve: process "/bin/sh -c mkdir -p public && npm run build" did not complete successfully: exit code: 1
+2026-Apr-19 18:30:11.651137 exit status 1
+2026-Apr-19 18:30:11.655941 [DEBUG] Error type: App\Exceptions\DeploymentException
+2026-Apr-19 18:30:11.660539 [DEBUG] Error code: 0
+2026-Apr-19 18:30:11.665353 [DEBUG] Location: /var/www/html/app/Traits/ExecuteRemoteCommand.php:237
+2026-Apr-19 18:30:11.670008 [DEBUG] Stack trace (first 5 lines):
+2026-Apr-19 18:30:11.674685 [DEBUG] #0 /var/www/html/app/Traits/ExecuteRemoteCommand.php(105): App\Jobs\ApplicationDeploymentJob->executeCommandWithProcess()
+2026-Apr-19 18:30:11.679582 [DEBUG] #1 /var/www/html/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(275): App\Jobs\ApplicationDeploymentJob->{closure:App\Traits\ExecuteRemoteCommand::execute_remote_command():72}()
+2026-Apr-19 18:30:11.684284 [DEBUG] #2 /var/www/html/app/Traits/ExecuteRemoteCommand.php(72): Illuminate\Support\Collection->each()
+2026-Apr-19 18:30:11.689500 [DEBUG] #3 /var/www/html/app/Jobs/ApplicationDeploymentJob.php(3243): App\Jobs\ApplicationDeploymentJob->execute_remote_command()
+2026-Apr-19 18:30:11.694156 [DEBUG] #4 /var/www/html/app/Jobs/ApplicationDeploymentJob.php(881): App\Jobs\ApplicationDeploymentJob->build_image()
+2026-Apr-19 18:30:11.698911 ========================================
+2026-Apr-19 18:30:11.703830 Deployment failed. Removing the new version of your application.
+2026-Apr-19 18:30:12.031983 Gracefully shutting down build container: kdyk0iayiu3hy9hb5fh2hjf2
+2026-Apr-19 18:30:12.278866 [DEBUG] [CMD]: docker stop -t 30 kdyk0iayiu3hy9hb5fh2hjf2
+2026-Apr-19 18:30:12.278866 [DEBUG] kdyk0iayiu3hy9hb5fh2hjf2

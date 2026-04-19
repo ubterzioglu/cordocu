@@ -15,6 +15,7 @@ import {
 import { supabaseEnvStatus, supabasePreparationNotes } from './supabase'
 
 export type { ContentViewSection } from './docs-content'
+export { sidebarUpdates } from './docs-content'
 export { defaultDocCategorySlug } from './docs-hub'
 export type {
   DocCategoryDefinition,
