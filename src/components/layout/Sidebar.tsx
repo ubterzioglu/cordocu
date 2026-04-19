@@ -74,27 +74,29 @@ export default function Sidebar({
               <span>ARA</span>
             </Link>
             {sidebarUpdates.length > 0 && (
-              <div className="mt-2 rounded-xl border border-gray-200 bg-white/70 p-3">
-                <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+              <div className="mt-3 flex gap-3 rounded-xl border border-gray-200 bg-white/70 p-3">
+                <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-gray-400 [writing-mode:vertical-lr] rotate-180">
                   Güncellemeler
-                </p>
-                {sidebarUpdates.map((group) => (
-                  <div key={group.date} className="mb-2 last:mb-0">
-                    <p className="mb-1 text-xs font-semibold text-gray-700">
-                      {group.date}
-                    </p>
-                    <ul className="space-y-1">
-                      {group.items.map((item, i) => (
-                        <li
-                          key={i}
-                          className="text-[11px] leading-snug text-gray-500 before:mr-1.5 before:text-gray-400 before:content-['•']"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                </span>
+                <div className="min-w-0 flex-1 space-y-2">
+                  {sidebarUpdates.map((group) => (
+                    <div key={group.date}>
+                      <p className="mb-1 text-[11px] font-semibold text-gray-700">
+                        {group.date}
+                      </p>
+                      <ul className="space-y-0.5">
+                        {group.items.map((item, i) => (
+                          <li
+                            key={i}
+                            className="text-[10px] leading-snug text-gray-500 before:mr-1 before:text-gray-400 before:content-['•']"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
