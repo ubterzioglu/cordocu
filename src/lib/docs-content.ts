@@ -5,6 +5,18 @@ import {
   type DocIconKey,
 } from './docs-hub'
 
+const generalSectionDetail: Record<string, string> = {
+  'general-updates':
+    '- Son iki günde ARGE modulu kart, link ve dosya akisini tek yapida toplayacak sekilde genisletildi.\n' +
+    '- ARGE tarafinda karta bagli link ve dosya mantigi eklendi; bagli icerikler kart altindan toplu gorunur hale getirildi.\n' +
+    '- Insan Kaynaklari sayfasina ise alim metodolojisini anlatan yeni bir bilgi karti eklendi.\n' +
+    '- WhatsApp Bot, Ekip ve Dijital Pazarlama sayfalarindaki aciklama kartlari daha okunabilir, madde madde yapiya donusturuldu.\n' +
+    '- Links bolumu Dosyalar ve Linkler olarak yeniden adlandirildi ve ust alan sadeleştirildi.\n' +
+    '- Links kayitlari departman bazli toplanacak sekilde duzenlendi ve bu kayitlar icin seed migration eklendi.\n' +
+    '- Links modulune tur alani eklenerek mevcut kayitlarin Dosya olarak siniflandirilmasi icin altyapi hazirlandi.\n' +
+    '- Cesitli yonetim ekranlarinda kucuk UI duzeltmeleri ve form davranisi iyilestirmeleri yapildi.',
+}
+
 const projeTakibiSectionDetail: Record<string, string> = {
   'pt-genel-yapi':
     'Corteqs tarafında kullanılabilecek sade bir proje takip şablonu. Tek sekme (Proje Takibi), 2 proje bloğu, toplam 14 görev satırı, 9 maliyet verili satır. Yapının mantığı: üstte proje kimlik bilgileri, sağda durum ve öncelik anahtarları, ortada proje bazlı görev listeleri, her proje için AVERAGE/SUM formüllü özet satırlar. Küçük ekipler için gereksiz karmaşıklıktan kaçınarak tek ekranda durum + maliyet + saat görünümü sağlamak amaçlanmış.',
@@ -824,6 +836,7 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
           description: useBulletCardLayout ? '' : item.description,
           detail: (() => {
             const detail =
+              generalSectionDetail[item.id] ??
               whatsappBotSectionDetail[item.id] ??
               projeTakibiSectionDetail[item.id] ??
               roadmapSectionDetail[item.id] ??

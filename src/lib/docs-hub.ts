@@ -110,6 +110,13 @@ export const docsCategories: DocCategoryDefinition[] = [
         href: '#general-installation',
         categorySlug: 'general',
       },
+      {
+        id: 'general-updates',
+        label: 'Güncellemeler / Eklentiler',
+        description: 'Son iki günde yapılan güncellemeler ve eklenen başlıca geliştirmeler.',
+        href: '#general-updates',
+        categorySlug: 'general',
+      },
     ],
   },
   {

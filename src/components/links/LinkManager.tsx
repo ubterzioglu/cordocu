@@ -6,6 +6,7 @@ import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
 import {
   LINK_AUTHORS,
+  LINK_TYPES,
   createEmptyLinkFormState,
   mapLinkRow,
   type LinkFormState,
@@ -48,7 +49,7 @@ export default function LinkManager() {
     try {
       const { data, error: fetchErr } = await supabase
         .from('links')
-        .select('id, added_by, description, link, created_at')
+        .select('id, added_by, type, description, link, created_at')
         .order('created_at', { ascending: false })
 
       if (fetchErr) throw fetchErr
@@ -74,6 +75,7 @@ export default function LinkManager() {
     try {
       const insertPayload = {
         added_by: formState.addedBy,
+        type: formState.type,
         description: formState.description.trim() || null,
         link: formState.link.trim() || null,
       }
@@ -81,7 +83,7 @@ export default function LinkManager() {
       const { data, error: insertErr } = await supabase
         .from('links')
         .insert(insertPayload)
-        .select('id, added_by, description, link, created_at')
+        .select('id, added_by, type, description, link, created_at')
         .single()
 
       if (insertErr || !data) throw insertErr ?? new Error('Link eklenemedi.')
@@ -99,6 +101,7 @@ export default function LinkManager() {
     setEditingId(item.id)
     setEditingState({
       addedBy: item.addedBy,
+      type: item.type,
       description: item.description ?? '',
       link: item.link ?? '',
     })
@@ -119,6 +122,7 @@ export default function LinkManager() {
     try {
       const updatePayload = {
         added_by: editingState.addedBy,
+        type: editingState.type,
         description: editingState.description.trim() || null,
         link: editingState.link.trim() || null,
       }
@@ -127,7 +131,7 @@ export default function LinkManager() {
         .from('links')
         .update(updatePayload)
         .eq('id', itemId)
-        .select('id, added_by, description, link, created_at')
+        .select('id, added_by, type, description, link, created_at')
         .single()
 
       if (updateErr || !data) throw updateErr ?? new Error('Link güncellenemedi.')
@@ -182,7 +186,7 @@ export default function LinkManager() {
             children: (
               <form
                 onSubmit={handleCreate}
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1.4fr_1fr]"
+                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2"
               >
                 <label className="space-y-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
@@ -201,6 +205,28 @@ export default function LinkManager() {
                     {LINK_AUTHORS.map((a) => (
                       <option key={a} value={a}>
                         {a}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="space-y-2">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                    Tür
+                  </span>
+                  <select
+                    value={formState.type}
+                    onChange={(e) =>
+                      setFormState((s) => ({
+                        ...s,
+                        type: e.target.value as LinkFormState['type'],
+                      }))
+                    }
+                    className={INPUT_CLS}
+                  >
+                    {LINK_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
                       </option>
                     ))}
                   </select>
@@ -237,7 +263,7 @@ export default function LinkManager() {
                   />
                 </label>
 
-                <div className="flex items-end sm:col-span-2 lg:col-span-3">
+                <div className="flex items-end sm:col-span-2 lg:col-span-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -274,7 +300,7 @@ export default function LinkManager() {
               <table className="min-w-full divide-y divide-gray-50 text-sm">
                 <thead className="bg-gray-50/80">
                   <tr>
-                    {['Kim Ekledi', 'Açıklama', 'Link', 'İşlemler'].map((col) => (
+                    {['Kim Ekledi', 'Tür', 'Açıklama', 'Link', 'İşlemler'].map((col) => (
                       <th
                         key={col}
                         scope="col"
@@ -313,6 +339,28 @@ export default function LinkManager() {
                             </select>
                           ) : (
                             item.addedBy
+                          )}
+                        </td>
+                        <td className="px-4 py-3.5 text-gray-600">
+                          {rowIsEditing ? (
+                            <select
+                              value={editingState.type}
+                              onChange={(e) =>
+                                setEditingState((s) => ({
+                                  ...s,
+                                  type: e.target.value as LinkFormState['type'],
+                                }))
+                              }
+                              className={INPUT_CLS}
+                            >
+                              {LINK_TYPES.map((type) => (
+                                <option key={type} value={type}>
+                                  {type}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            item.type
                           )}
                         </td>
                         <td className="max-w-sm px-4 py-3.5 text-gray-600">
@@ -431,6 +479,22 @@ export default function LinkManager() {
                             </option>
                           ))}
                         </select>
+                        <select
+                          value={editingState.type}
+                          onChange={(e) =>
+                            setEditingState((s) => ({
+                              ...s,
+                              type: e.target.value as LinkFormState['type'],
+                            }))
+                          }
+                          className={INPUT_CLS}
+                        >
+                          {LINK_TYPES.map((type) => (
+                            <option key={type} value={type}>
+                              {type}
+                            </option>
+                          ))}
+                        </select>
                         <input
                           type="text"
                           value={editingState.description}
@@ -454,6 +518,9 @@ export default function LinkManager() {
                       <>
                         <div className="space-y-1">
                           <p className="text-sm text-gray-500">{item.addedBy}</p>
+                          <p className="text-xs font-semibold uppercase tracking-widest text-primary-600">
+                            {item.type}
+                          </p>
                           <p className="text-sm text-gray-600">
                             {item.description ?? 'Açıklama yok'}
                           </p>
