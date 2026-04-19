@@ -754,12 +754,10 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
 
   const isAmbassadorCategory = categorySlug === 'ambassador'
   const isTeamCategory = categorySlug === 'ekip'
-  const isDigitalMarketingCategory = categorySlug === 'dijitalpazarlama'
   const isRoadmapCategory = categorySlug === 'roadmap'
   const useBulletCardLayout =
     isAmbassadorCategory ||
     isTeamCategory ||
-    isDigitalMarketingCategory ||
     isRoadmapCategory
 
   const buildBulletDetail = (description: string, detail: string): string => {
