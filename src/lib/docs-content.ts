@@ -735,40 +735,22 @@ export function getDocsHubContentView(): ContentView {
   }
 }
 
+export const sidebarUpdates: { date: string; items: string[] }[] = [
+  {
+    date: '19.04.2026',
+    items: [
+      'ARGE sayfasi kart, link ve dosya mantigini birlikte yonetecek sekilde buyutuldu; bagli icerikler kart altinda toplu gorunmeye basladi.',
+      'Insan Kaynaklari sayfasina ise alim metodolojisini anlatan yeni bir ust kart eklendi.',
+      'WhatsApp Bot, Ekip ve Dijital Pazarlama sayfalarindaki aciklama kartlari daha okunabilir olacak sekilde madde madde duzenlendi.',
+      'Links sayfasi Dosyalar ve Linkler olarak yeniden adlandirildi ve ust kisim sadeleştirildi.',
+      'Links listesine Tur sutunu eklendi; mevcut kayitlar Dosya olarak siniflandirildi.',
+      'Links kayitlari departman bazli duzene gore guncellendi ve ilgili seed yapisi eklendi.',
+    ],
+  },
+]
+
 export function getDocCategoryContentView(categorySlug: DocCategorySlug): ContentView {
   const category = getDocCategory(categorySlug)
-
-  if (categorySlug === 'general') {
-    const updateItems = generalSectionDetail['general-updates'] ?? ''
-    const lines = updateItems
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-
-    const changelogLines = lines.map((line) => {
-      if (line.startsWith('- ')) return line
-      return `- ${line}`
-    })
-
-    return {
-      mode: 'category-detail',
-      title: 'Genel Dokümantasyon',
-      description: category.overview.description,
-      sections: [
-        {
-          id: 'general-changelog',
-          title: '19.04.2026',
-          columns: 1,
-          cards: changelogLines.map((line, index) => ({
-            id: `general-changelog-${index}`,
-            title: line.replace(/^- /, ''),
-            description: '',
-            density: 'compact' as const,
-          })),
-        },
-      ],
-    }
-  }
 
   const isAmbassadorCategory = categorySlug === 'ambassador'
   const isTeamCategory = categorySlug === 'ekip'

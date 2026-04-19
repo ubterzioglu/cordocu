@@ -6,6 +6,7 @@ import SidebarCategory from './SidebarCategory'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
 import { buildDocsHubHref } from '@/lib/docs-navigation'
+import { sidebarUpdates } from '@/lib/docs-content'
 import type { DocCategorySlug } from '@/lib/docs-data'
 
 interface SidebarProps {
@@ -72,6 +73,30 @@ export default function Sidebar({
               </span>
               <span>ARA</span>
             </Link>
+            {sidebarUpdates.length > 0 && (
+              <div className="mt-2 rounded-xl border border-gray-200 bg-white/70 p-3">
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+                  Güncellemeler
+                </p>
+                {sidebarUpdates.map((group) => (
+                  <div key={group.date} className="mb-2 last:mb-0">
+                    <p className="mb-1 text-xs font-semibold text-gray-700">
+                      {group.date}
+                    </p>
+                    <ul className="space-y-1">
+                      {group.items.map((item, i) => (
+                        <li
+                          key={i}
+                          className="text-[11px] leading-snug text-gray-500 before:mr-1.5 before:text-gray-400 before:content-['•']"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="space-y-1">
             {docsCategories.map((category) => {
