@@ -5,14 +5,14 @@ import { Info } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
-import { buildDocsHubHref } from '@/lib/docs-navigation'
+import { buildDocCategoryHref, buildDocItemHref, buildDocsHubHref } from '@/lib/docs-navigation'
 import { sidebarUpdates } from '@/lib/docs-content'
 import type { DocCategorySlug } from '@/lib/docs-data'
 
 interface SidebarProps {
   isDesktopViewport: boolean
   isOpen: boolean
-  initialFocusRef: RefObject<HTMLButtonElement>
+  initialFocusRef: RefObject<HTMLAnchorElement>
   onClose: () => void
 }
 
@@ -36,6 +36,13 @@ export default function Sidebar({
     (category) => !hiddenSidebarCategorySlugs.includes(category.slug)
   )
   const isSidebarVisible = isDesktopViewport || isOpen
+  const generalUpdatesHref = buildDocItemHref({
+    categorySlug: 'general',
+    id: 'general-updates',
+  })
+  const isGeneralUpdatesActive =
+    router.asPath === buildDocCategoryHref('general') ||
+    router.asPath.startsWith(`${buildDocCategoryHref('general')}#`)
 
   return (
     <>
@@ -62,6 +69,7 @@ export default function Sidebar({
           <div className="mb-4 px-3 pt-1">
             <Link
               href={buildDocsHubHref()}
+              ref={initialFocusRef}
               onClick={onClose}
               className={`sidebar-item group mb-3 w-full text-left ${
                 router.asPath === '/' ? 'active' : ''
@@ -74,30 +82,19 @@ export default function Sidebar({
               <span>ARA</span>
             </Link>
             {sidebarUpdates.length > 0 && (
-              <div className="mt-3 flex gap-3 rounded-xl border border-gray-200 bg-white/70 p-3">
-                <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-gray-400 [writing-mode:vertical-lr] rotate-180">
-                  Güncellemeler
+              <Link
+                href={generalUpdatesHref}
+                onClick={onClose}
+                className={`sidebar-item group w-full text-left ${
+                  isGeneralUpdatesActive ? 'active' : ''
+                }`}
+                aria-current={isGeneralUpdatesActive ? 'page' : undefined}
+              >
+                <span className="h-5 w-5" aria-hidden="true">
+                  <Info size={16} />
                 </span>
-                <div className="min-w-0 flex-1 space-y-2">
-                  {sidebarUpdates.map((group) => (
-                    <div key={group.date}>
-                      <p className="mb-1 text-[11px] font-semibold text-gray-700">
-                        {group.date}
-                      </p>
-                      <ul className="space-y-0.5">
-                        {group.items.map((item, i) => (
-                          <li
-                            key={i}
-                            className="text-[10px] leading-snug text-gray-500 before:mr-1 before:text-gray-400 before:content-['•']"
-                          >
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                <span>GÜNCELLEMELER</span>
+              </Link>
             )}
           </div>
           <div className="space-y-1">
