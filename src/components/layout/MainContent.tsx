@@ -9,6 +9,7 @@ import {
   getDocsCategoryContentView,
   getDocsHubContentView,
   getDocsCategories,
+  sidebarUpdates,
   type ContentViewSection,
   type DocCategorySlug,
 } from '@/lib/docs-data'
@@ -29,6 +30,10 @@ export default function MainContent({ categorySlug }: MainContentProps) {
 }
 
 function CategoryContent({ categorySlug }: { categorySlug: DocCategorySlug }) {
+  if (categorySlug === 'general') {
+    return <GeneralUpdatesContent />
+  }
+
   const contentView = getDocsCategoryContentView(categorySlug)
 
   return (
@@ -84,6 +89,32 @@ function CategoryContent({ categorySlug }: { categorySlug: DocCategorySlug }) {
       {contentView.sections.map((section) => (
         <SectionRenderer key={section.id} section={section} />
       ))}
+    </article>
+  )
+}
+
+function GeneralUpdatesContent() {
+  const updateLines = sidebarUpdates.flatMap((group) =>
+    group.items.map((item) => `${group.date.slice(0, 5)} - ${item}`)
+  )
+
+  return (
+    <article>
+      <div className="docs-surface p-5 sm:p-6 md:p-8">
+        <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+          Güncellemeler
+        </h1>
+        <div className="mt-6 space-y-3 text-sm leading-7 text-gray-600 sm:text-base">
+          {updateLines.map((line, index) => (
+            <div
+              key={`${line}-${index}`}
+              className="pl-5 relative before:absolute before:left-0 before:text-gray-400 before:content-['•']"
+            >
+              {line}
+            </div>
+          ))}
+        </div>
+      </div>
     </article>
   )
 }
