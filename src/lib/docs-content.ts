@@ -132,22 +132,20 @@ const bawaChatSectionDetail: Record<string, string> = {
 
 const whatsappBotSectionDetail: Record<string, string> = {
   'wa-genel-cerceve':
-    'WhatsApp gruplarında bir bot aracılığıyla reklam ve tanıtım yapmak, topluluk yönetimi ve doğrudan pazarlama için etkili bir yöntemdir.\n\n' +
-    'Meta\'nın spam ve otomatik mesajlaşma konusundaki katı kuralları nedeniyle bu süreci stratejik ve teknik olarak doğru kurgulamak gerekir.\n\n' +
-    'Temel ilke: botun grupta "değer" sunması ve reklamı bu değerin içine yerleştirmesi.\n\n' +
-    'TODO:\n' +
-    '- Reklam modelinin spam algısı yaratmadan nasıl işleyeceğini netleştir\n' +
-    '- Teknik kurgu ile topluluk deneyimini birlikte düşün',
+    'Açıklama:\n' +
+    '- WhatsApp botu, grup içinde tanıtım ve bilgilendirme akışını daha düzenli hale getirmek için kullanılabilir.\n' +
+    '- Ana amaç sadece reklam atmak değil, kullanıcıya fayda sunan bir temas noktası oluşturmaktır.\n' +
+    '- Botun dili ve sıklığı, grubun doğal akışını bozmayacak şekilde kurgulanmalıdır.\n' +
+    '- Meta\'nın spam ve otomasyon kuralları nedeniyle yapı hem teknik hem operasyonel olarak dikkatli planlanmalıdır.\n' +
+    '- En sağlıklı yaklaşım, botu grup deneyimini destekleyen bir yardımcı rolünde konumlandırmaktır.',
   'wa-teknik-altyapi':
-    'İki temel yol — Resmi (WhatsApp Business API): Twilio, WATI, Interakt, MessageBird gibi Meta\'nın BSP\'leri üzerinden.\n\n' +
-    'Avantajlar: ban riski yok, güvenilir, yeşil tik.\n\n' +
-    'Dezavantajlar: ücretli, şablon mesaj onayı gerekiyor.\n\n' +
-    'Gayriresmi (Web Otomasyon): whatsapp-web.js veya Baileys kütüphaneleri, WhatsApp Web\'i simüle eder.\n\n' +
-    'Avantajlar: ücretsiz, esnek, onaysız her mesaj.\n\n' +
-    'Dezavantajlar: yüksek ban riski, kalıcı numara kapatma riski, sadece küçük ve samimi gruplarda kullanılmalı.\n\n' +
-    'TODO:\n' +
-    '- Maliyet, esneklik ve ban riski arasında öncelik sıralamasını yap\n' +
-    '- Kullanılacak sağlayıcı veya kütüphaneyi kısa listeye indir',
+    'Yapılacaklar:\n' +
+    '- Resmi API ile gayriresmi web otomasyonu arasında karar ver.\n' +
+    '- Maliyet, esneklik, onay süreci ve ban riski açısından kısa bir karşılaştırma çıkar.\n' +
+    '- Resmi yol seçilecekse Twilio, WATI, Interakt veya benzeri sağlayıcıları shortlist et.\n' +
+    '- Gayriresmi yol seçilecekse küçük test ortamında whatsapp-web.js veya Baileys risklerini ölç.\n' +
+    '- Kullanılacak numara, mesaj limiti ve şablon yapısını baştan tanımla.\n' +
+    '- Karar sonrası tek bir teknik hat üzerinde pilot kurulum planı oluştur.',
   'wa-tanitim-senaryolari':
     'Üç sağlıklı bot akışı:\n\n' +
     '(1) Tetikleyici Komutlar: bot kendi kendine mesaj atmaz; kullanıcı !kampanyalar veya !katalog yazdığında güncel teklifleri paylaşır.\n\n' +
@@ -235,17 +233,37 @@ const whatsappBotSectionDetail: Record<string, string> = {
 
 const dijitalPazarlamaSectionDetail: Record<string, string> = {
   'dijital-genel':
-    'Bu Excel dosyası, dijital pazarlama çalışmalarını iki ana başlık altında takip etmek için hazırlanmış bir çalışma şablonudur. İki ayrı sekme: İçerikler (içerik üretim ve yayın yönetimi) ve Kampanyalar1 (kampanya planlama ve durum izleme). Başlık yapıları ve durum seçenekleri tanımlı; ancak içeriklerin ve kampanyaların önemli kısmında açıklama, sorumlu kişi, tarih, dosya ve not alanları henüz boş. Dosya şu an dolu bir operasyon raporundan çok başlangıç şablonu niteliğinde.',
+    '- Dosya, dijital pazarlama operasyonunu iki ana sekmede takip etmek için hazırlanmış bir çalışma şablonudur.\n' +
+    '- Birinci yapı içerik üretimi ve yayın yönetimine, ikinci yapı kampanya planlama ve takibine odaklanır.\n' +
+    '- Başlıklar ve durum seçenekleri tanımlanmış olsa da açıklama, sorumlu kişi, tarih, dosya ve not alanlarının çoğu henüz boş durumdadır.\n' +
+    '- Mevcut hali, tamamlanmış bir operasyon raporundan çok başlangıç seviyesinde bir çalışma iskeleti niteliğindedir.',
   'dijital-icerikler':
-    'İçerikler sekmesi, e-posta, sosyal medya, TV ve blog gibi farklı içerik tiplerini tek tabloda izlemek için hazırlanmış. Takip alanları: İçerik adı, Tür, Ayrıntılar, Sahibi, Durum, Yayınlanma tarihi, Dosya, Notlar. Mevcut içerik türleri: E-posta, Sosyal medya, TV, Blog yayını, Tümü (filtre seçeneği). Çoğu satırda yalnızca tür ve durum bilgisi girilmiş; operasyonel detaylar henüz doldurulmamış.',
+    '- İçerikler sekmesi, e-posta, sosyal medya, TV ve blog gibi farklı içerik tiplerini tek tabloda izlemek için tasarlanmıştır.\n' +
+    '- Takip edilen alanlar: içerik adı, tür, ayrıntılar, sahibi, durum, yayınlanma tarihi, dosya ve notlar.\n' +
+    '- Mevcut içerik türleri arasında e-posta, sosyal medya, TV, blog yayını ve filtre amaçlı "Tümü" seçeneği yer alır.\n' +
+    '- Çoğu satırda yalnızca tür ve durum bilgisi bulunduğu için operasyonel kullanım için ek veri girişi gerekmektedir.',
   'dijital-icerik-durumlari':
-    'İçerik durum akışı beş aşamadan oluşuyor: Yeni → Devam Ediyor → İnceleniyor → Yayınlandı. Ek aşamalar: Askıya Alındı ve Duraklatıldı. Bu durum yapısı içerik yaşam döngüsünü (brief\'ten yayına kadar) ve olası kesintileri (askı/duraklama) tek akışta yönetmeye olanak tanıyor.',
+    '- İçerik durum akışı şu aşamalardan oluşur: Yeni, Devam Ediyor, İnceleniyor ve Yayınlandı.\n' +
+    '- Ek durumlar olarak Askıya Alındı ve Duraklatıldı seçenekleri tanımlanmıştır.\n' +
+    '- Bu yapı, bir içeriğin brief aşamasından yayına kadar olan sürecini tek akışta izlemeyi kolaylaştırır.\n' +
+    '- Aynı zamanda duraklama veya geçici bekleme durumlarını da görünür hale getirir.',
   'dijital-kampanyalar':
-    'Kampanyalar1 sekmesi, pazarlama kampanyalarını planlamak ve ilerleme durumlarını izlemek için hazırlanmış. Takip alanları: Kampanya adı, Tür (Tür 1 / Tür 2 / Tür 3), Sahibi, Durum, Başlangıç tarihi, Bitiş tarihi, Öğeler, Notlar. Şu an girilen tek somut kampanya fikri: "İlk 100 işletmeye/danışmana sosyal medya hesaplarında ücretsiz video." Geri kalan satırlar türler ve aşamalar gösterecek şekilde taslak bırakılmış.',
+    '- Kampanyalar sekmesi, pazarlama kampanyalarını planlamak ve ilerlemeyi takip etmek için hazırlanmıştır.\n' +
+    '- Takip edilen alanlar: kampanya adı, tür, sahibi, durum, başlangıç tarihi, bitiş tarihi, öğeler ve notlar.\n' +
+    '- Şu an görünen tek somut kampanya fikri, ilk 100 işletme veya danışmana sosyal medya hesaplarında ücretsiz video sunulmasıdır.\n' +
+    '- Diğer satırlar henüz taslak seviyesindedir ve kampanya detayları sonradan doldurulacaktır.',
   'dijital-kampanya-durumlari':
-    'Kampanya durum akışı beş aşamadan oluşuyor: Planlanıyor → Gelişiyor → İnceleniyor → Beklemede → Yayınlandı. Bu yapı, bir kampanyanın fikir aşamasından canlıya geçişine kadarki süreci takip etmeyi sağlıyor. Tür 1, Tür 2, Tür 3 etiketleri henüz içerikle tanımlanmamış; kampanya türlerinin belirlenmesi bir sonraki adım.',
+    '- Kampanya durum akışı şu aşamalardan oluşur: Planlanıyor, Gelişiyor, İnceleniyor, Beklemede ve Yayınlandı.\n' +
+    '- Bu yapı, bir kampanyanın fikir aşamasından yayın sürecine kadar düzenli biçimde takip edilmesini sağlar.\n' +
+    '- Tür 1, Tür 2 ve Tür 3 etiketleri henüz içerik karşılığı olmayan placeholder alanlar gibi durmaktadır.\n' +
+    '- Kampanya türlerinin net tanımlanması, şablonun gerçek operasyona dönmesi için sonraki adımdır.',
   'dijital-eksikler':
-    'Şablonun operasyonel hale gelmesi için doldurulması gereken öncelikli alanlar: (1) İçerik ve kampanya isimleri, (2) Sorumlu kişiler (sahibi kolonları), (3) Başlangıç ve yayın tarihleri, (4) İlgili dosyalar veya bağlantılar, (5) Notlar ve açıklamalar. Ek olarak: kampanya tür etiketlerinin (Tür 1/2/3) içerik stratejisine göre tanımlanması ve içerik türü "Tümü" filtresinin nasıl kullanılacağının netleştirilmesi gerekiyor.',
+    '- Öncelikle içerik ve kampanya isimleri net biçimde doldurulmalıdır.\n' +
+    '- Her satıra sorumlu kişi atanarak sahiplik görünür hale getirilmelidir.\n' +
+    '- Başlangıç, bitiş ve yayın tarihleri girilmeden planlama takibi sağlıklı çalışmaz.\n' +
+    '- İlgili dosyalar, bağlantılar ve notlar eklenerek kartlar operasyonel hale getirilmelidir.\n' +
+    '- Tür 1, Tür 2, Tür 3 etiketlerinin neyi temsil ettiği içerik stratejisine göre tanımlanmalıdır.\n' +
+    '- "Tümü" filtresinin kullanım amacı da netleştirilmelidir.',
 }
 
 const toplantiSectionDetail: Record<string, string> = {
@@ -289,21 +307,60 @@ const toplantiSectionDetail: Record<string, string> = {
 
 const ekipSectionDetail: Record<string, string> = {
   'ekip-genel-yapi':
-    'Çalışma dosyası erken aşama bir ekibin tüm kompanzasyon ve kadro planını tek alanda tutuyor. Toplam tanımlı rol: 16. Kurucu rolü: 2 (Kurucu/Business → Burak Akcakanat, Kurucu/CTO → U. Barış Terzioğlu). 1. ekipte işaretlenmiş rol: 6 (CFO, Product Manager, Front End, Back End, Mobile Developer, Test Engineer). 2. ekipte şu an yalnızca Data Analyst. Başvuranı yazılı rol: 2 kurucu dışında henüz yok. Standart vesting varsayımı: 4 yıl vest / 1 yıl cliff. EKİP sayfasındaki mevcut toplamlar: Ücret = 0, Hisse = 0 (hücreler dolduulmadığından formül 0 gösteriyor).',
+    '- Çalışma dosyası, erken aşama ekip planını, ücretleri ve hisse kurgusunu tek yerde toplar.\n' +
+    '- Toplam 16 rol tanımlanmıştır.\n' +
+    '- Kurucu rolleri iki kişiden oluşur: Kurucu/Business ve Kurucu/CTO.\n' +
+    '- 1. ekip altında CFO, Product Manager, Front End, Back End, Mobile Developer ve Test Engineer yer alır.\n' +
+    '- 2. ekip altında şu an yalnızca Data Analyst görünmektedir.\n' +
+    '- Kurucular dışında başvuranı yazılmış rol henüz bulunmamaktadır.\n' +
+    '- Standart vesting varsayımı 4 yıl vest ve 1 yıl cliff şeklindedir.\n' +
+    '- Ücret ve hisse hücreleri dolu olmadığı için mevcut toplamlar 0 görünmektedir.',
   'ekip-ekip-sayfasi':
-    'EKİP sayfası bir işe alım ve ekip planlama tablosudur. Takip edilen sütunlar: Başvuran, Aşama, Kurucu/Rol, Hangi Ekip, CV, Görüşmeyi Yapan, Puan, Ücret, Hisse, Notlar. Dikkat çeken durumlar: CFO için "Karar bekleniyor", Product Manager için "İşe alım yok" notu. Tablo şu an büyük ölçüde boş; rollerin çoğunda başvuran, ücret ve hisse bilgisi henüz yok. Son satırda ücret ve hisse toplamı için formül var ancak bağlı hücreler boş olduğundan toplamlar 0 görünüyor.',
+    '- EKİP sayfası, işe alım ve ekip planlama tablosu olarak kurgulanmıştır.\n' +
+    '- Takip edilen ana sütunlar: Başvuran, Aşama, Kurucu/Rol, Hangi Ekip, CV, Görüşmeyi Yapan, Puan, Ücret, Hisse ve Notlar.\n' +
+    '- CFO satırında "Karar bekleniyor" notu yer alır.\n' +
+    '- Product Manager satırında "İşe alım yok" notu bulunur.\n' +
+    '- Tablonun büyük bölümü henüz boş olduğu için çoğu rolde başvuran, ücret ve hisse bilgisi görünmemektedir.\n' +
+    '- Son satırda toplam formülü vardır; ancak bağlı hücreler boş olduğu için toplamlar 0 görünür.',
   'ekip-hisse-dagilimi':
-    'Hisse aralıkları kesinleşmemiş; dosya bunu açıkça vurguluyor. Ürün/mühendislik çekirdeği: Product Manager %1.0–2.5, Back End %1.0–2.0, Mobile Developer %0.75–1.5, Front End %0.5–1.25, DevOps/Server %0.5–1.0, Test Engineer %0.2–0.5. Büyüme ve operasyon: Data Analyst %0.3–0.7, Partnership Manager %0.4–0.8, Community/Social Media %0.1–0.3, Content Üreticisi %0.1–0.2, Event Coordinator %0.1–0.25. Danışman/Yatırımcı: genellikle maaşsız, %0.25–1.0 ESOP opsiyonu. Teknik ve kritik rollere daha yüksek, operasyonel ve dönemsel rollere daha sınırlı hisse aralıkları atanmış.',
+    '- Hisse aralıkları henüz kesinleşmemiştir; dosya bunu açık biçimde belirtir.\n' +
+    '- Ürün ve mühendislik çekirdeğinde daha yüksek oranlar öngörülmüştür.\n' +
+    '- Örnek aralıklar: Product Manager %1.0–2.5, Back End %1.0–2.0, Mobile Developer %0.75–1.5, Front End %0.5–1.25.\n' +
+    '- Teknik destek rolleri için DevOps/Server %0.5–1.0 ve Test Engineer %0.2–0.5 bandı yer alır.\n' +
+    '- Büyüme ve operasyon tarafında oranlar daha sınırlıdır: Data Analyst %0.3–0.7, Partnership Manager %0.4–0.8, Community/Social Media %0.1–0.3, Content Üreticisi %0.1–0.2, Event Coordinator %0.1–0.25.\n' +
+    '- Danışman veya yatırımcı için genellikle maaşsız ve %0.25–1.0 ESOP opsiyonu düşünülmektedir.',
   'ekip-ucret-bantlari':
-    'Almanya (EUR, yıllık): Product Manager 75K–110K, Back End 70K–95K, Mobile Developer 70K–90K, Front End 65K–85K, DevOps/Server 80K–115K, Test Engineer 55K–75K, Data Analyst 60K–85K, Partnership Manager 55K–80K+Prim, Community Manager 45K–65K, Content Üreticisi 40K–60K, Event Coordinator 45K–65K. Londra (GBP) rakamları yakın aralıkta, Dubai (AED) rakamları ise yaklaşık 4–5 kat daha yüksek bandda; bu döviz paritesi farklılığından kaynaklanmakta.',
+    '- Almanya için yıllık örnek ücret bantları tanımlanmıştır.\n' +
+    '- Product Manager: 75K–110K EUR.\n' +
+    '- Back End: 70K–95K EUR, Mobile Developer: 70K–90K EUR, Front End: 65K–85K EUR.\n' +
+    '- DevOps/Server: 80K–115K EUR, Test Engineer: 55K–75K EUR, Data Analyst: 60K–85K EUR.\n' +
+    '- Partnership Manager: 55K–80K EUR + prim, Community Manager: 45K–65K EUR, Content Üreticisi: 40K–60K EUR, Event Coordinator: 45K–65K EUR.\n' +
+    '- Londra rakamları benzer aralıklarda, Dubai rakamları ise kur ve pazar etkisi nedeniyle daha yüksek bantta görünmektedir.',
   'ekip-butce-toplami':
-    'Tüm rol bazlı alt ve üst sınırların toplanmasıyla ulaşılan toplam ekip maaş bütçeleri — Almanya (Berlin/Münih): 660.000–925.000 EUR. Londra: 605.000–935.000 GBP. Dubai: 2.550.000–4.110.000 AED. Bu toplamlar tam kadro senaryosunu yansıtıyor; aşamalı işe alım planında fiili bütçe bu rakamların çok altında kalacak.',
+    '- Toplam ekip maaş bütçesi, tüm rol bazlı alt ve üst sınırların toplanmasıyla hesaplanmıştır.\n' +
+    '- Almanya (Berlin/Münih): 660.000–925.000 EUR.\n' +
+    '- Londra: 605.000–935.000 GBP.\n' +
+    '- Dubai: 2.550.000–4.110.000 AED.\n' +
+    '- Bu rakamlar tam kadro senaryosunu temsil eder.\n' +
+    '- Aşamalı işe alım modelinde fiili bütçenin bu seviyelerin altında kalması beklenir.',
   'ekip-gorev-tanimlari':
-    'GÖRVE TANIMLARI sayfası (muhtemelen GÖREV TANIMLARI olarak düzeltilmeli) yapı olarak hazır: POZİSYON kolonu EKİP sayfasındaki rol isimlerini formülle çekiyor, GÖREV TANIMI kolonu henüz doldurulmamış. 16 pozisyonun tamamı görünüyor — Kurucu/Business\'tan Advisor/Investment_VC\'ye kadar — ancak her satırda görev tanımı alanı boş. Bu alan öncelikli doldurmayı bekliyor.',
+    '- GÖRVE TANIMLARI sayfası yapısal olarak hazır durumdadır.\n' +
+    '- Sayfa adının "GÖREV TANIMLARI" olarak düzeltilmesi gerekir.\n' +
+    '- POZİSYON kolonu, EKİP sayfasındaki rol isimlerini formülle çekmektedir.\n' +
+    '- GÖREV TANIMI kolonu ise henüz doldurulmamıştır.\n' +
+    '- Kurucu/Business\'tan Advisor/Investment_VC\'ye kadar tüm 16 pozisyon görünür durumdadır.\n' +
+    '- Bu sayfa, içerik girildiğinde işe alım ve rol netliği açısından en değerli alanlardan biri olacaktır.',
   'ekip-eksikler':
-    'Ana eksikler: (1) Ücret ve hisse kolonlarının büyük bölümü boş — toplam satırı karar destek verecek seviyede değil. (2) CV, görüşmeci, puan, notlar kolonları neredeyse tamamen boş. (3) GÖRVE TANIMLARI sayfası henüz doldurulmamış. (4) Yazım/adlandırma tutarsızlıkları: "GÖRVE TANIMLARI" → "GÖREV TANIMLARI", "Mobile Dveloper" → "Mobile Developer", "KESiNLEŞEN" başlığında büyük/küçük harf karışıklığı. (5) EKİP sayfasında ileride doldurulmak üzere açık bırakılmış boş satırlar.',
+    '- Ücret ve hisse kolonlarının büyük bölümü boş olduğu için toplam satırı karar destek verecek seviyede değildir.\n' +
+    '- CV, görüşmeci, puan ve notlar alanları neredeyse tamamen boştur.\n' +
+    '- Görev tanımları sayfası yapısal olarak hazır olsa da içerik olarak doldurulmamıştır.\n' +
+    '- Yazım ve adlandırma tutarsızlıkları vardır: GÖRVE TANIMLARI, Mobile Dveloper ve KESiNLEŞEN gibi.\n' +
+    '- EKİP sayfasında ileride doldurulmak üzere bırakılmış açık satırlar bulunur.',
   'ekip-sonuc':
-    'Bu dosya bir kesin karar belgesi değil; daha çok planlama + taslak organizasyon + kompanzasyon çerçevesi niteliğinde. Bir arada tuttuğu dört şey: (1) Kimleri ekibe almak istediğiniz, (2) Bu kişilerin hangi ekipte konumlanacağı, (3) Yaklaşık maaş ve hisse çerçevesi, (4) İleride yazılacak görev tanımları. Dosyayı bir sonraki seviyeye taşımak için öncelik sırası: ücret/hisse kolonlarını doldurmak → görev tanımlarını yazmak → yazım tutarsızlıklarını düzeltmek.',
+    '- Bu dosya kesinleşmiş bir karar dokümanı değil, planlama ve taslak organizasyon çerçevesidir.\n' +
+    '- Aynı yerde kimlerin ekibe alınmak istendiğini, bu kişilerin hangi ekipte konumlanacağını, yaklaşık ücret ve hisse çerçevesini toplar.\n' +
+    '- Ayrıca ileride yazılacak görev tanımlarına zemin hazırlar.\n' +
+    '- Bir sonraki seviye için öncelik sırası nettir: ücret ve hisse kolonlarını doldurmak, görev tanımlarını yazmak, yazım tutarsızlıklarını temizlemek.',
 }
 
 const ambassadorSectionDetail: Record<string, string> = {
