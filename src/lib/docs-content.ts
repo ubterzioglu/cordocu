@@ -754,11 +754,9 @@ export function getDocCategoryContentView(categorySlug: DocCategorySlug): Conten
 
   const isAmbassadorCategory = categorySlug === 'ambassador'
   const isTeamCategory = categorySlug === 'ekip'
-  const isRoadmapCategory = categorySlug === 'roadmap'
   const useBulletCardLayout =
     isAmbassadorCategory ||
-    isTeamCategory ||
-    isRoadmapCategory
+    isTeamCategory
 
   const buildBulletDetail = (description: string, detail: string): string => {
     const lines = `${description}\n\n${detail}`

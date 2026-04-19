@@ -171,6 +171,37 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "src\\pages\\mvpitems.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776627786716,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\mvp-items.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776627790381,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\mvp\\MvpManager.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776627858736,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ui\\AccordionCard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776628156677,
+      "type": "file"
+    },
+    {
+      "path": "mvpnew.md",
+      "accessCount": 1,
+      "lastAccessed": 1776628312349,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }
