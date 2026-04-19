@@ -777,20 +777,20 @@ export const docsCategories: DocCategoryDefinition[] = [
   },
   {
     slug: 'links',
-    label: 'LİNKLER',
-    shortDescription: 'Faydalı linklerin merkezi yönetim tablosu.',
+    label: 'DOSYALAR VE LİNKLER',
+    shortDescription: 'Departman bazlı dosya ve linklerin merkezi yönetim tablosu.',
     iconKey: 'book',
     defaultExpanded: false,
     overview: {
-      title: 'Link Yönetimi',
-      description: 'Faydalı linkleri ekleyin, düzenleyin ve paylaşın.',
-      ctaLabel: 'Linklere Git',
+      title: 'Dosyalar ve Linkler',
+      description: 'Departman bazlı dosya ve linkleri tek yerde görüntüleyin ve yönetin.',
+      ctaLabel: 'Dosya ve Linklere Git',
     },
     items: [
       {
         id: 'links-main',
-        label: 'Link Listesi',
-        description: 'Tüm linklerin CRUD tablosu.',
+        label: 'Dosya ve Link Listesi',
+        description: 'Tüm dosya ve linklerin merkezi CRUD tablosu.',
         href: '/links',
         categorySlug: 'links',
         featuredOrder: 43,

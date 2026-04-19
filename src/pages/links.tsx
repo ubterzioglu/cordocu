@@ -17,15 +17,8 @@ export default function LinksPage() {
                 aria-hidden="true"
               />
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                Link Yönetimi
+                Dosyalar ve Linkler
               </h1>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-600 sm:text-base">
-                Faydalı linkleri ekleyin, düzenleyin ve paylaşın.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-gray-500">
-                <span className="docs-chip">links tablosu</span>
-                <span className="docs-chip">Şahin, UBT, Baran</span>
-              </div>
             </div>
           </div>
 

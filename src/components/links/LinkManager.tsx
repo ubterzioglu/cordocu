@@ -165,10 +165,10 @@ export default function LinkManager() {
     <section className="space-y-6" aria-labelledby="link-manager-heading">
       <div className="space-y-2">
         <h2 id="link-manager-heading" className="text-xl font-semibold text-gray-900">
-          Link Listesi
+          Linkler ve Dosyalar
         </h2>
         <p className="max-w-3xl text-sm text-gray-500">
-          Yeni link ekle, mevcut linkleri güncelle veya sil.
+          Yeni kayıt ekle, mevcut dosya ve linkleri güncelle veya sil.
         </p>
       </div>
 
