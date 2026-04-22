@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Download, Eye, Pencil, Plus, Save, Trash2, Upload, X } from 'lucide-react'
+import { Download, Eye, ExternalLink, Pencil, Save, Trash2, Upload, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
 import {
@@ -17,6 +17,18 @@ const INPUT_CLS =
 
 const BTN_CLS =
   'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all disabled:opacity-60'
+
+function normalizeOptionalText(value: string): string | null {
+  const normalized = value.trim()
+  return normalized.length > 0 ? normalized : null
+}
+
+function withProtocol(url: string): string {
+  if (/^https?:\/\//i.test(url)) {
+    return url
+  }
+  return `https://${url}`
+}
 
 export default function CvManager() {
   const [cvs, setCvs] = useState<CvItem[]>([])
@@ -46,7 +58,7 @@ export default function CvManager() {
     try {
       const { data, error: fetchErr } = await supabase
         .from('user_cvs')
-        .select('id, first_name, last_name, role, file_path, file_name, created_at')
+        .select('id, first_name, last_name, role, linkedin_url, instagram_url, website_url, file_path, file_name, created_at')
         .order('created_at', { ascending: false })
       if (fetchErr) throw fetchErr
       setCvs((data as CvItemRow[]).map(mapCvRow))
@@ -78,9 +90,12 @@ export default function CvManager() {
       uploadedFilePath = filePath
 
       const insertPayload = {
-        first_name: formState.firstName,
-        last_name: formState.lastName,
-        role: formState.role.trim() || null,
+        first_name: formState.firstName.trim(),
+        last_name: formState.lastName.trim(),
+        role: normalizeOptionalText(formState.role),
+        linkedin_url: normalizeOptionalText(formState.linkedinUrl),
+        instagram_url: normalizeOptionalText(formState.instagramUrl),
+        website_url: normalizeOptionalText(formState.websiteUrl),
         file_path: filePath,
         file_name: selectedFile.name,
       }
@@ -88,7 +103,7 @@ export default function CvManager() {
       const { data, error: insertErr } = await supabase
         .from('user_cvs')
         .insert(insertPayload)
-        .select('id, first_name, last_name, role, file_path, file_name, created_at')
+        .select('id, first_name, last_name, role, linkedin_url, instagram_url, website_url, file_path, file_name, created_at')
         .single()
 
       if (insertErr || !data) throw insertErr ?? new Error('CV kaydı eklenemedi.')
@@ -155,7 +170,14 @@ export default function CvManager() {
 
   function startEdit(cv: CvItem) {
     setEditingId(cv.id)
-    setEditingState({ firstName: cv.firstName, lastName: cv.lastName, role: cv.role ?? '' })
+    setEditingState({
+      firstName: cv.firstName,
+      lastName: cv.lastName,
+      role: cv.role ?? '',
+      linkedinUrl: cv.linkedinUrl ?? '',
+      instagramUrl: cv.instagramUrl ?? '',
+      websiteUrl: cv.websiteUrl ?? '',
+    })
     setError(null)
   }
 
@@ -170,15 +192,18 @@ export default function CvManager() {
     setError(null)
     try {
       const updatePayload = {
-        first_name: editingState.firstName,
-        last_name: editingState.lastName,
-        role: editingState.role.trim() || null,
+        first_name: editingState.firstName.trim(),
+        last_name: editingState.lastName.trim(),
+        role: normalizeOptionalText(editingState.role),
+        linkedin_url: normalizeOptionalText(editingState.linkedinUrl),
+        instagram_url: normalizeOptionalText(editingState.instagramUrl),
+        website_url: normalizeOptionalText(editingState.websiteUrl),
       }
       const { data, error: updateErr } = await supabase
         .from('user_cvs')
         .update(updatePayload)
         .eq('id', cvId)
-        .select('id, first_name, last_name, role, file_path, file_name, created_at')
+        .select('id, first_name, last_name, role, linkedin_url, instagram_url, website_url, file_path, file_name, created_at')
         .single()
       if (updateErr || !data) throw updateErr
       setCvs((prev) => prev.map((c) => (c.id === cvId ? mapCvRow(data as CvItemRow) : c)))
@@ -199,14 +224,14 @@ export default function CvManager() {
           title: 'Yeni CV Yükle',
           accentColor: '#4CAF50',
           children: (
-            <form onSubmit={handleCreate} className="grid gap-4 sm:grid-cols-2">
+            <form onSubmit={handleCreate} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <label className="space-y-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">İsim</span>
-                <input type="text" value={formState.firstName} onChange={(e) => setFormState((s) => ({ ...s, firstName: e.target.value }))} placeholder="İsim" className={INPUT_CLS} required />
+                <input type="text" value={formState.firstName} onChange={(e) => setFormState((s) => ({ ...s, firstName: e.target.value }))} placeholder="İsim" className={INPUT_CLS} />
               </label>
               <label className="space-y-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Soyisim</span>
-                <input type="text" value={formState.lastName} onChange={(e) => setFormState((s) => ({ ...s, lastName: e.target.value }))} placeholder="Soyisim" className={INPUT_CLS} required />
+                <input type="text" value={formState.lastName} onChange={(e) => setFormState((s) => ({ ...s, lastName: e.target.value }))} placeholder="Soyisim" className={INPUT_CLS} />
               </label>
               <label className="space-y-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Görev / Pozisyon</span>
@@ -214,9 +239,21 @@ export default function CvManager() {
               </label>
               <label className="space-y-2">
                 <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">CV Dosyası</span>
-                <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)} className={INPUT_CLS} required />
+                <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)} className={INPUT_CLS} />
               </label>
-              <div className="flex items-end sm:col-span-2">
+              <label className="space-y-2">
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">LinkedIn</span>
+                <input type="url" value={formState.linkedinUrl} onChange={(e) => setFormState((s) => ({ ...s, linkedinUrl: e.target.value }))} placeholder="linkedin.com/in/..." className={INPUT_CLS} />
+              </label>
+              <label className="space-y-2">
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Instagram</span>
+                <input type="url" value={formState.instagramUrl} onChange={(e) => setFormState((s) => ({ ...s, instagramUrl: e.target.value }))} placeholder="instagram.com/..." className={INPUT_CLS} />
+              </label>
+              <label className="space-y-2">
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Website</span>
+                <input type="url" value={formState.websiteUrl} onChange={(e) => setFormState((s) => ({ ...s, websiteUrl: e.target.value }))} placeholder="ornek.com" className={INPUT_CLS} />
+              </label>
+              <div className="flex items-end sm:col-span-2 lg:col-span-3">
                 <button type="submit" disabled={isSubmitting || !selectedFile} className="w-full rounded-xl bg-primary-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60">
                   <Upload size={16} className="mr-1 inline" aria-hidden="true" />
                   {isSubmitting ? 'Yükleniyor...' : 'CV Yükle'}
@@ -242,7 +279,7 @@ export default function CvManager() {
               <table className="min-w-full divide-y divide-gray-50 text-sm">
                 <thead className="bg-gray-50/80">
                   <tr>
-                    {['İsim Soyisim', 'Görev', 'Dosya', 'İşlemler'].map((col) => (
+                    {['İsim Soyisim', 'Görev', 'Linkler', 'Dosya', 'İşlemler'].map((col) => (
                       <th key={col} scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-gray-500 first:pl-6 last:pr-6">{col}</th>
                     ))}
                   </tr>
@@ -254,14 +291,42 @@ export default function CvManager() {
                       <tr key={cv.id} className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]">
                         <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? (
-                            <div className="flex gap-2">
+                            <div className="grid grid-cols-2 gap-2">
                               <input type="text" value={editingState.firstName} onChange={(e) => setEditingState((s) => ({ ...s, firstName: e.target.value }))} placeholder="İsim" className={INPUT_CLS} />
                               <input type="text" value={editingState.lastName} onChange={(e) => setEditingState((s) => ({ ...s, lastName: e.target.value }))} placeholder="Soyisim" className={INPUT_CLS} />
                             </div>
-                          ) : `${cv.firstName} ${cv.lastName}`}
+                          ) : `${cv.firstName || 'İsim yok'} ${cv.lastName || 'Soyisim yok'}`}
                         </td>
                         <td className="px-4 py-3.5 text-gray-600">
                           {rowIsEditing ? <input type="text" value={editingState.role} onChange={(e) => setEditingState((s) => ({ ...s, role: e.target.value }))} className={INPUT_CLS} /> : (cv.role ?? <span className="text-gray-300">—</span>)}
+                        </td>
+                        <td className="px-4 py-3.5 text-gray-600">
+                          {rowIsEditing ? (
+                            <div className="grid gap-2">
+                              <input type="url" value={editingState.linkedinUrl} onChange={(e) => setEditingState((s) => ({ ...s, linkedinUrl: e.target.value }))} placeholder="LinkedIn" className={INPUT_CLS} />
+                              <input type="url" value={editingState.instagramUrl} onChange={(e) => setEditingState((s) => ({ ...s, instagramUrl: e.target.value }))} placeholder="Instagram" className={INPUT_CLS} />
+                              <input type="url" value={editingState.websiteUrl} onChange={(e) => setEditingState((s) => ({ ...s, websiteUrl: e.target.value }))} placeholder="Website" className={INPUT_CLS} />
+                            </div>
+                          ) : (
+                            <div className="flex flex-wrap gap-2">
+                              {cv.linkedinUrl && (
+                                <a href={withProtocol(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
+                                  LinkedIn <ExternalLink size={12} />
+                                </a>
+                              )}
+                              {cv.instagramUrl && (
+                                <a href={withProtocol(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
+                                  Instagram <ExternalLink size={12} />
+                                </a>
+                              )}
+                              {cv.websiteUrl && (
+                                <a href={withProtocol(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                                  Website <ExternalLink size={12} />
+                                </a>
+                              )}
+                              {!cv.linkedinUrl && !cv.instagramUrl && !cv.websiteUrl && <span className="text-gray-300">—</span>}
+                            </div>
+                          )}
                         </td>
                         <td className="px-4 py-3.5 text-gray-600 text-xs">{cv.fileName}</td>
                         <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
@@ -300,11 +365,35 @@ export default function CvManager() {
                           <input type="text" value={editingState.lastName} onChange={(e) => setEditingState((s) => ({ ...s, lastName: e.target.value }))} placeholder="Soyisim" className={INPUT_CLS} />
                         </div>
                         <input type="text" value={editingState.role} onChange={(e) => setEditingState((s) => ({ ...s, role: e.target.value }))} placeholder="Görev" className={INPUT_CLS} />
+                        <div className="grid gap-3">
+                          <input type="url" value={editingState.linkedinUrl} onChange={(e) => setEditingState((s) => ({ ...s, linkedinUrl: e.target.value }))} placeholder="LinkedIn" className={INPUT_CLS} />
+                          <input type="url" value={editingState.instagramUrl} onChange={(e) => setEditingState((s) => ({ ...s, instagramUrl: e.target.value }))} placeholder="Instagram" className={INPUT_CLS} />
+                          <input type="url" value={editingState.websiteUrl} onChange={(e) => setEditingState((s) => ({ ...s, websiteUrl: e.target.value }))} placeholder="Website" className={INPUT_CLS} />
+                        </div>
                       </div>
                     ) : (
                       <div className="space-y-1">
-                        <h3 className="text-base font-semibold text-gray-900">{cv.firstName} {cv.lastName}</h3>
+                        <h3 className="text-base font-semibold text-gray-900">{cv.firstName || 'İsim yok'} {cv.lastName || 'Soyisim yok'}</h3>
                         <p className="text-sm text-gray-500">{cv.role ?? 'Görev belirtilmemiş'}</p>
+                        {(cv.linkedinUrl || cv.instagramUrl || cv.websiteUrl) && (
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            {cv.linkedinUrl && (
+                              <a href={withProtocol(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
+                                LinkedIn <ExternalLink size={12} />
+                              </a>
+                            )}
+                            {cv.instagramUrl && (
+                              <a href={withProtocol(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
+                                Instagram <ExternalLink size={12} />
+                              </a>
+                            )}
+                            {cv.websiteUrl && (
+                              <a href={withProtocol(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                                Website <ExternalLink size={12} />
+                              </a>
+                            )}
+                          </div>
+                        )}
                         <p className="text-xs text-gray-400">{cv.fileName}</p>
                       </div>
                     )}
