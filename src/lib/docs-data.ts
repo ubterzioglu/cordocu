@@ -29,7 +29,6 @@ export type DocsDataSource = 'mock'
 export interface DocsDataSourceInfo {
   source: DocsDataSource
   supabaseConfigured: boolean
-  missingEnvKeys: string[]
   fallbackReason: string
 }
 
@@ -44,7 +43,6 @@ export function getDocsDataSourceInfo(): DocsDataSourceInfo {
   return {
     source: 'mock',
     supabaseConfigured: supabaseEnvStatus.isConfigured,
-    missingEnvKeys: supabaseEnvStatus.missingEnvKeys,
     fallbackReason: supabaseEnvStatus.isConfigured
       ? 'Supabase env is present, but Session 07 intentionally keeps docs on the mock adapter until query and auth scope are designed.'
       : 'Supabase env is incomplete, so docs stay on the mock adapter and the UI remains runtime-safe.',

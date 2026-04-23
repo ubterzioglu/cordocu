@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Download, Eye, ExternalLink, Pencil, Save, Trash2, Upload, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import { safeHref, validateCvFile, sanitizeError } from '@/lib/security'
 import {
   createEmptyCvFormState,
   mapCvRow,
@@ -21,13 +22,6 @@ const BTN_CLS =
 function normalizeOptionalText(value: string): string | null {
   const normalized = value.trim()
   return normalized.length > 0 ? normalized : null
-}
-
-function withProtocol(url: string): string {
-  if (/^https?:\/\//i.test(url)) {
-    return url
-  }
-  return `https://${url}`
 }
 
 export default function CvManager() {
@@ -63,7 +57,7 @@ export default function CvManager() {
       if (fetchErr) throw fetchErr
       setCvs((data as CvItemRow[]).map(mapCvRow))
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'CV listesi yüklenemedi.')
+      setError(sanitizeError(loadError, 'CV listesi yüklenemedi.'))
     } finally {
       setIsLoading(false)
     }
@@ -73,6 +67,11 @@ export default function CvManager() {
     event.preventDefault()
     if (!supabase || !selectedFile) {
       setError('Lütfen bir CV dosyası seçin.')
+      return
+    }
+    const fileError = validateCvFile(selectedFile)
+    if (fileError) {
+      setError(fileError)
       return
     }
     setIsSubmitting(true)
@@ -115,7 +114,7 @@ export default function CvManager() {
       if (uploadedFilePath) {
         await supabase.storage.from('cv-files').remove([uploadedFilePath])
       }
-      setError(createError instanceof Error ? createError.message : 'CV yüklenemedi.')
+      setError(sanitizeError(createError, 'CV yüklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -130,7 +129,7 @@ export default function CvManager() {
       if (signedErr || !data) throw signedErr
       window.open(data.signedUrl, '_blank')
     } catch (viewError) {
-      setError(viewError instanceof Error ? viewError.message : 'Signed URL oluşturulamadı.')
+      setError(sanitizeError(viewError, 'Signed URL oluşturulamadı.'))
     }
   }
 
@@ -146,7 +145,7 @@ export default function CvManager() {
       link.download = cv.fileName
       link.click()
     } catch (downloadError) {
-      setError(downloadError instanceof Error ? downloadError.message : 'İndirme başarısız.')
+      setError(sanitizeError(downloadError, 'İndirme başarısız.'))
     }
   }
 
@@ -162,7 +161,7 @@ export default function CvManager() {
       setCvs((prev) => prev.filter((c) => c.id !== cvId))
       if (editingId === cvId) setEditingId(null)
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Silinemedi.')
+      setError(sanitizeError(deleteError, 'Silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -209,7 +208,7 @@ export default function CvManager() {
       setCvs((prev) => prev.map((c) => (c.id === cvId ? mapCvRow(data as CvItemRow) : c)))
       cancelEdit()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Güncellenemedi.')
+      setError(sanitizeError(updateError, 'Güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -310,17 +309,17 @@ export default function CvManager() {
                           ) : (
                             <div className="flex flex-wrap gap-2">
                               {cv.linkedinUrl && (
-                                <a href={withProtocol(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
+                                <a href={safeHref(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
                                   LinkedIn <ExternalLink size={12} />
                                 </a>
                               )}
                               {cv.instagramUrl && (
-                                <a href={withProtocol(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
+                                <a href={safeHref(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
                                   Instagram <ExternalLink size={12} />
                                 </a>
                               )}
                               {cv.websiteUrl && (
-                                <a href={withProtocol(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                                <a href={safeHref(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
                                   Website <ExternalLink size={12} />
                                 </a>
                               )}
@@ -378,17 +377,17 @@ export default function CvManager() {
                         {(cv.linkedinUrl || cv.instagramUrl || cv.websiteUrl) && (
                           <div className="flex flex-wrap gap-2 pt-1">
                             {cv.linkedinUrl && (
-                              <a href={withProtocol(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
+                              <a href={safeHref(cv.linkedinUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
                                 LinkedIn <ExternalLink size={12} />
                               </a>
                             )}
                             {cv.instagramUrl && (
-                              <a href={withProtocol(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
+                              <a href={safeHref(cv.instagramUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-pink-200 bg-pink-50 px-2.5 py-1 text-xs font-medium text-pink-700 hover:bg-pink-100">
                                 Instagram <ExternalLink size={12} />
                               </a>
                             )}
                             {cv.websiteUrl && (
-                              <a href={withProtocol(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
+                              <a href={safeHref(cv.websiteUrl)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100">
                                 Website <ExternalLink size={12} />
                               </a>
                             )}

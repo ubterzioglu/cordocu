@@ -1,17 +1,25 @@
+# syntax=docker/dockerfile:1.7
+
 # ─── Stage 1: deps ───────────────────────────────────────────────────────────
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --prefer-offline
+RUN --mount=type=cache,target=/root/.npm npm ci --prefer-offline
 
 # ─── Stage 2: builder ────────────────────────────────────────────────────────
 FROM node:20-alpine AS builder
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY package.json package-lock.json ./
+COPY next.config.js ./
+COPY tsconfig.json ./
+COPY next-env.d.ts ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY src ./src
 
 # Build-time env vars (Coolify injects these as build args or from env)
 ARG NEXT_PUBLIC_SUPABASE_URL
@@ -23,7 +31,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # Some deployments have no public/ directory; create it so the runner stage
 # can always copy a stable path from the builder image.
-RUN mkdir -p public && npm run build
+RUN --mount=type=cache,target=/app/.next/cache mkdir -p public && npm run build
 
 # ─── Stage 3: runner ─────────────────────────────────────────────────────────
 FROM node:20-alpine AS runner

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ExternalLink, Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import { safeHref, sanitizeError } from '@/lib/security'
 import {
   SOCIAL_PLATFORMS,
   SOCIAL_AUTHORS,
@@ -52,7 +53,7 @@ export default function SocialMediaManager() {
       if (fetchErr) throw fetchErr
       setItems((data as SocialMediaItemRow[]).map(mapSocialMediaRow))
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Sosyal medya linkleri yüklenemedi.')
+      setError(sanitizeError(loadError, 'Sosyal medya linkleri yüklenemedi.'))
     } finally {
       setIsLoading(false)
     }
@@ -79,7 +80,7 @@ export default function SocialMediaManager() {
       setItems((prev) => [mapSocialMediaRow(data as SocialMediaItemRow), ...prev])
       setFormState(createEmptySocialMediaFormState())
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Eklenemedi.')
+      setError(sanitizeError(createError, 'Eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -122,7 +123,7 @@ export default function SocialMediaManager() {
       setItems((prev) => prev.map((i) => (i.id === itemId ? mapSocialMediaRow(data as SocialMediaItemRow) : i)))
       cancelEdit()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Güncellenemedi.')
+      setError(sanitizeError(updateError, 'Güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -139,7 +140,7 @@ export default function SocialMediaManager() {
       setItems((prev) => prev.filter((i) => i.id !== itemId))
       if (editingId === itemId) cancelEdit()
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Silinemedi.')
+      setError(sanitizeError(deleteError, 'Silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -223,7 +224,7 @@ export default function SocialMediaManager() {
                         </td>
                         <td className="max-w-xs px-4 py-3.5">
                           {rowIsEditing ? <input type="url" value={editingState.link} onChange={(e) => setEditingState((s) => ({ ...s, link: e.target.value }))} className={INPUT_CLS} /> : item.link ? (
-                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"><ExternalLink size={14} /> Link</a>
+                            <a href={safeHref(item.link)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"><ExternalLink size={14} /> Link</a>
                           ) : <span className="text-gray-300">—</span>}
                         </td>
                         <td className="px-4 py-3.5 text-gray-600">
@@ -269,7 +270,7 @@ export default function SocialMediaManager() {
                       <div className="space-y-1">
                         <p className="text-xs font-semibold text-gray-400">{item.platform}</p>
                         <p className="text-sm text-gray-600">{item.description ?? 'Açıklama yok'}</p>
-                        {item.link && <a href={item.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"><ExternalLink size={14} /> Linki Aç</a>}
+                        {item.link && <a href={safeHref(item.link)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"><ExternalLink size={14} /> Linki Aç</a>}
                         <p className="text-xs text-gray-400">Ekleyen: {item.addedBy}</p>
                       </div>
                     )}

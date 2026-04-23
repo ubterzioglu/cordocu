@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ExternalLink, Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import { safeHref, sanitizeError } from '@/lib/security'
 import {
   LINK_AUTHORS,
   LINK_TYPES,
@@ -56,7 +57,7 @@ export default function LinkManager() {
 
       setLinks((data as LinkItemRow[]).map(mapLinkRow))
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Linkler yüklenemedi.')
+      setError(sanitizeError(loadError, 'Linkler yüklenemedi.'))
     } finally {
       setIsLoading(false)
     }
@@ -91,7 +92,7 @@ export default function LinkManager() {
       setLinks((prev) => [mapLinkRow(data as LinkItemRow), ...prev])
       setFormState(createEmptyLinkFormState())
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Link eklenemedi.')
+      setError(sanitizeError(createError, 'Link eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -139,7 +140,7 @@ export default function LinkManager() {
       setLinks((prev) => prev.map((l) => (l.id === itemId ? mapLinkRow(data as LinkItemRow) : l)))
       cancelEdit()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Link güncellenemedi.')
+      setError(sanitizeError(updateError, 'Link güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -159,7 +160,7 @@ export default function LinkManager() {
       setLinks((prev) => prev.filter((l) => l.id !== itemId))
       if (editingId === itemId) cancelEdit()
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Link silinemedi.')
+      setError(sanitizeError(deleteError, 'Link silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -389,7 +390,7 @@ export default function LinkManager() {
                             />
                           ) : item.link ? (
                             <a
-                              href={item.link}
+                              href={safeHref(item.link)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"
@@ -526,7 +527,7 @@ export default function LinkManager() {
                           </p>
                           {item.link && (
                             <a
-                              href={item.link}
+                              href={safeHref(item.link)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"

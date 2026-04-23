@@ -1,4 +1,5 @@
 import { getSupabaseBrowserClient } from './supabase'
+import { validateTitle, validateContent, sanitizeError } from './security'
 
 export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'WA' | 'NO' | 'MAN'
 
@@ -142,6 +143,12 @@ export async function createMeetingNote(
   const supabase = getSupabaseBrowserClient()
   if (!supabase) return null
 
+  const titleErr = validateTitle(note.content.slice(0, 80))
+  if (titleErr) return null
+
+  const contentErr = validateContent(note.content)
+  if (contentErr) return null
+
   const { data, error } = await supabase
     .from('meeting_notes')
     .insert({
@@ -155,7 +162,10 @@ export async function createMeetingNote(
     .select(NOTE_SELECT)
     .single()
 
-  if (error || !data) return null
+  if (error || !data) {
+    console.error(sanitizeError(error, 'Not eklenemedi.'))
+    return null
+  }
   return mapRow(data as MeetingNoteRow)
 }
 
@@ -165,6 +175,9 @@ export async function updateMeetingNote(
 ): Promise<MeetingNoteItem | null> {
   const supabase = getSupabaseBrowserClient()
   if (!supabase) return null
+
+  const contentErr = validateContent(updates.content)
+  if (contentErr) return null
 
   const { data, error } = await supabase
     .from('meeting_notes')
@@ -179,7 +192,10 @@ export async function updateMeetingNote(
     .select(NOTE_SELECT)
     .single()
 
-  if (error || !data) return null
+  if (error || !data) {
+    console.error(sanitizeError(error, 'Not güncellenemedi.'))
+    return null
+  }
   return mapRow(data as MeetingNoteRow)
 }
 

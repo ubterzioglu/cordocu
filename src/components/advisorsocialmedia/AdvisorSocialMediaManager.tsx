@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { ExternalLink, Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import { safeHref, sanitizeError } from '@/lib/security'
 import {
   ADVISOR_SOCIAL_AUTHORS,
   ADVISOR_SOCIAL_PLATFORMS,
@@ -57,11 +58,7 @@ export default function AdvisorSocialMediaManager() {
       if (fetchErr) throw fetchErr
       setItems((data as AdvisorSocialMediaItemRow[]).map(mapAdvisorSocialMediaRow))
     } catch (loadError) {
-      setError(
-        loadError instanceof Error
-          ? loadError.message
-          : 'Danışmanlar/SM linkleri yüklenemedi.'
-      )
+      setError(sanitizeError(loadError, 'Danışmanlar/SM linkleri yüklenemedi.'))
     } finally {
       setIsLoading(false)
     }
@@ -93,7 +90,7 @@ export default function AdvisorSocialMediaManager() {
       setItems((prev) => [mapAdvisorSocialMediaRow(data as AdvisorSocialMediaItemRow), ...prev])
       setFormState(createEmptyAdvisorSocialMediaFormState())
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Eklenemedi.')
+      setError(sanitizeError(createError, 'Eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -145,7 +142,7 @@ export default function AdvisorSocialMediaManager() {
       )
       cancelEdit()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Güncellenemedi.')
+      setError(sanitizeError(updateError, 'Güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -169,7 +166,7 @@ export default function AdvisorSocialMediaManager() {
       setItems((prev) => prev.filter((item) => item.id !== itemId))
       if (editingId === itemId) cancelEdit()
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Silinemedi.')
+      setError(sanitizeError(deleteError, 'Silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -369,7 +366,7 @@ export default function AdvisorSocialMediaManager() {
                             />
                           ) : item.link ? (
                             <a
-                              href={item.link}
+                              href={safeHref(item.link)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"
@@ -529,7 +526,7 @@ export default function AdvisorSocialMediaManager() {
                         </p>
                         {item.link && (
                           <a
-                            href={item.link}
+                            href={safeHref(item.link)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700"

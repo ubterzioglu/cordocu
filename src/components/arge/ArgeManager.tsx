@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import { safeHref, validateArgeFile, sanitizeError } from '@/lib/security'
 import {
   ARGE_AUTHORS,
   createEmptyArgeCardFormState,
@@ -127,7 +128,7 @@ export default function ArgeManager() {
       setCards(((cardsRes.data ?? []) as ArgeCardRow[]).map(mapArgeCardRow))
       setFiles(((filesRes.data ?? []) as ArgeFileRow[]).map(mapArgeFileRow))
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Veri yüklenemedi.')
+      setError(sanitizeError(loadError, 'Veri yüklenemedi.'))
     } finally {
       setIsLoading(false)
     }
@@ -162,7 +163,7 @@ export default function ArgeManager() {
       setLinks((prev) => [mapArgeLinkRow(data as ArgeLinkRow), ...prev])
       setLinkForm(createEmptyArgeLinkFormState())
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Link eklenemedi.')
+      setError(sanitizeError(createError, 'Link eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -192,7 +193,7 @@ export default function ArgeManager() {
       setCards((prev) => [mapArgeCardRow(data as ArgeCardRow), ...prev])
       setCardForm(createEmptyArgeCardFormState())
     } catch (createError) {
-      setError(createError instanceof Error ? createError.message : 'Kart eklenemedi.')
+      setError(sanitizeError(createError, 'Kart eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -203,6 +204,12 @@ export default function ArgeManager() {
 
     if (!supabase || !selectedFile) {
       setError('Dosya seçin.')
+      return
+    }
+
+    const fileError = validateArgeFile(selectedFile)
+    if (fileError) {
+      setError(fileError)
       return
     }
 
@@ -244,7 +251,7 @@ export default function ArgeManager() {
       if (uploadedFilePath) {
         await supabase.storage.from('arge-files').remove([uploadedFilePath])
       }
-      setError(createError instanceof Error ? createError.message : 'Dosya eklenemedi.')
+      setError(sanitizeError(createError, 'Dosya eklenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -263,7 +270,7 @@ export default function ArgeManager() {
       if (deleteErr) throw deleteErr
       setLinks((prev) => prev.filter((link) => link.id !== id))
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Link silinemedi.')
+      setError(sanitizeError(deleteError, 'Link silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -312,7 +319,7 @@ export default function ArgeManager() {
       )
       cancelEditLink()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Link güncellenemedi.')
+      setError(sanitizeError(updateError, 'Link güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -338,7 +345,7 @@ export default function ArgeManager() {
         prev.map((file) => (file.cardId === id ? { ...file, cardId: null } : file))
       )
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Kart silinemedi.')
+      setError(sanitizeError(deleteError, 'Kart silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -385,7 +392,7 @@ export default function ArgeManager() {
       )
       cancelEditCard()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Kart güncellenemedi.')
+      setError(sanitizeError(updateError, 'Kart güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -408,7 +415,7 @@ export default function ArgeManager() {
 
       setFiles((prev) => prev.filter((file) => file.id !== id))
     } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'Dosya silinemedi.')
+      setError(sanitizeError(deleteError, 'Dosya silinemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -455,7 +462,7 @@ export default function ArgeManager() {
       )
       cancelEditFile()
     } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Dosya güncellenemedi.')
+      setError(sanitizeError(updateError, 'Dosya güncellenemedi.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -481,8 +488,7 @@ export default function ArgeManager() {
         prev.map((link) => (link.id === linkId ? mapArgeLinkRow(data as ArgeLinkRow) : link))
       )
     } catch (updateError) {
-      const message =
-        updateError instanceof Error ? updateError.message : 'Kart ataması güncellenemedi.'
+      const message = sanitizeError(updateError, 'Kart ataması güncellenemedi.')
       setError(
         message.includes('card_id')
           ? 'Kart ataması için veritabanında son migration henüz uygulanmamış.'
@@ -513,8 +519,7 @@ export default function ArgeManager() {
         prev.map((file) => (file.id === fileId ? mapArgeFileRow(data as ArgeFileRow) : file))
       )
     } catch (updateError) {
-      const message =
-        updateError instanceof Error ? updateError.message : 'Kart ataması güncellenemedi.'
+      const message = sanitizeError(updateError, 'Kart ataması güncellenemedi.')
       setError(
         message.includes('card_id')
           ? 'Kart ataması için veritabanında son migration henüz uygulanmamış.'
@@ -537,7 +542,7 @@ export default function ArgeManager() {
 
       window.open(data.signedUrl, '_blank')
     } catch (viewError) {
-      setError(viewError instanceof Error ? viewError.message : 'Dosya görüntülenemedi.')
+      setError(sanitizeError(viewError, 'Dosya görüntülenemedi.'))
     }
   }
 
@@ -556,7 +561,7 @@ export default function ArgeManager() {
       link.download = file.fileName
       link.click()
     } catch (downloadError) {
-      setError(downloadError instanceof Error ? downloadError.message : 'Dosya indirilemedi.')
+      setError(sanitizeError(downloadError, 'Dosya indirilemedi.'))
     }
   }
 
@@ -663,7 +668,7 @@ export default function ArgeManager() {
                               <p className="mt-1 text-xs text-gray-500">{link.description}</p>
                             )}
                             <a
-                              href={link.url}
+                              href={safeHref(link.url)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="mt-2 inline-flex items-center gap-1 text-xs text-primary-600 hover:text-primary-700"
@@ -1393,6 +1398,7 @@ export default function ArgeManager() {
                       </span>
                       <input
                         type="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.svg,.webp,.zip,.rar,.7z,.txt,.csv,.md,.json"
                         onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null)}
                         className={INPUT_CLS}
                         required

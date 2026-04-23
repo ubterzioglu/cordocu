@@ -2,12 +2,14 @@
 
 import AccordionCard from '../ui/AccordionCard'
 import SectionHeading from '../ui/SectionHeading'
+import { sanitizeHtml } from '@/lib/security'
 
 interface GeneralSummaryCardProps {
   content: string
 }
 
 export default function GeneralSummaryCard({ content }: GeneralSummaryCardProps) {
+  const safeHtml = sanitizeHtml(content)
   return (
     <div className="space-y-6">
       <SectionHeading
@@ -24,7 +26,7 @@ export default function GeneralSummaryCard({ content }: GeneralSummaryCardProps)
             accentColor: '#A142F4',
             children: (
               <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300">
-                <div dangerouslySetInnerHTML={{ __html: content }} />
+                <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
               </div>
             ),
           },

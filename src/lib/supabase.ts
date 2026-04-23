@@ -10,13 +10,11 @@ const missingEnvKeys = [
 
 export interface SupabaseEnvStatus {
   isConfigured: boolean
-  missingEnvKeys: string[]
   mode: 'configured' | 'mock-fallback'
 }
 
 export const supabaseEnvStatus: SupabaseEnvStatus = {
   isConfigured: missingEnvKeys.length === 0,
-  missingEnvKeys,
   mode: missingEnvKeys.length === 0 ? 'configured' : 'mock-fallback',
 }
 
