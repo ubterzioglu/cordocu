@@ -1,0 +1,218 @@
+Tüm Maddeler
+Satıra tıklayın veya imleci üzerinde tutun — düzenlemek için kalem, silmek için çöp kutusu ikonunu kullanın.
+
+
+Toplantı & WA — Tüm Maddeler
+53 madde
+17 Mart'a kadar MVP v2.0 dokümanları karşılıklı gönderilecek.
+
+
+17 Mart
+19'unda Barış 2 dokümanı + Lovable projesini birleştirip nihai doküman oluşturacak.
+
+
+19 Mart
+2-3 toplantı sonra MVP çıkartılabilir.
+
+
+17 Mart
+Barak: startup business 0-100 standartlarını incele (tohum → exit, seed, preseed); onepager hazırlanacak.
+
+
+17 Mart
+Core Team: Burak Akçakanat (iş geliştirme, strateji, network) + Barış UBT (CTO, teknik liderlik).
+
+
+17 Mart
+Teknik kumanda UBT'de — Burak.
+
+
+17 Mart
+Yönetim tasarımı mantığı: domain bazlı ownership, fonksiyon bazlı değil.
+
+
+17 Mart
+WhatsApp grubu influencerlar için ayrı kanal.
+
+
+17 Mart
+SEO için seyahat bloggerları blog yazısı yarışması ile toplanacak.
+
+
+17 Mart
+Blogger/Influencer = City Ambassador modeli.
+
+
+17 Mart
+VIT Jukebox/borsa fikri entegrasyonu.
+
+
+17 Mart
+OdtuGather fikirlerinin entegrasyonu.
+
+
+17 Mart
+Vlogger işbirliği ile traction.
+
+
+17 Mart
+Jukebox → ileride ayrı app.
+
+
+17 Mart
+Ambassador mantığı çalışıldı (Drive dökümanı + Lovable mock).
+
+
+17 Mart
+Haberler mantığı kondu.
+
+
+17 Mart
+Hospital booking eklendi.
+
+
+17 Mart
+Jukebox zaten vardı (ileride işletme müzik sistemleri entegre edilecek).
+
+
+17 Mart
+Bireysel kullanıcı profilinden hizmet talebi açıldı.
+
+
+17 Mart
+Admin dashboard yapılanmaya başladı. Şehir Elçileri mantığı çalışıldı.
+
+
+17 Mart
+İşletmeler her türlü eklenecek.
+
+
+12 Mart
+Dubai Business Council üzerinden 1000-2000 işletme hedefi (Burak tanıyor).
+
+
+12 Mart
+Mass migration veri tabanı değerlendirilecek (KVKK kontrolü).
+
+
+12 Mart
+'Danışmana danışmanlık' ürünü: mikrosite + AI twin + chatbot.
+
+
+12 Mart
+Teknik yük değerlendirilecek.
+
+
+12 Mart
+Bireysel danışman: claiming + olanaklar.
+
+
+17 Mart
+Kuruluşlar: konsolosluk, vakıf, dernek.
+
+
+17 Mart
+Bağış/aidat toplama.
+
+
+17 Mart
+Etkinlik yönetim arayüzü.
+
+
+17 Mart
+İşletme: restoran/market indirim çeki.
+
+
+17 Mart
+İş ilanları: işletme + genel pool.
+
+
+17 Mart
+İş fırsatları ortaklık: yurt dışına açılma.
+
+
+17 Mart
+WA grupları kategorizasyon.
+
+
+17 Mart
+Etkinlikler: filtreleme, featured sponsorluk, harita.
+
+
+17 Mart
+Blogger/Vlogger, haberler.
+
+
+17 Mart
+Hoşgeldin paketi.
+
+
+17 Mart
+Roadmap: Fikir→İnovasyon → Teknoloji→MVP → Traction→Marketing → Tutundurma→UI/UX → Ölçekleme→Yatırım.
+
+
+24 Mart
+Hoşgeldin paketine eklenenler: uçak bileti discount, araç kiralama, havaalanı transferi — teklif sistemi entegre.
+
+
+24 Mart
+CorteQS WA Kanalı: kullanıcı hem kanala hem bota bağlı.
+
+
+24 Mart
+Etkileşim havuzu sponsorluğu (OdtuGather/all2gather özelliği buraya aktarılacak).
+
+
+24 Mart
+Uzun vade: event sponsor management platform olabilir.
+
+
+24 Mart
+6 Domain Ownership modeli: Supply, Demand, Transaction, Product, Platform Core, Support & CRM.
+
+
+17 Mart
+Her domain = 1 owner prensibi; owner KPI'lardan, backlog'dan, büyümeden sorumlu.
+
+
+17 Mart
+Domain owner mikro yönetim yapmaz.
+
+
+17 Mart
+Supply Owner KPI: onboard edilen advisor #, aktif advisor %, partner sayısı.
+
+
+17 Mart
+Demand Owner KPI: WAU, yeni kullanıcı #, ambassador output, community engagement %.
+
+
+17 Mart
+Revenue Owner KPI: GMV, net revenue, take rate %, conversion rate %.
+
+
+17 Mart
+Operasyon: haftalık 10'ar dk owner update + KPI review; aylık retro.
+
+
+17 Mart
+GPT prompt ile tam sistem analizi: kullanıcı tipleri, feature gap, gelir modeli, versiyon önceliklendirme (V1/V2/V3).
+
+
+17 Mart
+Çıktı: product backlog (feature name, description, priority, dependencies, implementation). 2 Nisan toplantısında konuşuldu.
+
+
+2 Nisan
+Ana Google Drive klasörü ve ilk dokümentasyon taslağı oluşturuldu.
+
+
+17 Mart
+Cap Table v1 + v2 çalışma devam ediyor.
+
+
+17 Mart
+Referans siteler incelendi: qualtronsinclair.com, diasporanet-connect, tuerkischeaerzte.de, relocate.me.
+
+
+17 Mart

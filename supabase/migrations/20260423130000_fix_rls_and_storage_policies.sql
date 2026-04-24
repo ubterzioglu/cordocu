@@ -9,61 +9,85 @@
 
 -- links: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.links;
+DROP POLICY IF EXISTS "links_select_public" ON public.links;
+DROP POLICY IF EXISTS "links_all_authenticated" ON public.links;
 CREATE POLICY "links_select_public" ON public.links FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "links_all_authenticated" ON public.links FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- mvp_items: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.mvp_items;
+DROP POLICY IF EXISTS "mvp_items_select_public" ON public.mvp_items;
+DROP POLICY IF EXISTS "mvp_items_all_authenticated" ON public.mvp_items;
 CREATE POLICY "mvp_items_select_public" ON public.mvp_items FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "mvp_items_all_authenticated" ON public.mvp_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- social_media_links: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.social_media_links;
+DROP POLICY IF EXISTS "social_media_links_select_public" ON public.social_media_links;
+DROP POLICY IF EXISTS "social_media_links_all_authenticated" ON public.social_media_links;
 CREATE POLICY "social_media_links_select_public" ON public.social_media_links FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "social_media_links_all_authenticated" ON public.social_media_links FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- arge_links: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.arge_links;
+DROP POLICY IF EXISTS "arge_links_select_public" ON public.arge_links;
+DROP POLICY IF EXISTS "arge_links_all_authenticated" ON public.arge_links;
 CREATE POLICY "arge_links_select_public" ON public.arge_links FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "arge_links_all_authenticated" ON public.arge_links FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- arge_cards: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.arge_cards;
+DROP POLICY IF EXISTS "arge_cards_select_public" ON public.arge_cards;
+DROP POLICY IF EXISTS "arge_cards_all_authenticated" ON public.arge_cards;
 CREATE POLICY "arge_cards_select_public" ON public.arge_cards FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "arge_cards_all_authenticated" ON public.arge_cards FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- arge_files: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.arge_files;
+DROP POLICY IF EXISTS "arge_files_select_public" ON public.arge_files;
+DROP POLICY IF EXISTS "arge_files_all_authenticated" ON public.arge_files;
 CREATE POLICY "arge_files_select_public" ON public.arge_files FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "arge_files_all_authenticated" ON public.arge_files FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- todo_items: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.todo_items;
+DROP POLICY IF EXISTS "todo_items_select_public" ON public.todo_items;
+DROP POLICY IF EXISTS "todo_items_all_authenticated" ON public.todo_items;
 CREATE POLICY "todo_items_select_public" ON public.todo_items FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "todo_items_all_authenticated" ON public.todo_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- contacts: read-only for anon, full CRUD for authenticated (PII data)
 DROP POLICY IF EXISTS "Allow all" ON public.contacts;
+DROP POLICY IF EXISTS "contacts_select_public" ON public.contacts;
+DROP POLICY IF EXISTS "contacts_all_authenticated" ON public.contacts;
 CREATE POLICY "contacts_select_public" ON public.contacts FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "contacts_all_authenticated" ON public.contacts FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- meeting_notes: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.meeting_notes;
+DROP POLICY IF EXISTS "meeting_notes_select_public" ON public.meeting_notes;
+DROP POLICY IF EXISTS "meeting_notes_all_authenticated" ON public.meeting_notes;
 CREATE POLICY "meeting_notes_select_public" ON public.meeting_notes FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "meeting_notes_all_authenticated" ON public.meeting_notes FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- advisor_social_media_links: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.advisor_social_media_links;
+DROP POLICY IF EXISTS "advisor_social_media_links_select_public" ON public.advisor_social_media_links;
+DROP POLICY IF EXISTS "advisor_social_media_links_all_authenticated" ON public.advisor_social_media_links;
 CREATE POLICY "advisor_social_media_links_select_public" ON public.advisor_social_media_links FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "advisor_social_media_links_all_authenticated" ON public.advisor_social_media_links FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- gorevler: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.gorevler;
+DROP POLICY IF EXISTS "gorevler_select_public" ON public.gorevler;
+DROP POLICY IF EXISTS "gorevler_all_authenticated" ON public.gorevler;
 CREATE POLICY "gorevler_select_public" ON public.gorevler FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "gorevler_all_authenticated" ON public.gorevler FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- draft_notlar: read-only for anon, full CRUD for authenticated
 DROP POLICY IF EXISTS "Allow all" ON public.draft_notlar;
+DROP POLICY IF EXISTS "draft_notlar_select_public" ON public.draft_notlar;
+DROP POLICY IF EXISTS "draft_notlar_all_authenticated" ON public.draft_notlar;
 CREATE POLICY "draft_notlar_select_public" ON public.draft_notlar FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "draft_notlar_all_authenticated" ON public.draft_notlar FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
@@ -72,6 +96,7 @@ DROP POLICY IF EXISTS "user_cvs_select_public" ON public.user_cvs;
 DROP POLICY IF EXISTS "user_cvs_insert_public" ON public.user_cvs;
 DROP POLICY IF EXISTS "user_cvs_update_public" ON public.user_cvs;
 DROP POLICY IF EXISTS "user_cvs_delete_public" ON public.user_cvs;
+DROP POLICY IF EXISTS "user_cvs_all_authenticated" ON public.user_cvs;
 CREATE POLICY "user_cvs_select_public" ON public.user_cvs FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "user_cvs_all_authenticated" ON public.user_cvs FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
@@ -93,7 +118,6 @@ CREATE POLICY "cv_files_insert_authenticated"
   ON storage.objects FOR INSERT TO authenticated
   WITH CHECK (
     bucket_id = 'cv-files'
-    AND (storage.folder(name))[1] = auth.uid()::text
     AND lower(storage.extension(name)) IN ('pdf', 'doc', 'docx')
   );
 

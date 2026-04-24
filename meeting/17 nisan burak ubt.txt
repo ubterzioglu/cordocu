@@ -1,0 +1,62 @@
+Toplantı 4 — 17 Nisan
+15 madde
+Yeni proje dashboard'u canlıya alındı; Notion'ın yerini alarak tüm planlama, araştırma ve dokümantasyonu tek merkezde topluyor.
+
+
+17 Nisan
+Dashboard içeriği Danışmanlar, ARGE ve MVP 1/2/3 gibi kolonlarla organize ediliyor; MVP 1/2/3 kolonları full V1 öncesi pre-launch milestone yapısını temsil ediyor.
+
+
+17 Nisan
+Dashboard yarı otomatik ilerleyecek; ilk aşamada veri manuel kürasyonla kalite kontrollü tutulacak, ardından Fathom linkleri AI ile özetlenip kategorize edilecek.
+
+
+17 Nisan
+Dashboard aynı zamanda yatırımcılar için şeffaf bir data room olarak kullanılacak ve tüm proje bilgisini tek yerde görünür kılacak.
+
+
+17 Nisan
+Yeni hiring metodolojisi Cihan'ın Head of Growth & Content adaylığı üzerinden test case olarak tanımlandı ve standart offer yapısını rafine etmek için kullanılacak.
+
+
+17 Nisan
+Hiring süreci iki adım olarak netleştirildi: her kurucu adayla ayrı 30 dakikalık görüşme yapacak, ardından kurucular sync olup ortak karar verecek.
+
+
+17 Nisan
+Senior core team rollerinde deferred salary + 4 yıllık vesting + 1 yıl cliff ile 2–3% equity bandı kullanılacak; amaç pre-seed nakit akışını korumak.
+
+
+17 Nisan
+İkincil ekip için saatlik ödeme veya şirket revenue üretince ödenecek deferred pay gibi daha esnek modeller kullanılacak.
+
+
+17 Nisan
+Uluslararası payroll ve compliance süreçlerini sadeleştirmek için umbrella company modeli kullanılacak.
+
+
+17 Nisan
+WhatsApp bot, retention için çekirdek araç ve aynı zamanda ileride ayrı ürün hattına dönüşebilecek stratejik bir katman olarak konumlandı.
+
+
+17 Nisan
+Bot, kullanıcıların uygulamayı açmadan WhatsApp içinden platformla etkileşime girmesini sağlayacak; örnek kullanım olarak 'visa consultant' sorgusuna profil listesi döndürmesi hedefleniyor.
+
+
+17 Nisan
+Ambassadorlar, Danışmanlar ve Son Kullanıcılar gibi grupları organize eden yapısal bir WhatsApp matrix kurulacak ve bot bu topluluk katmanlarına entegre edilecek.
+
+
+17 Nisan
+Umut'un aksiyonları: Cihan ile Head of Growth & Content görüşmesini yapmak, WhatsApp matrix oluşturmak, dashboard yapısını finalize edip Drive linklerini taşımaya başlamak ve hiring metodolojisinin mind map'ini çıkarmak.
+
+
+17 Nisan
+Burak'ın aksiyonları: compensation matrix'i hourly ve deferred pay modelleriyle tamamlamak, compensation modelini test edecek örnek offer letter hazırlamak ve WhatsApp bot prompt'unu review için paylaşmak.
+
+
+17 Nisan
+Her iki kurucu için ortak hedef: hiring metodolojisini ve örnek offer letter'ı 8 Mayıs 2026'ya kadar finalize etmek.
+
+
+17 Nisan

@@ -1,0 +1,82 @@
+Burak Akc's Zoom Meeting - April 09
+VIEW RECORDING: 
+Meeting Purpose
+
+Align on project status, strategy, and next steps for Cortex.
+
+Key Takeaways
+
+  - Centralized Dashboard: Umut is building a centralized "D.Cortex" dashboard to consolidate all project info (notes, contacts, MVP plan), solving the current "technology spaghetti" of scattered documents.
+  - Influencer Strategy: The plan is to partner with smaller influencers ("City Partners") by offering Cortex's traffic and platform, leveraging their content for features like automated travel itineraries.
+  - Guerrilla Marketing: A manual "guerrilla marketing" campaign will target comments on viral diaspora videos (e.g., a 60k-view video) to capture warm leads. A volunteer/intern program will scale this effort.
+  - Team Expansion: Burak has offered a key marketing role to Seren Uzluer, a creative professional with 15+ years of experience. A formal SOP document is ready to define equity and deferred compensation for new hires.
+
+Topics
+
+Project Management & Documentation
+
+  - Problem: Project information is scattered across WhatsApp, Notion, and Drive, creating "technology spaghetti."
+  - Solution: Umut is building a centralized "D.Cortex" dashboard to serve as the single source of truth.
+      - Content: Merged notes, exported chats, and key documents (e.g., cap table analysis, MVP plan).
+      - Status: A "fluent" (ein flüssig) project, meaning it's continuously developed without a hard deadline.
+  - Technical Versioning:
+      - Decision: Burak will continue adding all features to the main Lovable project file.
+      - Rationale: This keeps Burak's complete vision mapped out. Umut will manage technical versioning (e.g., hiding features for the MVP) on the backend to maintain a clean codebase.
+
+Influencer & Content Strategy
+
+  - Goal: Partner with smaller influencers ("City Partners") to scale content creation and reach.
+  - Tactic: Offer Cortex as a platform, providing traffic and exposure in exchange for content.
+      - Analogy: "Come to our shopping mall, we have more traffic."
+  - Content Sources:
+      - WhatsApp Groups: Umut is joining diaspora communities (TÜYAFET, Alpatürk Özbekistan) to find potential partners.
+      - YouTube Channels: Identify and "ingest" (konjum) content from smaller channels.
+      - Instagram/TikTok: Key platforms for finding influencers.
+  - Future Feature Idea (v2/v3): Use indexed influencer content to build an automated travel itinerary generator, similar to ChatGPT but with real-world, curated recommendations.
+
+Marketing & SEO
+
+  - Guerrilla Marketing:
+      - Tactic: Manually post Cortex links in the comments of viral diaspora videos.
+      - Rationale: Capture warm leads from users already expressing interest in diaspora-related content.
+  - Team for Guerrilla Marketing:
+      - Idea: Recruit volunteers or interns from the diaspora.
+      - Rationale: They have the energy, time, and cultural understanding to execute this strategy effectively.
+  - SEO & Backlinks:
+      - Status: Cortex.net is live and will be added to Google Console this week.
+      - Action: Burak will add Cortex backlinks to his 11+ existing domains.
+      - Rationale: Build early SEO authority, as Google values links from established sites.
+      - Expertise: Umut will consult an SEO expert known for rapid growth on the "Almanya 101" project.
+
+Team & Operations
+
+  - Marketing Lead:
+      - Candidate: Seren Uzluer, a creative professional with 15+ years of experience.
+      - Role: Full-time, equity-based position to lead all marketing (strategy, social media, branding).
+      - Impact: Enables immediate setup of all social media accounts and a coordinated pre-launch teaser campaign.
+  - Onboarding New Hires:
+      - Document: Burak created an SOP to explain the equity and compensation model.
+      - Model: Deferred compensation (ertelenmiş ücret) where salary accrues as a debt, payable from future revenue or investment.
+      - Rationale: Provides a clear, fair, and sustainable offer for early team members.
+  - Tool Management:
+      - Problem: Disorganized subscriptions and costs for team software.
+      - Solution: Umut will create a tool matrix to centralize subscriptions, analyze costs, and budget for shared vs. individual licenses.
+
+Long-Term Vision: AI Twin
+
+  - Concept: Automate founder tasks (communication, documentation) with an "AI twin."
+  - Status: Burak is developing the structure and rules for this project in parallel.
+  - Rationale: Free up founder time and potentially create a unique, automated startup management model.
+
+Next Steps
+
+  - Umut:
+      - Finalize the D.Cortex dashboard and share the link by April 12.
+      - Add Cortex.net to Google Console this week.
+      - Create the tool management matrix.
+      - Review the SOP document for new hires.
+      - Begin manual "guerrilla marketing" on relevant social media posts.
+  - Burak:
+      - Continue adding all features to the main Lovable project file.
+      - Add Cortex backlinks to his existing domains.
+      - Follow up with Seren Uzluer on the marketing lead offer.

@@ -1,0 +1,71 @@
+Impromptu Zoom Meeting - April 24
+VIEW RECORDING: 
+Meeting Purpose
+
+Finalize the influencer strategy to accelerate Cortex's growth.
+
+Key Takeaways
+
+  - Influencer Strategy: Cihan will lead influencer outreach, starting with his friend Burak Cem (146k followers), to secure the first 3–5 key partners.
+  - Competitor Acquisition: Cortex will offer Tahsin Barış (1.2k-member WhatsApp group) a referral code and revenue share to merge his community, preventing its organic loss to the platform.
+  - Influencer Value Prop: The team will create a formal playbook detailing a 5-year revenue share model (e.g., 10% of business subscriptions) and "welcome packages" (e.g., software trials) to incentivize participation.
+  - Content & Growth: A blog contest with cash prizes ($1k–$3k) will be launched to drive traffic and generate high-quality, user-generated content for the platform.
+
+Topics
+
+Cortex Pre-Launch & Early Traction
+
+  - Cortex is in a rapid pre-launch sprint, building infrastructure and social channels.
+  - Early traction is positive:
+      - Sign-ups: ~20 users in the first day.
+      - Traffic: ~250 site visitors in 3 days.
+  - Initial Goal: Reach 8k–10k social followers to establish credibility and create a "movement."
+
+Competitor Analysis & Opportunity
+
+  - Tahsin Barış's 1.2k-member WhatsApp group shows strong demand for a diaspora platform.
+  - Problem: WhatsApp groups are unsustainable long-term and will eventually lose members to a structured platform like Cortex.
+  - Solution: Offer Tahsin Barış a referral code and revenue share to merge his community.
+      - Rationale: This provides him with a sustainable revenue stream and prevents the organic loss of his members.
+      - Precedent: A similar, successful merger was completed with the "Almanya 101" group.
+
+Influencer Outreach Strategy
+
+  - Goal: Secure 3–5 key influencers to kickstart growth.
+  - Target Profile: 50k–150k followers, with a focus on HR/career and YouTube channels.
+      - Rationale: This segment is more accessible than macro-influencers and has an audience actively seeking overseas opportunities.
+  - Cihan's Role: Leverage his network to make initial contact.
+      - First Target: Burak Cem (146k followers), a close friend of Cihan's.
+      - Insight: Burak Cem's audience of "new generation migrants" is a perfect fit for Cortex.
+
+Influencer Value Proposition & Monetization
+
+  - A formal playbook is required to clearly define the value for influencers.
+  - Monetization Model:
+      - Revenue Share: A 5-year share (e.g., 10%) of subscription revenue from referred businesses and premium users.
+      - Paid Posts: A separate budget for paid posts, which influencers value more than temporary Stories.
+  - Incentives for Smaller Influencers (<20k followers):
+      - "Welcome Packages": Physical or digital gifts (e.g., branded merch, software trials) to secure Stories without cash.
+      - Rationale: This builds relationships for future paid collaborations.
+
+Content & Engagement Initiatives
+
+  - Blog Contest: A contest with cash prizes ($1k–$3k) will be launched to drive traffic and generate content.
+      - Categories: Humorous, emotional, and practical stories about the diaspora experience.
+      - Goal: Use top entries for platform content, including video adaptations.
+  - Influencer Content Strategy:
+      - Stories: Primary channel for referral links.
+      - Posts: Require a separate budget.
+      - YouTube: High-impact channel for sponsored videos.
+      - DM Automation: Use keyword-triggered DMs to send referral links.
+
+Next Steps
+
+  - Cihan:
+      - Contact Burak Cem to get initial feedback on the influencer value proposition.
+      - Identify 3–4 other potential influencer partners.
+  - Qualtron & Umut Barış:
+      - Draft the influencer playbook detailing the revenue share model and welcome packages.
+      - Develop a prototype influencer dashboard for the landing page.
+  - All:
+      - Schedule a follow-up meeting for next week to review the playbook and Cihan's findings.

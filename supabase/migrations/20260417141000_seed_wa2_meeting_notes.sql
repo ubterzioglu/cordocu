@@ -38,4 +38,5 @@ insert into meeting_notes (title, content, date, category, source, sort_order) v
 ('WA2-35', 'Umbrella company modeli araştırılacak.', '17 Nisan WA', 'kullanici-kisitlamalari', 'WA', 234),
 ('WA2-36', 'Aday araştırması başlatılıyor: UBT adaylara bakacak; Cihanla görüşme — Burak onay, Barış görüşecek.', '17 Nisan WA', 'kullanici-kisitlamalari', 'WA', 235),
 ('WA2-37', 'CorteQS WhatsApp yapısı: Mastermind Bot + Admin Bot + Role Based Bot + Kanal Bot.', '17 Nisan WA', 'mvp-hedefleri', 'WA', 236),
-('WA2-38', 'LinkedIn Company Page''e önce follower kazanımı odaklanılmalı; iş ilanları sonraki aşamada.', '17 Nisan WA', 'reklam-modeli', 'WA', 237);
+('WA2-38', 'LinkedIn Company Page''e önce follower kazanımı odaklanılmalı; iş ilanları sonraki aşamada.', '17 Nisan WA', 'reklam-modeli', 'WA', 237)
+on conflict do nothing;
