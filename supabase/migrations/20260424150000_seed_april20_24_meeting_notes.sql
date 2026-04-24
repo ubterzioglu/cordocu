@@ -1,0 +1,86 @@
+alter table public.meeting_notes drop constraint if exists meeting_notes_source_check;
+
+alter table public.meeting_notes add constraint meeting_notes_source_check
+  check (source in ('T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'WA', 'NO', 'MAN'));
+
+insert into public.meeting_notes (title, content, date, category, source, sort_order) values
+
+-- T5 — 20 Nisan / Tahsin oncesi
+('T5-01', 'Influencer stratejisinde Ambassador → Partner → Country Agent kariyer yolu kurgulandı.', '20 Nisan', 'influencer-partnerlikleri', 'T5', 300),
+('T5-02', 'Influencerlara sürdürülebilir gelir modeli olarak topluluk aboneliklerinden recurring revenue önerilecek.', '20 Nisan', 'reklam-modeli', 'T5', 301),
+('T5-03', 'Barış görüşmesinde önce ihtiyacı dinleme, sonra Cortex''i işini büyüteceği platform olarak konumlandırma yaklaşımı benimsendi.', '20 Nisan', 'influencer-partnerlikleri', 'T5', 302),
+('T5-04', 'Barış profilinde yüksek enerji ve hızlı aksiyon avantaj; sabırsızlık ve dağılma riski not edildi.', '20 Nisan', 'influencer-partnerlikleri', 'T5', 303),
+('T5-05', 'WhatsApp bot MVP''si canlı; kullanıcı onboarding ve SSS cevaplama için kullanılacak.', '20 Nisan', 'mvp-hedefleri', 'T5', 304),
+('T5-06', 'Proje dokümantasyonu Q&A formatına çevrilerek bot için yapılandırılmış bilgi tabanı oluşturuldu.', '20 Nisan', 'veritabani-tasarimi', 'T5', 305),
+('T5-07', 'WhatsApp botunun 60 günlük ücretsiz deneme sonrası mesaj maliyeti için bütçe ve alternatif platform riski değerlendirilecek.', '20 Nisan', 'audit-kayitlari', 'T5', 306),
+('T5-08', 'Spindora AI, Batuhan ile pazarlama partnerliği üzerinden SEO/GEO aracı olarak kullanılacak.', '20 Nisan', 'reklam-modeli', 'T5', 307),
+('T5-09', 'MVP onboarding akışında tek ekranda tek soru mantığıyla tinder-style form deneyimi planlandı.', '20 Nisan', 'mvp-hedefleri', 'T5', 308),
+('T5-10', 'Atınç Akçayöz için QS senior technical advisor rolü ve formal teklif hazırlığı gündeme alındı.', '20 Nisan', 'ekip-ve-isbirligi', 'T5', 309),
+('T5-11', 'Sertaç Yay ile Almanya ambassador/partnerlik ihtimali için görüşme başlatılacak.', '20 Nisan', 'influencer-partnerlikleri', 'T5', 310),
+('T5-12', 'Dashboard içinde tüm proje araçlarını takip edecek Studio bölümü ihtiyacı not edildi.', '20 Nisan', 'veritabani-tasarimi', 'T5', 311),
+
+-- T6 — 20 Nisan / Tahsin
+('T6-01', 'Tahsin ile Cortex arasında diaspora topluluk projeleri için olası partnerlik değerlendirildi.', '20 Nisan', 'influencer-partnerlikleri', 'T6', 330),
+('T6-02', 'Tahsin''e Sydney gibi bir bölge için Cortex City Partner rolü önerildi.', '20 Nisan', 'influencer-partnerlikleri', 'T6', 331),
+('T6-03', 'City Partner modeli Ambassador → City/Country Partner → Agency Owner kariyer yolu olarak anlatıldı.', '20 Nisan', 'influencer-partnerlikleri', 'T6', 332),
+('T6-04', 'Tahsin için revenue share modeli kullanıcı harcamasından %6-10 pay olarak çerçevelendi.', '20 Nisan', 'reklam-modeli', 'T6', 333),
+('T6-05', 'Partnerlerin etkinlik, tur ve büyük organizasyonlardan event-based income üretebileceği anlatıldı.', '20 Nisan', 'reklam-modeli', 'T6', 334),
+('T6-06', 'Tahsin kendi platformunda diaspora profesyonellerine sosyal medya pazarlaması öğretmeyi planlıyor.', '20 Nisan', 'influencer-partnerlikleri', 'T6', 335),
+('T6-07', 'Tahsin''in platformu ücretsiz Instagram temelleri ve ücretli YouTube masterclass gibi katmanlı içerik modeliyle kurgulanıyor.', '20 Nisan', 'reklam-modeli', 'T6', 336),
+('T6-08', 'Tahsin''in uygulaması performans testinde; lansman webinarı yaklaşık iki hafta içinde yapılacak.', '20 Nisan', 'mvp-hedefleri', 'T6', 337),
+('T6-09', 'Cortex global diaspora ekosistemi olarak directory, AI matching ve relocation engine avantajlarıyla konumlandırıldı.', '20 Nisan', 'mvp-hedefleri', 'T6', 338),
+('T6-10', 'Cortex''in GCC konumu yatırım ve devlet ilgisi açısından stratejik avantaj olarak anlatıldı.', '20 Nisan', 'reklam-modeli', 'T6', 339),
+('T6-11', 'Tahsin Cortex teklifini kendi webinarından sonra değerlendirecek.', '20 Nisan', 'influencer-partnerlikleri', 'T6', 340),
+('T6-12', 'Taraflar iki hafta sonra Tahsin''in kararını görüşmek üzere tekrar temas kuracak.', '20 Nisan', 'kullanici-kisitlamalari', 'T6', 341),
+
+-- T7 — 20 Nisan / Tahsin sonrasi ve Cihan
+('T7-01', 'Cihan, Cortex core marketing rolü için güçlü aday olarak değerlendirildi.', '20 Nisan', 'ekip-ve-isbirligi', 'T7', 360),
+('T7-02', 'Cihan''ın BMW, Coca-Cola ve büyük markalarla 15+ yıllık deneyimi stratejik değer olarak not edildi.', '20 Nisan', 'ekip-ve-isbirligi', 'T7', 361),
+('T7-03', 'Cortex marketing rolünün Content, Influencer Management ve Growth olmak üzere üç ana kolu yöneteceği netleşti.', '20 Nisan', 'ekip-ve-isbirligi', 'T7', 362),
+('T7-04', 'Cihan''ın temel katkısı takipçi sayısından çok kitle uyumu ve kaliteye dayalı influencer seçimi olarak tanımlandı.', '20 Nisan', 'influencer-partnerlikleri', 'T7', 363),
+('T7-05', 'French Oje örneği, doğru kitleye sahip micro influencerın büyük hesaplardan daha etkili olabileceğini gösteren referans olarak kullanıldı.', '20 Nisan', 'influencer-partnerlikleri', 'T7', 364),
+('T7-06', 'Cihan''ın uzun vadeli topluluk bağlılığı ve riskleri önceden görme yaklaşımı Cortex için değerli bulundu.', '20 Nisan', 'topluluk-yonetimi', 'T7', 365),
+('T7-07', 'Cihan için rol co-founder/equity opportunity olarak çerçevelenecek.', '20 Nisan', 'ekip-ve-isbirligi', 'T7', 366),
+('T7-08', 'Cihan için maaş + hisse hibrit modeli, maaşın ilk yatırıma kadar ertelenmesi seçeneğiyle değerlendirilecek.', '20 Nisan', 'audit-kayitlari', 'T7', 367),
+('T7-09', 'Cihan''a formal offer hazırlanacak ve rol kapsamı yeniden görüşülecek.', '20 Nisan', 'ekip-ve-isbirligi', 'T7', 368),
+('T7-10', 'Cihan''ın finansal güvenlik ihtiyacı teklif yapısında dikkate alınacak risk olarak not edildi.', '20 Nisan', 'audit-kayitlari', 'T7', 369),
+
+-- WA3 — 17-24 Nisan WA: wa summary 24 nisan.txt dosyasinda son iki #summary arasi
+('WA3-01', 'Barış Avustralya''nın hızla büyüyen community''si için erken temas ve win-win strateji kurulması gündeme geldi.', '18 Nisan WA', 'influencer-partnerlikleri', 'WA', 400),
+('WA3-02', 'CorteQS WhatsApp community linkinin landing page''e eklenmesi ve kullanıcıların buradan yönlendirilmesi planlandı.', '18 Nisan WA', 'topluluk-yonetimi', 'WA', 401),
+('WA3-03', 'WhatsApp botu hoş geldin akışına konumlandırılarak yeni gelenlere kısa sürede bilgi verecek şekilde kullanılacak.', '18 Nisan WA', 'mvp-hedefleri', 'WA', 402),
+('WA3-04', 'Landing SEO/GEO ayarları için SSS ve yapısal içeriklerin zorunlu hale geldiği not edildi.', '18 Nisan WA', 'reklam-modeli', 'WA', 403),
+('WA3-05', 'Influencerlar gelmeden önce aday database''i oluşturma ve açıklamalarla doldurma ihtiyacı gündeme geldi.', '20 Nisan WA', 'influencer-partnerlikleri', 'WA', 404),
+('WA3-06', 'Barış Avustralya oluşumu friction yaratmadan birlikte büyüme perspektifiyle ele alınacak.', '20 Nisan WA', 'influencer-partnerlikleri', 'WA', 405),
+('WA3-07', 'Sertaç Yay Almanya ambassador için güçlü aday olarak işbirliği ön görüşmesine çağrılacak.', '20 Nisan WA', 'influencer-partnerlikleri', 'WA', 406),
+('WA3-08', 'Landing launch sonrasında kurucular LinkedIn pozisyonlarını görünür hale getirecek.', '20 Nisan WA', 'reklam-modeli', 'WA', 407),
+('WA3-09', 'Harici görüşmelerden önce adaylara iddialı ama ölçülü bir onepager gönderme kuralı önerildi.', '20 Nisan WA', 'ekip-ve-isbirligi', 'WA', 408),
+('WA3-10', 'Tahsin webinarı öncesinde bot ve sosyal medya hareketlenirse webinar trafiğinin CorteQS''e dönebileceği değerlendirildi.', '20 Nisan WA', 'reklam-modeli', 'WA', 409),
+('WA3-11', 'White label partnerlik modeli Barış görüşmesi sonrası ayrıca değerlendirilecek konu olarak not edildi.', '20 Nisan WA', 'reklam-modeli', 'WA', 410),
+('WA3-12', 'Referral programının hızlıca hayata geçirilmesi gerektiği ve ödeme altyapısı seçeneklerinin araştırılacağı konuşuldu.', '20 Nisan WA', 'audit-kayitlari', 'WA', 411),
+('WA3-13', 'Bot, landing page ve topluluk hazırlıkları tamamlanarak Cihan''ın hafta içinde içeri alınması hedeflendi.', '21 Nisan WA', 'ekip-ve-isbirligi', 'WA', 412),
+('WA3-14', 'Sosyal medya çağrıları ve LinkedIn dağıtımı launch öncesi yumuşak büyüme kanalı olarak kullanılacak.', '21 Nisan WA', 'reklam-modeli', 'WA', 413),
+('WA3-15', 'Influencer seçiminde takipçi sayısından çok akıllı seçim ve kitle kalitesi önceliklendirilecek.', '21 Nisan WA', 'influencer-partnerlikleri', 'WA', 414),
+('WA3-16', 'Sertaç ve Cihan için hazırlanan mesajlar gönderildi; sandboxdan çıkış hissi oluştu.', '21 Nisan WA', 'ekip-ve-isbirligi', 'WA', 415),
+('WA3-17', 'Landing AI/bot akışı ile klasik formun aynı sayfada birlikte sunulması uygun görüldü.', '21 Nisan WA', 'mvp-hedefleri', 'WA', 416),
+('WA3-18', 'HR takipçileri güçlü olduğu için yurt dışındaki HR profilleri ikinci influencer kanalı olarak görüldü.', '21 Nisan WA', 'influencer-partnerlikleri', 'WA', 417),
+('WA3-19', 'Community duyurusunda topluluk sahiplerine gelir ortaklığı ve topluluğunu koruma mesajı öne çıkarılacak.', '23 Nisan WA', 'topluluk-yonetimi', 'WA', 418),
+('WA3-20', 'Yeni WhatsApp grup yapısı core topluluktan ayrı ve kontrollü davet kanalı olarak kurgulanacak.', '23 Nisan WA', 'topluluk-yonetimi', 'WA', 419),
+('WA3-21', 'Katılacak topluluk liderlerine referral gönderme ve davet akışını izleme ihtiyacı not edildi.', '23 Nisan WA', 'audit-kayitlari', 'WA', 420),
+('WA3-22', 'Cihan topluluğa dahil edildi ve erken core hareketin parçası haline geldi.', '23 Nisan WA', 'ekip-ve-isbirligi', 'WA', 421),
+('WA3-23', 'Topluluk liderleri için güvenlik, hukuk ve ana WhatsApp yapısı ayrı çalışma başlıkları olarak ayrıldı.', '23 Nisan WA', 'topluluk-yonetimi', 'WA', 422),
+('WA3-24', 'Seren''in topluluk liderleri kanalına alınıp content üretimi ve bağlam artırma sorumluluğu alması önerildi.', '23 Nisan WA', 'ekip-ve-isbirligi', 'WA', 423),
+('WA3-25', 'Influencer management için international-national co-manager düzeniyle tek adam riskini azaltma fikri gündeme geldi.', '23 Nisan WA', 'influencer-partnerlikleri', 'WA', 424),
+('WA3-26', 'Instagram DM mesajları CorteQS hesabından atılacak şekilde influencer outreach taktiği netleştirilecek.', '23 Nisan WA', 'influencer-partnerlikleri', 'WA', 425),
+('WA3-27', 'Reddit r/diasporaturks kanalının otomasyon ve dağıtım kanalı olarak kullanılması gündeme geldi.', '23 Nisan WA', 'reklam-modeli', 'WA', 426),
+('WA3-28', 'Community mesajlarında pinli ana mesaj ve kısa güncel teaserlar kullanma yaklaşımı benimsendi.', '24 Nisan WA', 'topluluk-yonetimi', 'WA', 427),
+('WA3-29', 'Bireysel destek verecek ama danışman olmayan kişiler için Contributors / Community Contributors adı önerildi.', '24 Nisan WA', 'topluluk-yonetimi', 'WA', 428),
+('WA3-30', 'LinkedIn postlarının boşa gitmemesi için landing ana sayfada sliding news/admin içerik yapısı kullanılacak.', '24 Nisan WA', 'reklam-modeli', 'WA', 429),
+('WA3-31', 'Sliding news detay sayfaları LinkedIn postlarına bağlanarak trafik artırma kanalı olarak kullanılacak.', '24 Nisan WA', 'reklam-modeli', 'WA', 430),
+('WA3-32', 'Barış Avustralya takipçileri CorteQS hesabıyla günlük 100-150 takip stratejisiyle izlenecek.', '24 Nisan WA', 'influencer-partnerlikleri', 'WA', 431),
+('WA3-33', 'Avustralya için 50 Türk Instagram influencer başlangıç listesi outreach ve scraping havuzu olarak çıkarıldı.', '24 Nisan WA', 'influencer-partnerlikleri', 'WA', 432),
+('WA3-34', 'Influencer listeleri master arşivde güncel ve erişilebilir tutulacak.', '24 Nisan WA', 'veritabani-tasarimi', 'WA', 433),
+('WA3-35', 'Influencer CRM''inde kime hangi içerik, davet veya işbirliği gittiğinin takip edilmesi gerektiği not edildi.', '24 Nisan WA', 'veritabani-tasarimi', 'WA', 434),
+('WA3-36', 'Platform maskotu için teknoloji yönünü vurgulayan ama özelleştirilecek bir görsel fikir todo olarak kaydedilecek.', '24 Nisan WA', 'mvp-hedefleri', 'WA', 435),
+('WA3-37', 'Katılımcıları hareketlendirmek için bilgi + anket içeren küçük sayfa fikri toplantı konusu olarak ayrıldı.', '24 Nisan WA', 'topluluk-yonetimi', 'WA', 436)
+on conflict do nothing;

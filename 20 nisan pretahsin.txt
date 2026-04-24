@@ -1,0 +1,63 @@
+Qualtron Sinclair-Burak Akcakanat's Zoom Meeting - April 20
+VIEW RECORDING: 
+Meeting Purpose
+
+Align on project updates and strategize for the upcoming influencer meeting.
+
+Key Takeaways
+
+  - Influencer Strategy: Offer a clear career path (Ambassador → Partner → Country Agent) to monetize communities via recurring revenue, solving the financial instability of freelance influencing.
+  - New Tech Stack: A new stack is live, featuring a WhatsApp bot for automated onboarding, Spindora AI for SEO, and a new "tinder-style" MVP onboarding flow to boost user completion.
+  - Strategic Hire: Atınç Akçayoz (ex-Is Bankası SoftTech GM) is being onboarded as a Senior Technical Advisor to provide high-level architecture and mentorship.
+  - Influencer Prospect: Barış, who is actively seeking a platform, is the target for the new strategy. The goal is to understand his needs before pitching Cortex as the solution.
+
+Topics
+
+Influencer Strategy & Barış Meeting Prep
+
+  - Problem: Influencers struggle with inconsistent income and lack a clear business model.
+  - Solution: A structured career path to build a sustainable business on the Cortex platform.
+      - Ambassador → Partner: Initial roles focused on community growth.
+      - Country Agent: A long-term goal where successful partners in a region form an agency, using Cortex infrastructure to manage large-scale events and subscriptions.
+  - Meeting Plan:
+    1.  Listen: First, understand Barış's current situation and needs.
+    2.  Pitch: Present Cortex as the platform to build his business, emphasizing recurring revenue from his community's subscriptions.
+  - Influencer Intel (Barış):
+      - Profile: ~30-35, Karadeniz accent, ~3-4 years abroad (Germany), visa consultancy background.
+      - Assessment: High-energy but potentially impatient; needs a clear, structured path to stay engaged.
+
+Project Updates & New Tech Stack
+
+  - WhatsApp Bot:
+      - Purpose: Automate user onboarding and answer FAQs.
+      - Status: MVP is live.
+      - Data Source: All project documentation has been converted to a Q&A format, creating a structured knowledge base for the bot.
+      - Budget Risk: The Cortex bot has a 60-day free trial. Scaling may incur per-message costs, requiring a budget review or platform change (e.g., Telegram).
+  - Spindora AI:
+      - Tool: A powerful SEO/Geo tool.
+      - Status: Acquired via a marketing partnership with its creator, Batuhan.
+      - Action: The landing page will be updated with SEO-optimized content based on Spindora's recommendations.
+  - MVP Onboarding Flow:
+      - Problem: Traditional forms have low completion rates.
+      - Solution: A new "tinder-style" flow with one question per screen to increase engagement.
+      - Function: The flow will dynamically route users to the correct role (e.g., Ambassador) based on their answers.
+
+Strategic Hire: Atınç Akçayoz
+
+  - Role: Senior Technical Advisor for Qualtron Sinclair (QS).
+  - Background: Former General Manager at SoftTech (Is Bankası's tech arm), with deep experience in large-scale technical architecture.
+  - Value: Provides high-level technical mentorship and architecture oversight for all QS projects.
+  - Status: A formal offer is being prepared.
+
+Next Steps
+
+  - Qualtron:
+      - Pitch the Cortex career path to Barış.
+      - Contact Sertaç Yay (450K followers) to explore a partnership.
+      - Test Cloud Design AI for one month.
+      - Draft the offer for Atınç Akçayoz.
+      - Create a "Studio" section on the dashboard to track all project tools.
+  - Umut:
+      - Implement the "tinder-style" onboarding flow for the MVP.
+      - Integrate Spindora AI recommendations into the landing page.
+      - Research a shared password manager (e.g., KeePass) for team credentials.

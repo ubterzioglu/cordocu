@@ -1,7 +1,7 @@
 import { getSupabaseBrowserClient } from './supabase'
 import { validateTitle, validateContent, sanitizeError } from './security'
 
-export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'WA' | 'NO' | 'MAN'
+export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'WA' | 'NO' | 'MAN'
 
 export interface MeetingNoteItem {
   id: string
@@ -30,6 +30,9 @@ export const MEETING_CATEGORIES: MeetingNoteCategory[] = [
   { id: 'veritabani-tasarimi', label: 'Veritabanı Tasarımı', color: '#FBBC04' },
   { id: 'mvp-hedefleri', label: 'MVP Hedefleri', color: '#A142F4' },
   { id: 'reklam-modeli', label: 'Reklam Modeli', color: '#00897B' },
+  { id: 'influencer-partnerlikleri', label: 'Influencer Partnerlikleri', color: '#EC4899' },
+  { id: 'topluluk-yonetimi', label: 'Topluluk Yönetimi', color: '#0EA5E9' },
+  { id: 'ekip-ve-isbirligi', label: 'Ekip ve İşbirliği', color: '#F97316' },
 ]
 
 export const MEETING_SOURCES: MeetingNoteSource[] = [
@@ -37,6 +40,9 @@ export const MEETING_SOURCES: MeetingNoteSource[] = [
   { key: 'T2', label: 'Toplantı 2', date: '12 Mart' },
   { key: 'T3', label: 'Toplantı 3', date: '9 Nisan' },
   { key: 'T4', label: 'Toplantı 4', date: '17 Nisan' },
+  { key: 'T5', label: 'Toplantı 5', date: '20 Nisan - Tahsin Öncesi' },
+  { key: 'T6', label: 'Toplantı 6', date: '20 Nisan - Tahsin' },
+  { key: 'T7', label: 'Toplantı 7', date: '20 Nisan - Tahsin Sonrası / Cihan' },
   { key: 'WA', label: 'WhatsApp Yazışmaları', date: '13 Nisan WA' },
   { key: 'NO', label: 'Notion Kararlar', date: '17 Nisan' },
   { key: 'MAN', label: 'Manuel', date: 'Dashboard' },
@@ -47,6 +53,9 @@ export const SOURCE_COLORS: Record<MeetingSource, string> = {
   T2: '#34A853',
   T3: '#EA4335',
   T4: '#7E57C2',
+  T5: '#0EA5E9',
+  T6: '#EC4899',
+  T7: '#F97316',
   WA: '#FA7B17',
   NO: '#8B5CF6',
   MAN: '#1A73E8',
