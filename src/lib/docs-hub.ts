@@ -2,8 +2,6 @@ export type DocCategorySlug =
   | 'general'
   | 'toplantiozet'
   | 'todolist'
-  | 'sosyalmedya'
-  | 'danismanlarsm'
   | 'insankaynaklari'
   | 'arge'
   | 'mvpitems'
@@ -168,50 +166,6 @@ export const docsCategories: DocCategoryDefinition[] = [
         description: 'Core team kararları (Burak + Barış), ürün fikirleri (WhatsApp bot, Ambassador, JukeBox, haberler, hospital booking) ve networking bağlantıları.',
         href: '#todo-notion-brainstorm',
         categorySlug: 'todolist',
-      },
-    ],
-  },
-  {
-    slug: 'sosyalmedya',
-    label: 'SOSYAL MEDYA',
-    shortDescription: 'Sosyal medya kaynaklarının merkezi yönetim tablosu.',
-    iconKey: 'book',
-    defaultExpanded: false,
-    overview: {
-      title: 'Sosyal Medya Linkleri',
-      description: 'Sosyal medya kaynaklarını merkezi ve yönetilebilir tabloda toplayın.',
-      ctaLabel: 'Sosyal Medyaya Git',
-    },
-    items: [
-      {
-        id: 'sosyalmedya-main',
-        label: 'Sosyal Medya Listesi',
-        description: 'Tüm sosyal medya linkleri.',
-        href: '/sosyalmedya',
-        categorySlug: 'sosyalmedya',
-        featuredOrder: 45,
-      },
-    ],
-  },
-  {
-    slug: 'danismanlarsm',
-    label: 'DANIŞMANLAR / SM',
-    shortDescription: 'Danışman ve sosyal medya odaklı kaynakların ayrı yönetim tablosu.',
-    iconKey: 'book',
-    defaultExpanded: false,
-    overview: {
-      title: 'Danışmanlar/SM Linkleri',
-      description: 'Danışman ve sosyal medya odaklı linkleri ayrı modülde yönetin.',
-      ctaLabel: 'Danışmanlar/SM Modülüne Git',
-    },
-    items: [
-      {
-        id: 'danismanlarsm-main',
-        label: 'Danışmanlar/SM Listesi',
-        description: 'Danışmanlar ve sosyal medya kaynakları için ayrı liste.',
-        href: '/danismanlarsm',
-        categorySlug: 'danismanlarsm',
-        featuredOrder: 46,
       },
     ],
   },
