@@ -1,7 +1,7 @@
 import { getSupabaseBrowserClient } from './supabase'
 import { validateTitle, validateContent, sanitizeError } from './security'
 
-export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'T8' | 'WA' | 'NO' | 'MAN'
+export type MeetingSource = 'T1' | 'T2' | 'T3' | 'T4' | 'T5' | 'T6' | 'T7' | 'T8' | 'T9' | 'WA' | 'NO' | 'MAN'
 
 export interface MeetingNoteItem {
   id: string
@@ -44,6 +44,7 @@ export const MEETING_SOURCES: MeetingNoteSource[] = [
   { key: 'T6', label: 'Toplantı 6', date: '20 Nisan - Tahsin' },
   { key: 'T7', label: 'Toplantı 7', date: '20 Nisan - Tahsin Sonrası / Cihan' },
   { key: 'T8', label: 'Toplantı 8', date: '24 Nisan - Cihan / Influencer' },
+  { key: 'T9', label: 'Toplantı 9', date: '29 Nisan - Strategy & Ops' },
   { key: 'WA', label: 'WhatsApp Yazışmaları', date: '13-24 Nisan WA' },
   { key: 'NO', label: 'Notion Kararlar', date: '17 Nisan' },
   { key: 'MAN', label: 'Manuel', date: 'Dashboard' },
@@ -58,6 +59,7 @@ export const SOURCE_COLORS: Record<MeetingSource, string> = {
   T6: '#EC4899',
   T7: '#F97316',
   T8: '#14B8A6',
+  T9: '#2563EB',
   WA: '#FA7B17',
   NO: '#8B5CF6',
   MAN: '#1A73E8',
