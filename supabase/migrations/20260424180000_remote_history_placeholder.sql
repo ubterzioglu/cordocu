@@ -1,0 +1,2 @@
+-- Placeholder migration to mirror an existing remote-only history entry.
+-- This file intentionally does not change schema or data.
