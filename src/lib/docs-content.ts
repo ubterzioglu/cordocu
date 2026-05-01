@@ -12,7 +12,11 @@ const generalSectionDetail: Record<string, string> = {
     '- WhatsApp Bot, Ekip ve Dijital Pazarlama sayfalarindaki aciklama kartlari daha okunabilir olacak sekilde madde madde duzenlendi.\n' +
     '- Links sayfasi Dosyalar ve Linkler olarak yeniden adlandirildi ve ust kisim sadeleştirildi.\n' +
     '- Links listesine Tur sutunu eklendi; mevcut kayitlar Dosya olarak siniflandirildi.\n' +
-    '- Links kayitlari departman bazli duzene gore guncellendi ve ilgili seed yapisi eklendi.',
+    '- Links kayitlari departman bazli duzene gore guncellendi ve ilgili seed yapisi eklendi.\n' +
+    '- Links sayfasinin baslik kartina Google Drive klasorune giden hizli erisim butonu eklendi.\n' +
+    '- Sol menude Dosyalar ve Linkler butonu ARGE ile MVP Listesi arasina tasindi.\n' +
+    '- dosyalar0105.md listesindeki eksik Drive kayitlari links tablosuna eklenip Supabase migration olarak pushlandi.\n' +
+    '- MVP, Ambassador, Ekip, Dijital Pazarlama, WhatsApp Bot, Roadmap, Proje Takibi, Kortex docs ve Cap Table baglantilari yeni WIKI sekmesi altinda gruplandi.',
 }
 
 const projeTakibiSectionDetail: Record<string, string> = {
@@ -736,6 +740,16 @@ export function getDocsHubContentView(): ContentView {
 }
 
 export const sidebarUpdates: { date: string; items: string[] }[] = [
+  {
+    date: '01.05.2026',
+    items: [
+      'Links sayfasinin baslik kartina Google Drive klasorune giden hizli erisim butonu eklendi.',
+      'Sol menude Dosyalar ve Linkler butonu ARGE ile MVP Listesi arasina tasindi.',
+      'dosyalar0105.md listesindeki eksik Drive kayitlari links tablosuna eklenip Supabase migration olarak pushlandi.',
+      'Supabase migrationlari kontrol edildi; remote veritabani ile local migration listesi tam senkron hale getirildi.',
+      'MVP, Ambassador, Ekip, Dijital Pazarlama, WhatsApp Bot, Roadmap, Proje Takibi, Kortex docs ve Cap Table baglantilari yeni WIKI sekmesi altinda gruplandi.',
+    ],
+  },
   {
     date: '19.04.2026',
     items: [

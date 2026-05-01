@@ -1,6 +1,9 @@
 import type { RefObject } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Menu, X } from 'lucide-react'
+import { buildDocCategoryHref, buildDocItemHref, buildDocsHubHref } from '@/lib/docs-navigation'
+import { sidebarUpdates } from '@/lib/docs-content'
 
 interface HeaderProps {
   onMenuToggle: () => void
@@ -13,13 +16,22 @@ export default function Header({
   isSidebarOpen,
   menuButtonRef,
 }: HeaderProps) {
+  const router = useRouter()
+  const searchHref = buildDocsHubHref()
+  const updatesHref = buildDocItemHref({
+    categorySlug: 'general',
+    id: 'general-updates',
+  })
+  const isSearchActive = router.asPath === searchHref
+  const isUpdatesActive =
+    router.asPath === buildDocCategoryHref('general') ||
+    router.asPath.startsWith(`${buildDocCategoryHref('general')}#`)
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-[var(--docs-header-height)] border-b border-white/70 bg-white/85 shadow-[0_8px_32px_rgba(60,64,67,0.08)] backdrop-blur-xl">
-       <div className="flex h-full items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
+      <div className="flex h-full items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
         <div className="flex min-w-0 items-center gap-2 sm:gap-4">
-          <span className="docs-chip hidden sm:inline-flex">
-            v1.0.0
-          </span>
+          <span className="docs-chip hidden sm:inline-flex">v1.0.0</span>
           <button
             ref={menuButtonRef}
             type="button"
@@ -61,6 +73,32 @@ export default function Header({
               </span>
             </span>
           </Link>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href={searchHref}
+            className={`hidden rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-all sm:inline-flex ${
+              isSearchActive
+                ? 'bg-[rgba(66,133,244,0.12)] text-primary-700'
+                : 'text-gray-500 hover:bg-[rgba(66,133,244,0.06)] hover:text-gray-700'
+            }`}
+            aria-current={isSearchActive ? 'page' : undefined}
+          >
+            Ara
+          </Link>
+          {sidebarUpdates.length > 0 && (
+            <Link
+              href={updatesHref}
+              className={`rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-all ${
+                isUpdatesActive
+                  ? 'bg-[rgba(66,133,244,0.12)] text-primary-700'
+                  : 'text-gray-500 hover:bg-[rgba(66,133,244,0.06)] hover:text-gray-700'
+              }`}
+              aria-current={isUpdatesActive ? 'page' : undefined}
+            >
+              Guncellemeler
+            </Link>
+          )}
         </div>
       </div>
     </header>

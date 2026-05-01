@@ -1,19 +1,16 @@
 import { useEffect, useState, type RefObject } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { BookOpen, ChevronDown, Info } from 'lucide-react'
+import { BookOpen, ChevronDown } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
 import SidebarItem from './SidebarItem'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
-import { buildDocCategoryHref, buildDocItemHref, buildDocsHubHref } from '@/lib/docs-navigation'
-import { sidebarUpdates } from '@/lib/docs-content'
 import type { DocCategorySlug } from '@/lib/docs-data'
 
 interface SidebarProps {
   isDesktopViewport: boolean
   isOpen: boolean
-  initialFocusRef: RefObject<HTMLAnchorElement>
+  initialFocusRef: RefObject<HTMLButtonElement>
   onClose: () => void
 }
 
@@ -73,13 +70,6 @@ export default function Sidebar({
     (category) => !hiddenSidebarCategorySlugs.includes(category.slug)
   )
   const isSidebarVisible = isDesktopViewport || isOpen
-  const generalUpdatesHref = buildDocItemHref({
-    categorySlug: 'general',
-    id: 'general-updates',
-  })
-  const isGeneralUpdatesActive =
-    router.asPath === buildDocCategoryHref('general') ||
-    router.asPath.startsWith(`${buildDocCategoryHref('general')}#`)
 
   useEffect(() => {
     if (isWikiActive) {
@@ -109,38 +99,7 @@ export default function Sidebar({
           aria-label="Dokümantasyon navigasyonu"
           className="h-full overflow-y-auto px-3 py-4 [overscroll-behavior:contain]"
         >
-          <div className="mb-4 px-3 pt-1">
-            <Link
-              href={buildDocsHubHref()}
-              ref={initialFocusRef}
-              onClick={onClose}
-              className={`sidebar-item group mb-3 w-full text-left ${
-                router.asPath === '/' ? 'active' : ''
-              }`}
-              aria-current={router.asPath === '/' ? 'page' : undefined}
-            >
-              <span className="h-5 w-5" aria-hidden="true">
-                <Info size={16} />
-              </span>
-              <span>ARA</span>
-            </Link>
-            {sidebarUpdates.length > 0 && (
-              <Link
-                href={generalUpdatesHref}
-                onClick={onClose}
-                className={`sidebar-item group w-full text-left ${
-                  isGeneralUpdatesActive ? 'active' : ''
-                }`}
-                aria-current={isGeneralUpdatesActive ? 'page' : undefined}
-              >
-                <span className="h-5 w-5" aria-hidden="true">
-                  <Info size={16} />
-                </span>
-                <span>GÜNCELLEMELER</span>
-              </Link>
-            )}
-          </div>
-          <div className="space-y-1">
+          <div className="space-y-1 px-3 pt-1">
             {docsCategories.map((category) => {
               const Icon = getDocIcon(category.iconKey)
 
@@ -157,6 +116,7 @@ export default function Sidebar({
             })}
             <div className="pt-1">
               <button
+                ref={initialFocusRef}
                 type="button"
                 onClick={() => setIsWikiOpen((previousState) => !previousState)}
                 className={`flex w-full items-center gap-2 rounded-2xl border px-3 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
