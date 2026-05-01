@@ -214,6 +214,28 @@ export const docsCategories: DocCategoryDefinition[] = [
     ],
   },
   {
+    slug: 'links',
+    label: 'DOSYALAR VE LİNKLER',
+    shortDescription: 'Departman bazlı dosya ve linklerin merkezi yönetim tablosu.',
+    iconKey: 'book',
+    defaultExpanded: false,
+    overview: {
+      title: 'Dosyalar ve Linkler',
+      description: 'Departman bazlı dosya ve linkleri tek yerde görüntüleyin ve yönetin.',
+      ctaLabel: 'Dosya ve Linklere Git',
+    },
+    items: [
+      {
+        id: 'links-main',
+        label: 'Dosya ve Link Listesi',
+        description: 'Tüm dosya ve linklerin merkezi CRUD tablosu.',
+        href: '/links',
+        categorySlug: 'links',
+        featuredOrder: 43,
+      },
+    ],
+  },
+  {
     slug: 'mvpitems',
     label: 'MVP LİSTESİ',
     shortDescription: 'MVP maddelerinin Supabase destekli merkezi listesi — MVP seviyesi ve sorumlu ataması.',
@@ -710,28 +732,6 @@ export const docsCategories: DocCategoryDefinition[] = [
         href: '#pt-genel-yapi',
         categorySlug: 'projetakibi',
         featuredOrder: 40,
-      },
-    ],
-  },
-  {
-    slug: 'links',
-    label: 'DOSYALAR VE LİNKLER',
-    shortDescription: 'Departman bazlı dosya ve linklerin merkezi yönetim tablosu.',
-    iconKey: 'book',
-    defaultExpanded: false,
-    overview: {
-      title: 'Dosyalar ve Linkler',
-      description: 'Departman bazlı dosya ve linkleri tek yerde görüntüleyin ve yönetin.',
-      ctaLabel: 'Dosya ve Linklere Git',
-    },
-    items: [
-      {
-        id: 'links-main',
-        label: 'Dosya ve Link Listesi',
-        description: 'Tüm dosya ve linklerin merkezi CRUD tablosu.',
-        href: '/links',
-        categorySlug: 'links',
-        featuredOrder: 43,
       },
     ],
   },
