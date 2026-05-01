@@ -5,7 +5,7 @@ import type { DocNavItem } from '@/lib/docs-data'
 import { buildDocItemHref } from '@/lib/docs-navigation'
 
 interface SidebarItemProps {
-  href: Pick<DocNavItem, 'categorySlug' | 'id'>
+  href: string | Pick<DocNavItem, 'categorySlug' | 'id'>
   icon?: ReactNode
   label: string
   description?: string
@@ -21,9 +21,12 @@ export default function SidebarItem({
   active,
   onClick,
 }: SidebarItemProps) {
+  const targetHref =
+    typeof href === 'string' ? href : buildDocItemHref(href)
+
   return (
     <Link
-      href={buildDocItemHref(href)}
+      href={targetHref}
       onClick={onClick}
       className={`sidebar-item group w-full text-left ${active ? 'active' : ''}`}
       title={description}

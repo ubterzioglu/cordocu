@@ -1,8 +1,9 @@
-import type { RefObject } from 'react'
+import { useEffect, useState, type RefObject } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Info } from 'lucide-react'
+import { BookOpen, ChevronDown, Info } from 'lucide-react'
 import SidebarCategory from './SidebarCategory'
+import SidebarItem from './SidebarItem'
 import { getDocsCategories } from '@/lib/docs-data'
 import { getDocIcon } from '@/lib/docs-icons'
 import { buildDocCategoryHref, buildDocItemHref, buildDocsHubHref } from '@/lib/docs-navigation'
@@ -22,7 +23,41 @@ const hiddenSidebarCategorySlugs: DocCategorySlug[] = [
   'planung',
   'architecture',
   'tests',
+  'mvpitems',
+  'ambassador',
+  'ekip',
+  'dijitalpazarlama',
+  'whatsappbot',
+  'roadmap',
+  'projetakibi',
+  'kortexdocs',
+  'captable',
 ]
+
+const wikiCategorySlugs: DocCategorySlug[] = [
+  'mvpitems',
+  'ambassador',
+  'ekip',
+  'dijitalpazarlama',
+  'whatsappbot',
+  'roadmap',
+  'projetakibi',
+  'kortexdocs',
+  'captable',
+]
+
+const wikiLinks = [
+  { label: 'MVP LISTESI', href: '/mvpitems' },
+  { label: 'AMBASSADOR', href: '/ambassador' },
+  { label: 'EKIP & UCRET', href: '/ekip' },
+  { label: 'DIJITAL PAZARLAMA', href: '/dijitalpazarlama' },
+  { label: 'WHATSAPP BOT', href: '/whatsappbot' },
+  { label: 'Roadmap', href: '/roadmap' },
+  { label: 'Proje Takibi Sablonu', href: '/projetakibi' },
+  { label: 'Kortex — CTO, Pitch & PRD Dokumanlari', href: '/kortexdocs' },
+  { label: 'Cap Table v2 — Hisse Yapisi', href: '/captable' },
+  { label: 'Cap Table v2', href: '/captable#ct-sirket-hisse' },
+] as const
 
 export default function Sidebar({
   isDesktopViewport,
@@ -32,6 +67,8 @@ export default function Sidebar({
 }: SidebarProps) {
   const router = useRouter()
   const activeSlug = router.asPath.split('/').filter(Boolean)[0] ?? ''
+  const isWikiActive = wikiCategorySlugs.includes(activeSlug as DocCategorySlug)
+  const [isWikiOpen, setIsWikiOpen] = useState(isWikiActive)
   const docsCategories = getDocsCategories().filter(
     (category) => !hiddenSidebarCategorySlugs.includes(category.slug)
   )
@@ -43,6 +80,12 @@ export default function Sidebar({
   const isGeneralUpdatesActive =
     router.asPath === buildDocCategoryHref('general') ||
     router.asPath.startsWith(`${buildDocCategoryHref('general')}#`)
+
+  useEffect(() => {
+    if (isWikiActive) {
+      setIsWikiOpen(true)
+    }
+  }, [isWikiActive])
 
   return (
     <>
@@ -112,6 +155,42 @@ export default function Sidebar({
                 />
               )
             })}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => setIsWikiOpen((previousState) => !previousState)}
+                className={`flex w-full items-center gap-2 rounded-2xl border px-3 py-3 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
+                  isWikiActive || isWikiOpen
+                    ? 'border-[rgba(66,133,244,0.16)] bg-[linear-gradient(90deg,rgba(66,133,244,0.12),rgba(255,255,255,0.96))] text-primary-700 shadow-[0_10px_20px_rgba(60,64,67,0.06)]'
+                    : 'border-transparent bg-white/70 text-gray-500 hover:border-[rgba(66,133,244,0.1)] hover:bg-[rgba(66,133,244,0.05)] hover:text-gray-700'
+                }`}
+                aria-expanded={isWikiOpen}
+                aria-controls="wiki-links"
+              >
+                <span className="h-4 w-4" aria-hidden="true">
+                  <BookOpen size={16} />
+                </span>
+                <span className="text-[0.625rem]">WIKI</span>
+                <ChevronDown
+                  size={16}
+                  className={`ml-auto transition-transform ${isWikiOpen ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
+                />
+              </button>
+              {isWikiOpen && (
+                <div id="wiki-links" className="mt-2 space-y-1 pl-3">
+                  {wikiLinks.map((item) => (
+                    <SidebarItem
+                      key={item.label}
+                      href={item.href}
+                      label={item.label}
+                      active={router.asPath === item.href}
+                      onClick={onClose}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </aside>
