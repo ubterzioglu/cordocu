@@ -4,8 +4,7 @@
 
 @layer base {
   :root {
-    --docs-header-height: 4rem;
-    --docs-sidebar-width: 14rem;
+    --docs-header-height: 8.5rem;
     --docs-content-max-width: 72rem;
     --docs-content-gutter: clamp(1rem, 1.5vw + 0.75rem, 2rem);
     --docs-content-block-padding: clamp(1.5rem, 2vw + 1rem, 2.5rem);
@@ -226,13 +225,5 @@
     transform: translateY(-2px);
     border-color: rgba(66, 133, 244, 0.22);
     box-shadow: var(--docs-shadow-strong);
-  }
-}
-
-@media (min-width: 1024px) {
-  @layer components {
-    .docs-shell-main {
-      padding-left: var(--docs-sidebar-width);
-    }
   }
 }
