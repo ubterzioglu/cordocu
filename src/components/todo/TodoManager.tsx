@@ -21,7 +21,7 @@ import {
   type TodoItemRow,
 } from '@/lib/todo-items'
 
-const TODO_SELECT = 'id, konu, kim, ne_zaman, ayrinti, durum'
+const TODO_SELECT = 'id, konu, kim, ne_zaman, ayrinti, acil, durum'
 
 const ASSIGNEE_CARDS = [
   { assignee: 'UBT' as const, color: '#1A6DC2' },
@@ -61,6 +61,9 @@ const FILTER_SELECT_CLS =
 
 const FILTER_INPUT_CLS =
   'min-w-[220px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+
+const CHECKBOX_CLS =
+  'h-4 w-4 rounded border border-[rgba(66,133,244,0.25)] text-red-500 focus:ring-2 focus:ring-red-200'
 
 function getTodoDetail(value: string | null): string {
   return value?.trim() || 'Ayrıntı yok'
@@ -170,6 +173,7 @@ export default function TodoManager() {
         kim: formState.kim,
         ne_zaman: formState.neZaman || null,
         ayrinti: formState.ayrinti.trim(),
+        acil: formState.acil,
         durum: formState.durum,
       }
 
@@ -221,6 +225,7 @@ export default function TodoManager() {
         kim: editingState.kim,
         ne_zaman: editingState.neZaman || null,
         ayrinti: editingState.ayrinti.trim(),
+        acil: editingState.acil,
         durum: editingState.durum,
       }
 
@@ -284,13 +289,9 @@ export default function TodoManager() {
         <h2 id="todo-manager-heading" className="text-xl font-semibold text-gray-900">
           Todo Listesi
         </h2>
-        <p className="max-w-3xl text-sm text-gray-500">
-          Yeni kayıt ekle, mevcut kayıtları güncelle veya artık gerekmeyenleri sil.
-        </p>
       </div>
 
       <AccordionCard
-        defaultOpenId="new-todo"
         items={[
           {
             id: 'new-todo',
@@ -379,6 +380,18 @@ export default function TodoManager() {
                       </option>
                     ))}
                   </select>
+                </label>
+
+                <label className="flex items-center gap-3 rounded-xl border border-red-100 bg-red-50/70 px-3.5 py-3 text-sm font-semibold text-red-700">
+                  <input
+                    type="checkbox"
+                    checked={formState.acil}
+                    onChange={(e) =>
+                      setFormState((s) => ({ ...s, acil: e.target.checked }))
+                    }
+                    className={CHECKBOX_CLS}
+                  />
+                  Acil!
                 </label>
 
                 <label className="space-y-2 sm:col-span-2 lg:col-span-3">
@@ -536,7 +549,7 @@ export default function TodoManager() {
               <table className="min-w-full divide-y divide-gray-50 text-sm">
                 <thead className="bg-gray-50/80">
                   <tr>
-                    {['Kategori', 'Görev', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
+                    {['!', 'Kategori', 'Görev', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
                       (col) => (
                         <th
                           key={col}
@@ -558,7 +571,27 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
+                        <td className="pl-6 pr-3 py-3.5 align-top">
+                          {rowIsEditing ? (
+                            <label className="flex items-center justify-center">
+                              <input
+                                type="checkbox"
+                                checked={editingState.acil}
+                                onChange={(e) =>
+                                  setEditingState((s) => ({
+                                    ...s,
+                                    acil: e.target.checked,
+                                  }))
+                                }
+                                className={CHECKBOX_CLS}
+                                aria-label="Acil"
+                              />
+                            </label>
+                          ) : (
+                            <UrgentIndicator urgent={todo.acil} />
+                          )}
+                        </td>
+                        <td className="pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? (
                             <select
                               value={editingState.konu}
@@ -640,22 +673,38 @@ export default function TodoManager() {
                         </td>
                         <td className="whitespace-nowrap px-4 py-3.5">
                           {rowIsEditing ? (
-                            <select
-                              value={editingState.durum}
-                              onChange={(e) =>
-                                setEditingState((s) => ({
-                                  ...s,
-                                  durum: e.target.value as TodoFormState['durum'],
-                                }))
-                              }
-                              className={INPUT_CLS}
-                            >
-                              {TODO_STATUSES.map((st) => (
-                                <option key={st} value={st}>
-                                  {st}
-                                </option>
-                              ))}
-                            </select>
+                            <div className="space-y-3">
+                              <select
+                                value={editingState.durum}
+                                onChange={(e) =>
+                                  setEditingState((s) => ({
+                                    ...s,
+                                    durum: e.target.value as TodoFormState['durum'],
+                                  }))
+                                }
+                                className={INPUT_CLS}
+                              >
+                                {TODO_STATUSES.map((st) => (
+                                  <option key={st} value={st}>
+                                    {st}
+                                  </option>
+                                ))}
+                              </select>
+                              <label className="flex items-center gap-2 text-sm font-semibold text-red-700">
+                                <input
+                                  type="checkbox"
+                                  checked={editingState.acil}
+                                  onChange={(e) =>
+                                    setEditingState((s) => ({
+                                      ...s,
+                                      acil: e.target.checked,
+                                    }))
+                                  }
+                                  className={CHECKBOX_CLS}
+                                />
+                                Acil!
+                              </label>
+                            </div>
                           ) : (
                             <StatusBadge status={todo.durum} />
                           )}
@@ -796,12 +845,29 @@ export default function TodoManager() {
                               </option>
                             ))}
                           </select>
+                          <label className="flex items-center gap-3 rounded-xl border border-red-100 bg-red-50/70 px-3.5 py-3 text-sm font-semibold text-red-700 sm:col-span-2">
+                            <input
+                              type="checkbox"
+                              checked={editingState.acil}
+                              onChange={(e) =>
+                                setEditingState((s) => ({
+                                  ...s,
+                                  acil: e.target.checked,
+                                }))
+                              }
+                              className={CHECKBOX_CLS}
+                            />
+                            Acil!
+                          </label>
                         </div>
                       </div>
                     ) : (
                       <>
                         <div className="space-y-1">
-                          <CategoryBadge category={todo.konu} />
+                          <div className="flex items-center gap-2">
+                            <UrgentIndicator urgent={todo.acil} mobile />
+                            <CategoryBadge category={todo.konu} />
+                          </div>
                           <h3 className="text-base font-semibold text-gray-900">
                             {getTodoDetail(todo.ayrinti)}
                           </h3>
@@ -905,6 +971,30 @@ function AssigneeCell({ assignee }: { assignee: string }) {
       <AssigneeAvatar assignee={assignee} />
       <span>{assignee}</span>
     </div>
+  )
+}
+
+function UrgentIndicator({
+  urgent,
+  mobile = false,
+}: {
+  urgent: boolean
+  mobile?: boolean
+}) {
+  if (!urgent) {
+    return mobile ? null : <span className="block h-6 w-6" aria-hidden="true" />
+  }
+
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-black text-white shadow-[0_8px_18px_rgba(220,38,38,0.28)] ${
+        mobile ? 'h-6 min-w-6 px-2' : 'h-6 w-6'
+      }`}
+      aria-label="Acil görev"
+      title="Acil görev"
+    >
+      !
+    </span>
   )
 }
 

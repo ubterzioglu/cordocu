@@ -31,6 +31,7 @@ export interface TodoItemRow {
   kim: TodoAssignee
   ne_zaman: string | null
   ayrinti: string | null
+  acil: boolean
   durum: TodoStatus
   created_at?: string
   updated_at?: string
@@ -42,6 +43,7 @@ export interface TodoItem {
   kim: TodoAssignee
   neZaman: string | null
   ayrinti: string | null
+  acil: boolean
   durum: TodoStatus
   createdAt: string | null
   updatedAt: string | null
@@ -52,6 +54,7 @@ export interface TodoFormState {
   kim: TodoAssignee
   neZaman: string
   ayrinti: string
+  acil: boolean
   durum: TodoStatus
 }
 
@@ -61,6 +64,7 @@ export function createEmptyTodoFormState(): TodoFormState {
     kim: 'Atanmadi',
     neZaman: '',
     ayrinti: '',
+    acil: false,
     durum: 'Baslanmadi',
   }
 }
@@ -72,6 +76,7 @@ export function mapTodoRow(row: TodoItemRow): TodoItem {
     kim: row.kim,
     neZaman: row.ne_zaman,
     ayrinti: row.ayrinti,
+    acil: row.acil,
     durum: row.durum,
     createdAt: row.created_at ?? null,
     updatedAt: row.updated_at ?? null,
@@ -84,6 +89,7 @@ export function toTodoFormState(item: TodoItem): TodoFormState {
     kim: item.kim,
     neZaman: item.neZaman ?? '',
     ayrinti: item.ayrinti ?? '',
+    acil: item.acil,
     durum: item.durum,
   }
 }
