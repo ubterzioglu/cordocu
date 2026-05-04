@@ -5,8 +5,6 @@ import Image from 'next/image'
 import { Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
-import kafaBurak from '../../../kafaburak.png'
-import kafaUbt from '../../../kafaubt.png'
 import {
   TODO_ASSIGNEES,
   TODO_CATEGORIES,
@@ -948,7 +946,11 @@ export default function TodoManager() {
 
 function AssigneeAvatar({ assignee }: { assignee: string }) {
   const src =
-    assignee === 'Burak' ? kafaBurak : assignee === 'UBT' ? kafaUbt : null
+    assignee === 'Burak'
+      ? '/kafaburak.png'
+      : assignee === 'UBT'
+        ? '/kafaubt.png'
+        : null
 
   if (!src) {
     return null

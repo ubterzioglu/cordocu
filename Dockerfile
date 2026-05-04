@@ -20,6 +20,7 @@ COPY next-env.d.ts ./
 COPY postcss.config.js ./
 COPY tailwind.config.js ./
 COPY src ./src
+COPY kafaburak.png kafaubt.png ./
 
 # Build-time env vars (Coolify injects these as build args or from env)
 ARG NEXT_PUBLIC_SUPABASE_URL
@@ -31,7 +32,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 # Some deployments have no public/ directory; create it so the runner stage
 # can always copy a stable path from the builder image.
-RUN --mount=type=cache,target=/app/.next/cache mkdir -p public && npm run build
+RUN --mount=type=cache,target=/app/.next/cache mkdir -p public \
+ && cp kafaburak.png public/kafaburak.png \
+ && cp kafaubt.png public/kafaubt.png \
+ && npm run build
 
 # ─── Stage 3: runner ─────────────────────────────────────────────────────────
 FROM node:20-alpine AS runner
