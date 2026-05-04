@@ -1,9 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { Pencil, Plus, Save, Trash2, X } from 'lucide-react'
+import Image from 'next/image'
+import { Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
+import kafaBurak from '../../../kafaburak.png'
+import kafaUbt from '../../../kafaubt.png'
 import {
   TODO_ASSIGNEES,
   TODO_CATEGORIES,
@@ -53,6 +56,12 @@ const INPUT_CLS =
 const BTN_CLS =
   'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all disabled:opacity-60'
 
+const FILTER_SELECT_CLS =
+  'min-w-[170px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2.5 text-sm text-gray-700 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+
+const FILTER_INPUT_CLS =
+  'min-w-[220px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+
 function getTodoDetail(value: string | null): string {
   return value?.trim() || 'Ayrıntı yok'
 }
@@ -73,18 +82,36 @@ export default function TodoManager() {
   const [formState, setFormState] = useState<TodoFormState>(createEmptyTodoFormState)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingState, setEditingState] = useState<TodoFormState>(createEmptyTodoFormState)
+  const [selectedCategory, setSelectedCategory] = useState<string>('Tümü')
+  const [selectedStatus, setSelectedStatus] = useState<string>('Tümü')
+  const [searchTerm, setSearchTerm] = useState('')
 
   const supabase = getSupabaseBrowserClient()
 
   const isEditing = useMemo(() => editingId !== null, [editingId])
 
+  const filteredTodos = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLocaleLowerCase('tr-TR')
+
+    return todos.filter((todo) => {
+      const matchesCategory =
+        selectedCategory === 'Tümü' || todo.konu === selectedCategory
+      const matchesStatus = selectedStatus === 'Tümü' || todo.durum === selectedStatus
+      const matchesSearch =
+        normalizedSearch.length === 0 ||
+        getTodoDetail(todo.ayrinti).toLocaleLowerCase('tr-TR').includes(normalizedSearch)
+
+      return matchesCategory && matchesStatus && matchesSearch
+    })
+  }, [searchTerm, selectedCategory, selectedStatus, todos])
+
   const todosByAssignee = useMemo(() => {
     const map: Record<string, TodoItem[]> = {}
     for (const { assignee } of ASSIGNEE_CARDS) {
-      map[assignee] = todos.filter((t) => t.kim === assignee)
+      map[assignee] = filteredTodos.filter((t) => t.kim === assignee)
     }
     return map
-  }, [todos])
+  }, [filteredTodos])
 
   useEffect(() => {
     void loadTodos()
@@ -441,6 +468,54 @@ export default function TodoManager() {
         </div>
       )}
 
+      <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white p-4 shadow-[0_10px_20px_rgba(60,64,67,0.04)]">
+        <div className="flex flex-wrap items-center gap-3">
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className={FILTER_SELECT_CLS}
+            aria-label="Kategori filtresi"
+          >
+            <option value="Tümü">Tümü - Kategori</option>
+            {TODO_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className={FILTER_SELECT_CLS}
+            aria-label="Durum filtresi"
+          >
+            <option value="Tümü">Tümü - Durum</option>
+            {TODO_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          <label className="relative min-w-[240px] flex-1">
+            <Search
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Görev ara..."
+              className={FILTER_INPUT_CLS}
+              aria-label="Görev arama"
+            />
+          </label>
+        </div>
+      </div>
+
       <div className="space-y-4">
         {isLoading ? (
           <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-8 text-center text-sm text-gray-400">
@@ -450,6 +525,10 @@ export default function TodoManager() {
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
             Henüz görev yok. Yukarıdaki formu kullanarak ilk görevi ekleyin.
           </div>
+        ) : filteredTodos.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
+            Filtreye uygun görev bulunamadı.
+          </div>
         ) : (
           <>
             {/* Desktop table */}
@@ -457,7 +536,7 @@ export default function TodoManager() {
               <table className="min-w-full divide-y divide-gray-50 text-sm">
                 <thead className="bg-gray-50/80">
                   <tr>
-                    {['Görev', 'Kategori', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
+                    {['Kategori', 'Görev', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
                       (col) => (
                         <th
                           key={col}
@@ -471,7 +550,7 @@ export default function TodoManager() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                  {todos.map((todo) => {
+                  {filteredTodos.map((todo) => {
                     const rowIsEditing = editingId === todo.id
 
                     return (
@@ -479,26 +558,7 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="w-[38%] pl-6 pr-4 py-3.5 text-gray-600">
-                          {rowIsEditing ? (
-                            <textarea
-                              value={editingState.ayrinti}
-                              onChange={(e) =>
-                                setEditingState((s) => ({
-                                  ...s,
-                                  ayrinti: e.target.value,
-                                }))
-                              }
-                              rows={4}
-                              className={INPUT_CLS}
-                            />
-                          ) : (
-                            <span className="font-medium text-gray-900">
-                              {getTodoDetail(todo.ayrinti)}
-                            </span>
-                          )}
-                        </td>
-                        <td className="pl-0 pr-4 py-3.5 font-medium text-gray-900">
+                        <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
                           {rowIsEditing ? (
                             <select
                               value={editingState.konu}
@@ -520,6 +580,25 @@ export default function TodoManager() {
                             <CategoryBadge category={todo.konu} />
                           )}
                         </td>
+                        <td className="w-[38%] pr-4 py-3.5 text-gray-600">
+                          {rowIsEditing ? (
+                            <textarea
+                              value={editingState.ayrinti}
+                              onChange={(e) =>
+                                setEditingState((s) => ({
+                                  ...s,
+                                  ayrinti: e.target.value,
+                                }))
+                              }
+                              rows={4}
+                              className={INPUT_CLS}
+                            />
+                          ) : (
+                            <span className="font-medium text-gray-900">
+                              {getTodoDetail(todo.ayrinti)}
+                            </span>
+                          )}
+                        </td>
                         <td className="px-4 py-3.5 text-gray-600">
                           {rowIsEditing ? (
                             <select
@@ -539,7 +618,7 @@ export default function TodoManager() {
                               ))}
                             </select>
                           ) : (
-                            todo.kim
+                            <AssigneeCell assignee={todo.kim} />
                           )}
                         </td>
                         <td className="whitespace-nowrap px-4 py-3.5 text-gray-600">
@@ -590,18 +669,20 @@ export default function TodoManager() {
                                   onClick={() => void handleUpdate(todo.id)}
                                   disabled={isSubmitting}
                                   className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
+                                  aria-label="Kaydet"
+                                  title="Kaydet"
                                 >
                                   <Save size={14} aria-hidden="true" />
-                                  Kaydet
                                 </button>
                                 <button
                                   type="button"
                                   onClick={cancelEdit}
                                   disabled={isSubmitting}
                                   className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                  aria-label="İptal"
+                                  title="İptal"
                                 >
                                   <X size={14} aria-hidden="true" />
-                                  İptal
                                 </button>
                               </>
                             ) : (
@@ -610,9 +691,10 @@ export default function TodoManager() {
                                 onClick={() => startEdit(todo)}
                                 disabled={isSubmitting || isEditing}
                                 className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                aria-label="Düzenle"
+                                title="Düzenle"
                               >
                                 <Pencil size={14} aria-hidden="true" />
-                                Düzenle
                               </button>
                             )}
                             <button
@@ -620,9 +702,10 @@ export default function TodoManager() {
                               onClick={() => void handleDelete(todo.id)}
                               disabled={isSubmitting}
                               className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
+                              aria-label="Sil"
+                              title="Sil"
                             >
                               <Trash2 size={14} aria-hidden="true" />
-                              Sil
                             </button>
                           </div>
                         </td>
@@ -635,7 +718,7 @@ export default function TodoManager() {
 
             {/* Mobile cards */}
             <div className="space-y-3 md:hidden">
-              {todos.map((todo) => {
+              {filteredTodos.map((todo) => {
                 const rowIsEditing = editingId === todo.id
 
                 return (
@@ -718,13 +801,17 @@ export default function TodoManager() {
                     ) : (
                       <>
                         <div className="space-y-1">
+                          <CategoryBadge category={todo.konu} />
                           <h3 className="text-base font-semibold text-gray-900">
                             {getTodoDetail(todo.ayrinti)}
                           </h3>
-                          <CategoryBadge category={todo.konu} />
                         </div>
                         <div className="grid grid-cols-2 gap-3 text-sm">
-                          <MobileInfoPair label="Kim" value={todo.kim} />
+                          <MobileInfoPair
+                            label="Kim"
+                            value={todo.kim}
+                            assignee={todo.kim}
+                          />
                           <MobileInfoPair label="Durum" value={todo.durum} />
                           <MobileInfoPair
                             label="Ne zaman"
@@ -742,18 +829,20 @@ export default function TodoManager() {
                             onClick={() => void handleUpdate(todo.id)}
                             disabled={isSubmitting}
                             className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
+                            aria-label="Kaydet"
+                            title="Kaydet"
                           >
                             <Save size={14} aria-hidden="true" />
-                            Kaydet
                           </button>
                           <button
                             type="button"
                             onClick={cancelEdit}
                             disabled={isSubmitting}
                             className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                            aria-label="İptal"
+                            title="İptal"
                           >
                             <X size={14} aria-hidden="true" />
-                            İptal
                           </button>
                         </>
                       ) : (
@@ -762,9 +851,10 @@ export default function TodoManager() {
                           onClick={() => startEdit(todo)}
                           disabled={isSubmitting || isEditing}
                           className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                          aria-label="Düzenle"
+                          title="Düzenle"
                         >
                           <Pencil size={14} aria-hidden="true" />
-                          Düzenle
                         </button>
                       )}
                       <button
@@ -772,9 +862,10 @@ export default function TodoManager() {
                         onClick={() => void handleDelete(todo.id)}
                         disabled={isSubmitting}
                         className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
+                        aria-label="Sil"
+                        title="Sil"
                       >
                         <Trash2 size={14} aria-hidden="true" />
-                        Sil
                       </button>
                     </div>
                   </div>
@@ -786,6 +877,34 @@ export default function TodoManager() {
       </div>
 
     </section>
+  )
+}
+
+function AssigneeAvatar({ assignee }: { assignee: string }) {
+  const src =
+    assignee === 'Burak' ? kafaBurak : assignee === 'UBT' ? kafaUbt : null
+
+  if (!src) {
+    return null
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={assignee}
+      width={28}
+      height={28}
+      className="h-7 w-7 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
+    />
+  )
+}
+
+function AssigneeCell({ assignee }: { assignee: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <AssigneeAvatar assignee={assignee} />
+      <span>{assignee}</span>
+    </div>
   )
 }
 
@@ -815,13 +934,28 @@ function StatusBadge({ status }: { status: string }) {
   )
 }
 
-function MobileInfoPair({ label, value }: { label: string; value: string }) {
+function MobileInfoPair({
+  label,
+  value,
+  assignee,
+}: {
+  label: string
+  value: string
+  assignee?: string
+}) {
   return (
     <div className="space-y-1 rounded-xl border border-[rgba(66,133,244,0.08)] bg-gray-50/50 px-3 py-2">
       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
         {label}
       </p>
-      <p className="text-sm text-gray-800">{value}</p>
+      {label === 'Kim' ? (
+        <div className="flex items-center gap-2 text-sm text-gray-800">
+          <AssigneeAvatar assignee={assignee ?? value} />
+          <span>{value}</span>
+        </div>
+      ) : (
+        <p className="text-sm text-gray-800">{value}</p>
+      )}
     </div>
   )
 }
