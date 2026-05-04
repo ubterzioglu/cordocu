@@ -6,6 +6,7 @@ import AccordionCard from '../ui/AccordionCard'
 import { getSupabaseBrowserClient } from '@/lib/supabase'
 import {
   TODO_ASSIGNEES,
+  TODO_CATEGORIES,
   TODO_STATUSES,
   createEmptyTodoFormState,
   formatTodoDate,
@@ -31,11 +32,38 @@ const STATUS_COLORS: Record<string, string> = {
   Tamamlandi: '#4CAF50',
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  'Bot & Otomasyon': '#4F46E5',
+  'Dashboard, Admin & UX': '#2563EB',
+  'Landing Page & Web': '#0EA5E9',
+  'İçerik, SEO & Sosyal Medya': '#DB2777',
+  'Influencer, Ambassador & Partnerlikler': '#7C3AED',
+  'Topluluk, Referral & Onboarding': '#F97316',
+  'Veri, CRM & Analytics': '#0891B2',
+  'İnsan Kaynakları & Hiring': '#16A34A',
+  'Teklif, Sözleşme & Compensation': '#65A30D',
+  'Finans, Legal & Şirketleşme': '#DC2626',
+  'Strateji, Roadmap & PMO': '#6B7280',
+  'Dokümantasyon, Drive & Operasyon': '#92400E',
+}
+
 const INPUT_CLS =
   'w-full rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3.5 py-2.5 text-sm text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 
 const BTN_CLS =
   'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all disabled:opacity-60'
+
+function getTodoDetail(value: string | null): string {
+  return value?.trim() || 'Ayrıntı yok'
+}
+
+function validateTodoFormState(state: TodoFormState): string | null {
+  if (!state.ayrinti.trim()) {
+    return 'Görev ayrıntısı boş bırakılamaz.'
+  }
+
+  return null
+}
 
 export default function TodoManager() {
   const [todos, setTodos] = useState<TodoItem[]>([])
@@ -100,6 +128,12 @@ export default function TodoManager() {
       return
     }
 
+    const validationError = validateTodoFormState(formState)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
 
@@ -108,7 +142,7 @@ export default function TodoManager() {
         konu: formState.konu,
         kim: formState.kim,
         ne_zaman: formState.neZaman || null,
-        ayrinti: formState.ayrinti.trim() || null,
+        ayrinti: formState.ayrinti.trim(),
         durum: formState.durum,
       }
 
@@ -145,6 +179,12 @@ export default function TodoManager() {
   async function handleUpdate(todoId: string) {
     if (!supabase) return
 
+    const validationError = validateTodoFormState(editingState)
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
 
@@ -153,7 +193,7 @@ export default function TodoManager() {
         konu: editingState.konu,
         kim: editingState.kim,
         ne_zaman: editingState.neZaman || null,
-        ayrinti: editingState.ayrinti.trim() || null,
+        ayrinti: editingState.ayrinti.trim(),
         durum: editingState.durum,
       }
 
@@ -232,22 +272,28 @@ export default function TodoManager() {
             children: (
               <form
                 onSubmit={handleCreate}
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.9fr_0.9fr_1fr]"
+                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1.05fr_0.85fr_0.85fr_0.85fr]"
               >
                 <label className="space-y-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
-                    Konu
+                    Kategori
                   </span>
-                  <input
-                    type="text"
+                  <select
                     value={formState.konu}
                     onChange={(e) =>
-                      setFormState((s) => ({ ...s, konu: e.target.value }))
+                      setFormState((s) => ({
+                        ...s,
+                        konu: e.target.value as TodoFormState['konu'],
+                      }))
                     }
-                    placeholder="Yeni görev konusu"
                     className={INPUT_CLS}
-                    required
-                  />
+                  >
+                    {TODO_CATEGORIES.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
                 </label>
 
                 <label className="space-y-2">
@@ -310,16 +356,17 @@ export default function TodoManager() {
 
                 <label className="space-y-2 sm:col-span-2 lg:col-span-3">
                   <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
-                    Ayrıntı
+                    Görev Ayrıntısı
                   </span>
                   <textarea
                     value={formState.ayrinti}
                     onChange={(e) =>
                       setFormState((s) => ({ ...s, ayrinti: e.target.value }))
                     }
-                    placeholder="Göreve dair notlar"
-                    rows={3}
+                    placeholder="Yapılacak işi ayrıntılı yaz"
+                    rows={4}
                     className={INPUT_CLS}
+                    required
                   />
                 </label>
 
@@ -362,24 +409,21 @@ export default function TodoManager() {
                       {assigneeTodos.map((todo) => (
                         <li
                           key={todo.id}
-                          className="flex items-center justify-between gap-3 py-2 text-sm"
+                          className="flex items-start justify-between gap-3 py-3 text-sm"
                         >
-                          <span className="font-medium text-gray-900">{todo.konu}</span>
-                          <div className="flex shrink-0 items-center gap-2">
+                          <div className="min-w-0 space-y-1.5">
+                            <p className="font-medium text-gray-900">
+                              {getTodoDetail(todo.ayrinti)}
+                            </p>
+                            <CategoryBadge category={todo.konu} />
+                          </div>
+                          <div className="flex shrink-0 flex-col items-end gap-2">
                             {todo.neZaman && (
                               <span className="text-xs text-gray-400">
                                 {formatTodoDate(todo.neZaman)}
                               </span>
                             )}
-                            <span
-                              className="rounded px-1.5 py-0.5 text-[11px] font-semibold"
-                              style={{
-                                color: STATUS_COLORS[todo.durum] ?? '#888888',
-                                background: `${STATUS_COLORS[todo.durum] ?? '#888888'}18`,
-                              }}
-                            >
-                              {todo.durum}
-                            </span>
+                            <StatusBadge status={todo.durum} />
                           </div>
                         </li>
                       ))}
@@ -413,7 +457,7 @@ export default function TodoManager() {
               <table className="min-w-full divide-y divide-gray-50 text-sm">
                 <thead className="bg-gray-50/80">
                   <tr>
-                    {['Konu', 'Kim', 'Ne zaman', 'Ayrıntı', 'Durum', 'İşlemler'].map(
+                    {['Görev', 'Kategori', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
                       (col) => (
                         <th
                           key={col}
@@ -435,21 +479,45 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="pl-6 pr-4 py-3.5 font-medium text-gray-900">
+                        <td className="w-[38%] pl-6 pr-4 py-3.5 text-gray-600">
                           {rowIsEditing ? (
-                            <input
-                              type="text"
+                            <textarea
+                              value={editingState.ayrinti}
+                              onChange={(e) =>
+                                setEditingState((s) => ({
+                                  ...s,
+                                  ayrinti: e.target.value,
+                                }))
+                              }
+                              rows={4}
+                              className={INPUT_CLS}
+                            />
+                          ) : (
+                            <span className="font-medium text-gray-900">
+                              {getTodoDetail(todo.ayrinti)}
+                            </span>
+                          )}
+                        </td>
+                        <td className="pl-0 pr-4 py-3.5 font-medium text-gray-900">
+                          {rowIsEditing ? (
+                            <select
                               value={editingState.konu}
                               onChange={(e) =>
                                 setEditingState((s) => ({
                                   ...s,
-                                  konu: e.target.value,
+                                  konu: e.target.value as TodoFormState['konu'],
                                 }))
                               }
                               className={INPUT_CLS}
-                            />
+                            >
+                              {TODO_CATEGORIES.map((category) => (
+                                <option key={category} value={category}>
+                                  {category}
+                                </option>
+                              ))}
+                            </select>
                           ) : (
-                            todo.konu
+                            <CategoryBadge category={todo.konu} />
                           )}
                         </td>
                         <td className="px-4 py-3.5 text-gray-600">
@@ -491,25 +559,6 @@ export default function TodoManager() {
                             formatTodoDate(todo.neZaman)
                           )}
                         </td>
-                        <td className="w-[38%] px-4 py-3.5 text-gray-600">
-                          {rowIsEditing ? (
-                            <textarea
-                              value={editingState.ayrinti}
-                              onChange={(e) =>
-                                setEditingState((s) => ({
-                                  ...s,
-                                  ayrinti: e.target.value,
-                                }))
-                              }
-                              rows={4}
-                              className={INPUT_CLS}
-                            />
-                          ) : (
-                            todo.ayrinti ?? (
-                              <span className="text-gray-300">—</span>
-                            )
-                          )}
-                        </td>
                         <td className="whitespace-nowrap px-4 py-3.5">
                           {rowIsEditing ? (
                             <select
@@ -529,15 +578,7 @@ export default function TodoManager() {
                               ))}
                             </select>
                           ) : (
-                            <span
-                              className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                              style={{
-                                color: STATUS_COLORS[todo.durum] ?? '#888888',
-                                background: `${STATUS_COLORS[todo.durum] ?? '#888888'}18`,
-                              }}
-                            >
-                              {todo.durum}
-                            </span>
+                            <StatusBadge status={todo.durum} />
                           )}
                         </td>
                         <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
@@ -604,14 +645,30 @@ export default function TodoManager() {
                   >
                     {rowIsEditing ? (
                       <div className="space-y-3">
-                        <input
-                          type="text"
-                          value={editingState.konu}
+                        <textarea
+                          value={editingState.ayrinti}
                           onChange={(e) =>
-                            setEditingState((s) => ({ ...s, konu: e.target.value }))
+                            setEditingState((s) => ({ ...s, ayrinti: e.target.value }))
                           }
+                          rows={4}
                           className={INPUT_CLS}
                         />
+                        <select
+                          value={editingState.konu}
+                          onChange={(e) =>
+                            setEditingState((s) => ({
+                              ...s,
+                              konu: e.target.value as TodoFormState['konu'],
+                            }))
+                          }
+                          className={INPUT_CLS}
+                        >
+                          {TODO_CATEGORIES.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
                         <div className="grid gap-3 sm:grid-cols-2">
                           <select
                             value={editingState.kim}
@@ -657,24 +714,14 @@ export default function TodoManager() {
                             ))}
                           </select>
                         </div>
-                        <textarea
-                          value={editingState.ayrinti}
-                          onChange={(e) =>
-                            setEditingState((s) => ({ ...s, ayrinti: e.target.value }))
-                          }
-                          rows={4}
-                          className={INPUT_CLS}
-                        />
                       </div>
                     ) : (
                       <>
                         <div className="space-y-1">
                           <h3 className="text-base font-semibold text-gray-900">
-                            {todo.konu}
+                            {getTodoDetail(todo.ayrinti)}
                           </h3>
-                          <p className="text-sm text-gray-500">
-                            {todo.ayrinti ?? 'Ayrıntı yok'}
-                          </p>
+                          <CategoryBadge category={todo.konu} />
                         </div>
                         <div className="grid grid-cols-2 gap-3 text-sm">
                           <MobileInfoPair label="Kim" value={todo.kim} />
@@ -739,6 +786,32 @@ export default function TodoManager() {
       </div>
 
     </section>
+  )
+}
+
+function CategoryBadge({ category }: { category: string }) {
+  const color = CATEGORY_COLORS[category] ?? '#6B7280'
+
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold"
+      style={{ color, background: `${color}18` }}
+    >
+      {category}
+    </span>
+  )
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const color = STATUS_COLORS[status] ?? '#888888'
+
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+      style={{ color, background: `${color}18` }}
+    >
+      {status}
+    </span>
   )
 }
 

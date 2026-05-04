@@ -1,3 +1,18 @@
+export const TODO_CATEGORIES = [
+  'Bot & Otomasyon',
+  'Dashboard, Admin & UX',
+  'Landing Page & Web',
+  'İçerik, SEO & Sosyal Medya',
+  'Influencer, Ambassador & Partnerlikler',
+  'Topluluk, Referral & Onboarding',
+  'Veri, CRM & Analytics',
+  'İnsan Kaynakları & Hiring',
+  'Teklif, Sözleşme & Compensation',
+  'Finans, Legal & Şirketleşme',
+  'Strateji, Roadmap & PMO',
+  'Dokümantasyon, Drive & Operasyon',
+] as const
+
 export const TODO_ASSIGNEES = ['Atanmadi', 'UBT', 'Burak'] as const
 export const TODO_STATUSES = [
   'Baslanmadi',
@@ -6,12 +21,13 @@ export const TODO_STATUSES = [
   'Tamamlandi',
 ] as const
 
+export type TodoCategory = (typeof TODO_CATEGORIES)[number]
 export type TodoAssignee = (typeof TODO_ASSIGNEES)[number]
 export type TodoStatus = (typeof TODO_STATUSES)[number]
 
 export interface TodoItemRow {
   id: string
-  konu: string
+  konu: TodoCategory
   kim: TodoAssignee
   ne_zaman: string | null
   ayrinti: string | null
@@ -22,7 +38,7 @@ export interface TodoItemRow {
 
 export interface TodoItem {
   id: string
-  konu: string
+  konu: TodoCategory
   kim: TodoAssignee
   neZaman: string | null
   ayrinti: string | null
@@ -32,7 +48,7 @@ export interface TodoItem {
 }
 
 export interface TodoFormState {
-  konu: string
+  konu: TodoCategory
   kim: TodoAssignee
   neZaman: string
   ayrinti: string
@@ -41,7 +57,7 @@ export interface TodoFormState {
 
 export function createEmptyTodoFormState(): TodoFormState {
   return {
-    konu: '',
+    konu: TODO_CATEGORIES[0],
     kim: 'Atanmadi',
     neZaman: '',
     ayrinti: '',
@@ -86,7 +102,12 @@ export function sortTodoItems(items: TodoItem[]): TodoItem[] {
       return 1
     }
 
-    return left.konu.localeCompare(right.konu, 'tr')
+    const categoryCompare = left.konu.localeCompare(right.konu, 'tr')
+    if (categoryCompare !== 0) {
+      return categoryCompare
+    }
+
+    return (left.ayrinti ?? '').localeCompare(right.ayrinti ?? '', 'tr')
   })
 }
 

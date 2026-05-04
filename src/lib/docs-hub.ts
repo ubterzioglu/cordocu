@@ -120,12 +120,12 @@ export const docsCategories: DocCategoryDefinition[] = [
   {
     slug: 'todolist',
     label: 'To Do List',
-    shortDescription: 'Canlı görev takip tablosu — Konu, Görev, Sorumlu, Zaman ve Durum kolonlarıyla DB\'ye bağlı.',
+    shortDescription: 'Canlı görev takip tablosu — kategorik konu, görev ayrıntısı, sorumlu, zaman ve durum alanlarıyla DB\'ye bağlı.',
     iconKey: 'test-tube',
     defaultExpanded: false,
     overview: {
       title: 'To Do List',
-      description: 'Tüm görevler tek tabloda: Konu / Görev / Sorumlu / Zaman / Durum. Supabase\'e bağlı, yeni görev eklenebilir.',
+      description: 'Tüm görevler tek tabloda: kategori / görev ayrıntısı / sorumlu / zaman / durum. Supabase\'e bağlı, yeni görev eklenebilir.',
       ctaLabel: 'Görevlere Bak',
     },
     items: [
