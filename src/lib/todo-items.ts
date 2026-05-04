@@ -133,3 +133,7 @@ export function formatTodoDate(value: string | null): string {
     year: 'numeric',
   })
 }
+
+export function normalizeTodoAssignee(value: string | null | undefined): string {
+  return (value ?? '').trim().toLocaleLowerCase('tr-TR')
+}

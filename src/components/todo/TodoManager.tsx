@@ -12,6 +12,7 @@ import {
   createEmptyTodoFormState,
   formatTodoDate,
   mapTodoRow,
+  normalizeTodoAssignee,
   sortTodoItems,
   toTodoFormState,
   type TodoFormState,
@@ -94,10 +95,12 @@ export default function TodoManager() {
 
   const filteredTodos = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLocaleLowerCase('tr-TR')
+    const normalizedSelectedAssignee = normalizeTodoAssignee(selectedAssignee)
 
     return todos.filter((todo) => {
       const matchesAssignee =
-        selectedAssignee === 'Tümü' || todo.kim === selectedAssignee
+        selectedAssignee === 'Tümü' ||
+        normalizeTodoAssignee(todo.kim) === normalizedSelectedAssignee
       const matchesCategory =
         selectedCategory === 'Tümü' || todo.konu === selectedCategory
       const matchesStatus = selectedStatus === 'Tümü' || todo.durum === selectedStatus
@@ -112,7 +115,9 @@ export default function TodoManager() {
   const todosByAssignee = useMemo(() => {
     const map: Record<string, TodoItem[]> = {}
     for (const { assignee } of ASSIGNEE_CARDS) {
-      map[assignee] = filteredTodos.filter((t) => t.kim === assignee)
+      map[assignee] = filteredTodos.filter(
+        (t) => normalizeTodoAssignee(t.kim) === normalizeTodoAssignee(assignee)
+      )
     }
     return map
   }, [filteredTodos])
@@ -963,10 +968,11 @@ export default function TodoManager() {
 }
 
 function AssigneeAvatar({ assignee }: { assignee: string }) {
+  const normalizedAssignee = normalizeTodoAssignee(assignee)
   const src =
-    assignee === 'Burak'
+    normalizedAssignee === normalizeTodoAssignee('Burak')
       ? '/kafaburak.png'
-      : assignee === 'UBT'
+      : normalizedAssignee === normalizeTodoAssignee('UBT')
         ? '/kafaubt.png'
         : null
 
@@ -987,8 +993,9 @@ function AssigneeAvatar({ assignee }: { assignee: string }) {
 
 function AssigneeCell({ assignee }: { assignee: string }) {
   return (
-    <div className="flex min-h-[40px] items-center justify-center">
+    <div className="flex min-h-[40px] items-center justify-center gap-2">
       <AssigneeAvatar assignee={assignee} />
+      <span className="text-[12px] font-medium text-gray-700">{assignee}</span>
     </div>
   )
 }
@@ -1058,8 +1065,9 @@ function MobileInfoPair({
         {label}
       </p>
       {label === 'Kim' ? (
-        <div className="flex min-h-[40px] items-center justify-center text-[13px] text-gray-800">
+        <div className="flex min-h-[40px] items-center justify-center gap-2 text-[13px] text-gray-800">
           <AssigneeAvatar assignee={assignee ?? value} />
+          <span>{value}</span>
         </div>
       ) : (
         <p className="text-[13px] text-gray-800">{value}</p>
