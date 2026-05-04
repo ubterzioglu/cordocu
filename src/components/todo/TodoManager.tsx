@@ -49,16 +49,16 @@ const CATEGORY_COLORS: Record<string, string> = {
 }
 
 const INPUT_CLS =
-  'w-full rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3.5 py-2.5 text-sm text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+  'w-full rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2 text-[13px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 
 const BTN_CLS =
-  'inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all disabled:opacity-60'
+  'inline-flex items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-[11px] font-semibold transition-all disabled:opacity-60'
 
 const FILTER_SELECT_CLS =
-  'min-w-[170px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2.5 text-sm text-gray-700 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+  'min-w-[170px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2 text-[13px] text-gray-700 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 
 const FILTER_INPUT_CLS =
-  'min-w-[220px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white pl-9 pr-3 py-2.5 text-sm text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+  'min-w-[220px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white pl-9 pr-3 py-2 text-[13px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 
 const CHECKBOX_CLS =
   'h-4 w-4 rounded border border-[rgba(66,133,244,0.25)] text-red-500 focus:ring-2 focus:ring-red-200'
@@ -83,6 +83,7 @@ export default function TodoManager() {
   const [formState, setFormState] = useState<TodoFormState>(createEmptyTodoFormState)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingState, setEditingState] = useState<TodoFormState>(createEmptyTodoFormState)
+  const [selectedAssignee, setSelectedAssignee] = useState<string>('Tümü')
   const [selectedCategory, setSelectedCategory] = useState<string>('Tümü')
   const [selectedStatus, setSelectedStatus] = useState<string>('Tümü')
   const [searchTerm, setSearchTerm] = useState('')
@@ -95,6 +96,8 @@ export default function TodoManager() {
     const normalizedSearch = searchTerm.trim().toLocaleLowerCase('tr-TR')
 
     return todos.filter((todo) => {
+      const matchesAssignee =
+        selectedAssignee === 'Tümü' || todo.kim === selectedAssignee
       const matchesCategory =
         selectedCategory === 'Tümü' || todo.konu === selectedCategory
       const matchesStatus = selectedStatus === 'Tümü' || todo.durum === selectedStatus
@@ -102,9 +105,9 @@ export default function TodoManager() {
         normalizedSearch.length === 0 ||
         getTodoDetail(todo.ayrinti).toLocaleLowerCase('tr-TR').includes(normalizedSearch)
 
-      return matchesCategory && matchesStatus && matchesSearch
+      return matchesAssignee && matchesCategory && matchesStatus && matchesSearch
     })
-  }, [searchTerm, selectedCategory, selectedStatus, todos])
+  }, [searchTerm, selectedAssignee, selectedCategory, selectedStatus, todos])
 
   const todosByAssignee = useMemo(() => {
     const map: Record<string, TodoItem[]> = {}
@@ -179,13 +182,15 @@ export default function TodoManager() {
         .from('todo_items')
         .insert(insertPayload)
         .select(TODO_SELECT)
-        .single()
+      
 
-      if (insertErr || !data) {
+      const insertedRow = Array.isArray(data) ? data[0] : data
+
+      if (insertErr || !insertedRow) {
         throw insertErr ?? new Error('Todo eklenemedi.')
       }
 
-      setTodos((prev) => sortTodoItems([mapTodoRow(data as TodoItemRow), ...prev]))
+      setTodos((prev) => sortTodoItems([mapTodoRow(insertedRow as TodoItemRow), ...prev]))
       setFormState(createEmptyTodoFormState())
     } catch (createError) {
       setError(createError instanceof Error ? createError.message : 'Todo eklenemedi.')
@@ -232,15 +237,22 @@ export default function TodoManager() {
         .update(updatePayload)
         .eq('id', todoId)
         .select(TODO_SELECT)
-        .single()
 
-      if (updateErr || !data) {
+      if (updateErr) {
         throw updateErr ?? new Error('Todo güncellenemedi.')
+      }
+
+      const updatedRow = Array.isArray(data) ? data[0] : data
+
+      if (!updatedRow) {
+        await loadTodos()
+        cancelEdit()
+        return
       }
 
       setTodos((prev) =>
         sortTodoItems(
-          prev.map((t) => (t.id === todoId ? mapTodoRow(data as TodoItemRow) : t))
+          prev.map((t) => (t.id === todoId ? mapTodoRow(updatedRow as TodoItemRow) : t))
         )
       )
       cancelEdit()
@@ -482,6 +494,20 @@ export default function TodoManager() {
       <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white p-4 shadow-[0_10px_20px_rgba(60,64,67,0.04)]">
         <div className="flex flex-wrap items-center gap-3">
           <select
+            value={selectedAssignee}
+            onChange={(e) => setSelectedAssignee(e.target.value)}
+            className={FILTER_SELECT_CLS}
+            aria-label="Kim filtresi"
+          >
+            <option value="Tümü">Tümü - Kim</option>
+            {TODO_ASSIGNEES.map((assignee) => (
+              <option key={assignee} value={assignee}>
+                {assignee}
+              </option>
+            ))}
+          </select>
+
+          <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             className={FILTER_SELECT_CLS}
@@ -544,7 +570,7 @@ export default function TodoManager() {
           <>
             {/* Desktop table */}
             <div className="hidden overflow-x-auto rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
-              <table className="min-w-full divide-y divide-gray-50 text-sm">
+              <table className="min-w-[1180px] divide-y divide-gray-50 text-[13px]">
                 <thead className="bg-gray-50/80">
                   <tr>
                     {['!', 'Kategori', 'Görev', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
@@ -552,7 +578,7 @@ export default function TodoManager() {
                         <th
                           key={col}
                           scope="col"
-                          className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-widest text-gray-500 first:pl-6 last:pr-6"
+                          className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500 first:pl-6 last:pr-6"
                         >
                           {col}
                         </th>
@@ -569,7 +595,7 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="pl-6 pr-3 py-3.5 align-top">
+                        <td className="pl-6 pr-3 py-3 align-top">
                           {rowIsEditing ? (
                             <label className="flex items-center justify-center">
                               <input
@@ -589,7 +615,7 @@ export default function TodoManager() {
                             <UrgentIndicator urgent={todo.acil} />
                           )}
                         </td>
-                        <td className="pr-4 py-3.5 font-medium text-gray-900">
+                        <td className="pr-3 py-3 font-medium text-gray-900">
                           {rowIsEditing ? (
                             <select
                               value={editingState.konu}
@@ -611,7 +637,7 @@ export default function TodoManager() {
                             <CategoryBadge category={todo.konu} />
                           )}
                         </td>
-                        <td className="w-[38%] pr-4 py-3.5 text-gray-600">
+                        <td className="w-[44%] pr-3 py-3 text-gray-600">
                           {rowIsEditing ? (
                             <textarea
                               value={editingState.ayrinti}
@@ -630,7 +656,7 @@ export default function TodoManager() {
                             </span>
                           )}
                         </td>
-                        <td className="px-4 py-3.5 text-gray-600">
+                        <td className="px-3 py-3 text-gray-600">
                           {rowIsEditing ? (
                             <select
                               value={editingState.kim}
@@ -652,7 +678,7 @@ export default function TodoManager() {
                             <AssigneeCell assignee={todo.kim} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3.5 text-gray-600">
+                        <td className="whitespace-nowrap px-3 py-3 text-gray-600">
                           {rowIsEditing ? (
                             <input
                               type="date"
@@ -669,45 +695,29 @@ export default function TodoManager() {
                             formatTodoDate(todo.neZaman)
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3.5">
+                        <td className="whitespace-nowrap px-3 py-3">
                           {rowIsEditing ? (
-                            <div className="space-y-3">
-                              <select
-                                value={editingState.durum}
-                                onChange={(e) =>
-                                  setEditingState((s) => ({
-                                    ...s,
-                                    durum: e.target.value as TodoFormState['durum'],
-                                  }))
-                                }
-                                className={INPUT_CLS}
-                              >
-                                {TODO_STATUSES.map((st) => (
-                                  <option key={st} value={st}>
-                                    {st}
-                                  </option>
-                                ))}
-                              </select>
-                              <label className="flex items-center gap-2 text-sm font-semibold text-red-700">
-                                <input
-                                  type="checkbox"
-                                  checked={editingState.acil}
-                                  onChange={(e) =>
-                                    setEditingState((s) => ({
-                                      ...s,
-                                      acil: e.target.checked,
-                                    }))
-                                  }
-                                  className={CHECKBOX_CLS}
-                                />
-                                Acil!
-                              </label>
-                            </div>
+                            <select
+                              value={editingState.durum}
+                              onChange={(e) =>
+                                setEditingState((s) => ({
+                                  ...s,
+                                  durum: e.target.value as TodoFormState['durum'],
+                                }))
+                              }
+                              className={INPUT_CLS}
+                            >
+                              {TODO_STATUSES.map((st) => (
+                                <option key={st} value={st}>
+                                  {st}
+                                </option>
+                              ))}
+                            </select>
                           ) : (
                             <StatusBadge status={todo.durum} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-4 py-3.5 last:pr-6">
+                        <td className="whitespace-nowrap px-3 py-3 last:pr-6">
                           <div className="flex flex-nowrap items-center gap-2">
                             {rowIsEditing ? (
                               <>
@@ -960,18 +970,17 @@ function AssigneeAvatar({ assignee }: { assignee: string }) {
     <Image
       src={src}
       alt={assignee}
-      width={28}
-      height={28}
-      className="h-7 w-7 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
+      width={22}
+      height={22}
+      className="h-5.5 w-5.5 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
     />
   )
 }
 
 function AssigneeCell({ assignee }: { assignee: string }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-center">
       <AssigneeAvatar assignee={assignee} />
-      <span>{assignee}</span>
     </div>
   )
 }
@@ -989,7 +998,7 @@ function UrgentIndicator({
 
   return (
     <span
-      className={`inline-flex items-center justify-center rounded-full bg-red-500 text-xs font-black text-white shadow-[0_8px_18px_rgba(220,38,38,0.28)] ${
+      className={`inline-flex items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white shadow-[0_8px_18px_rgba(220,38,38,0.28)] ${
         mobile ? 'h-6 min-w-6 px-2' : 'h-6 w-6'
       }`}
       aria-label="Acil görev"
@@ -1005,7 +1014,7 @@ function CategoryBadge({ category }: { category: string }) {
 
   return (
     <span
-      className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold"
+      className="inline-flex items-center rounded-full px-2 py-1 text-[10px] font-semibold"
       style={{ color, background: `${color}18` }}
     >
       {category}
@@ -1018,7 +1027,7 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+      className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
       style={{ color, background: `${color}18` }}
     >
       {status}
@@ -1037,16 +1046,15 @@ function MobileInfoPair({
 }) {
   return (
     <div className="space-y-1 rounded-xl border border-[rgba(66,133,244,0.08)] bg-gray-50/50 px-3 py-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
         {label}
       </p>
       {label === 'Kim' ? (
-        <div className="flex items-center gap-2 text-sm text-gray-800">
+        <div className="flex items-center justify-center text-[13px] text-gray-800">
           <AssigneeAvatar assignee={assignee ?? value} />
-          <span>{value}</span>
         </div>
       ) : (
-        <p className="text-sm text-gray-800">{value}</p>
+        <p className="text-[13px] text-gray-800">{value}</p>
       )}
     </div>
   )
