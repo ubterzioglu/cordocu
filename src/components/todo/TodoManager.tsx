@@ -568,16 +568,16 @@ export default function TodoManager() {
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden overflow-x-auto rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
-              <table className="w-full min-w-[1180px] table-fixed divide-y divide-gray-100 text-[12px]">
+            <div className="hidden overflow-hidden rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
+              <table className="w-full table-fixed divide-y divide-gray-100 text-[12px]">
                 <colgroup>
-                  <col className="w-[4%]" />
-                  <col className="w-[17%]" />
-                  <col className="w-[47%]" />
-                  <col className="w-[7%]" />
-                  <col className="w-[10%]" />
-                  <col className="w-[8%]" />
-                  <col className="w-[7%]" />
+                  <col className="w-[3.5%]" />
+                  <col className="w-[14.5%]" />
+                  <col className="w-[52%]" />
+                  <col className="w-[5.5%]" />
+                  <col className="w-[9.5%]" />
+                  <col className="w-[7.5%]" />
+                  <col className="w-[7.5%]" />
                 </colgroup>
                 <thead className="bg-gray-50/80">
                   <tr>
@@ -586,7 +586,7 @@ export default function TodoManager() {
                         <th
                           key={col}
                           scope="col"
-                          className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500 first:pl-5 last:pr-5"
+                          className="px-2.5 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500 first:pl-4 last:pr-4"
                         >
                           {col}
                         </th>
@@ -603,7 +603,7 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="pl-5 pr-2 py-3 align-middle">
+                        <td className="pl-4 pr-2 py-3 align-middle">
                           {rowIsEditing ? (
                             <label className="flex items-center justify-center">
                               <input
@@ -623,7 +623,7 @@ export default function TodoManager() {
                             <UrgentIndicator urgent={todo.acil} />
                           )}
                         </td>
-                        <td className="pr-3 py-3 align-middle font-medium text-gray-900">
+                        <td className="pr-2.5 py-3 align-middle font-medium text-gray-900">
                           {rowIsEditing ? (
                             <select
                               value={editingState.konu}
@@ -645,7 +645,7 @@ export default function TodoManager() {
                             <CategoryBadge category={todo.konu} />
                           )}
                         </td>
-                        <td className="pr-4 py-3 align-middle text-gray-600">
+                        <td className="pr-3 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <textarea
                               value={editingState.ayrinti}
@@ -664,7 +664,7 @@ export default function TodoManager() {
                             </span>
                           )}
                         </td>
-                        <td className="px-2 py-3 align-middle text-gray-600">
+                        <td className="px-1.5 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <select
                               value={editingState.kim}
@@ -686,7 +686,7 @@ export default function TodoManager() {
                             <AssigneeCell assignee={todo.kim} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-3 align-middle text-gray-600">
+                        <td className="whitespace-nowrap px-1.5 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <input
                               type="date"
@@ -703,7 +703,7 @@ export default function TodoManager() {
                             formatTodoDate(todo.neZaman)
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-3 align-middle">
+                        <td className="whitespace-nowrap px-1.5 py-3 align-middle">
                           {rowIsEditing ? (
                             <select
                               value={editingState.durum}
@@ -725,8 +725,8 @@ export default function TodoManager() {
                             <StatusBadge status={todo.durum} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-2 py-3 align-middle pr-5">
-                          <div className="flex flex-nowrap items-center justify-center gap-2">
+                        <td className="whitespace-nowrap px-1.5 py-3 align-middle pr-4">
+                          <div className="flex flex-nowrap items-center justify-center gap-1.5">
                             {rowIsEditing ? (
                               <>
                                 <button

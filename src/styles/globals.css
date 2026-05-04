@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --docs-header-height: 8.5rem;
+    --docs-header-height: 4.25rem;
     --docs-content-max-width: 72rem;
     --docs-content-gutter: clamp(1rem, 1.5vw + 0.75rem, 2rem);
     --docs-content-block-padding: clamp(1.5rem, 2vw + 1rem, 2.5rem);
