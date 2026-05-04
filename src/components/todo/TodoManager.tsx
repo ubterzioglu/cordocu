@@ -569,8 +569,17 @@ export default function TodoManager() {
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden overflow-x-auto rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
-              <table className="min-w-[1180px] divide-y divide-gray-50 text-[13px]">
+            <div className="hidden overflow-hidden rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
+              <table className="w-full table-fixed divide-y divide-gray-100 text-[12px]">
+                <colgroup>
+                  <col className="w-[4%]" />
+                  <col className="w-[18%]" />
+                  <col className="w-[42%]" />
+                  <col className="w-[8%]" />
+                  <col className="w-[12%]" />
+                  <col className="w-[9%]" />
+                  <col className="w-[7%]" />
+                </colgroup>
                 <thead className="bg-gray-50/80">
                   <tr>
                     {['!', 'Kategori', 'Görev', 'Kim', 'Ne zaman', 'Durum', 'İşlemler'].map(
@@ -578,7 +587,7 @@ export default function TodoManager() {
                         <th
                           key={col}
                           scope="col"
-                          className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500 first:pl-6 last:pr-6"
+                          className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500 first:pl-5 last:pr-5"
                         >
                           {col}
                         </th>
@@ -586,7 +595,7 @@ export default function TodoManager() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-100">
                   {filteredTodos.map((todo) => {
                     const rowIsEditing = editingId === todo.id
 
@@ -595,7 +604,7 @@ export default function TodoManager() {
                         key={todo.id}
                         className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                       >
-                        <td className="pl-6 pr-3 py-3 align-top">
+                        <td className="pl-5 pr-2 py-3 align-middle">
                           {rowIsEditing ? (
                             <label className="flex items-center justify-center">
                               <input
@@ -615,7 +624,7 @@ export default function TodoManager() {
                             <UrgentIndicator urgent={todo.acil} />
                           )}
                         </td>
-                        <td className="pr-3 py-3 font-medium text-gray-900">
+                        <td className="pr-3 py-3 align-middle font-medium text-gray-900">
                           {rowIsEditing ? (
                             <select
                               value={editingState.konu}
@@ -637,7 +646,7 @@ export default function TodoManager() {
                             <CategoryBadge category={todo.konu} />
                           )}
                         </td>
-                        <td className="w-[44%] pr-3 py-3 text-gray-600">
+                        <td className="pr-4 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <textarea
                               value={editingState.ayrinti}
@@ -651,12 +660,12 @@ export default function TodoManager() {
                               className={INPUT_CLS}
                             />
                           ) : (
-                            <span className="font-medium text-gray-900">
+                            <span className="block leading-5 text-gray-900">
                               {getTodoDetail(todo.ayrinti)}
                             </span>
                           )}
                         </td>
-                        <td className="px-3 py-3 text-gray-600">
+                        <td className="px-2 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <select
                               value={editingState.kim}
@@ -678,7 +687,7 @@ export default function TodoManager() {
                             <AssigneeCell assignee={todo.kim} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3 text-gray-600">
+                        <td className="whitespace-nowrap px-2 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
                             <input
                               type="date"
@@ -695,7 +704,7 @@ export default function TodoManager() {
                             formatTodoDate(todo.neZaman)
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3">
+                        <td className="whitespace-nowrap px-2 py-3 align-middle">
                           {rowIsEditing ? (
                             <select
                               value={editingState.durum}
@@ -717,8 +726,8 @@ export default function TodoManager() {
                             <StatusBadge status={todo.durum} />
                           )}
                         </td>
-                        <td className="whitespace-nowrap px-3 py-3 last:pr-6">
-                          <div className="flex flex-nowrap items-center gap-2">
+                        <td className="whitespace-nowrap px-2 py-3 align-middle pr-5">
+                          <div className="flex flex-nowrap items-center justify-center gap-2">
                             {rowIsEditing ? (
                               <>
                                 <button
@@ -970,9 +979,9 @@ function AssigneeAvatar({ assignee }: { assignee: string }) {
     <Image
       src={src}
       alt={assignee}
-      width={22}
-      height={22}
-      className="h-5.5 w-5.5 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
+      width={24}
+      height={24}
+      className="h-6 w-6 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
     />
   )
 }
@@ -1014,7 +1023,7 @@ function CategoryBadge({ category }: { category: string }) {
 
   return (
     <span
-      className="inline-flex items-center rounded-full px-2 py-1 text-[10px] font-semibold"
+      className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
       style={{ color, background: `${color}18` }}
     >
       {category}
@@ -1027,7 +1036,7 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold"
+      className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
       style={{ color, background: `${color}18` }}
     >
       {status}
