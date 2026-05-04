@@ -182,12 +182,11 @@ export default function TodoManager() {
         .from('todo_items')
         .insert(insertPayload)
         .select(TODO_SELECT)
-      
 
       const insertedRow = Array.isArray(data) ? data[0] : data
 
       if (insertErr || !insertedRow) {
-        throw insertErr ?? new Error('Todo eklenemedi.')
+        throw insertErr ?? new Error('Todo eklenemedi. Yazma yetkisi veya RLS politikasi kontrol edilmeli.')
       }
 
       setTodos((prev) => sortTodoItems([mapTodoRow(insertedRow as TodoItemRow), ...prev]))
@@ -245,9 +244,9 @@ export default function TodoManager() {
       const updatedRow = Array.isArray(data) ? data[0] : data
 
       if (!updatedRow) {
-        await loadTodos()
-        cancelEdit()
-        return
+        throw new Error(
+          'Todo guncellenemedi. Kayit bulunamadi veya yazma yetkisi yok. RLS politikasi kontrol edilmeli.'
+        )
       }
 
       setTodos((prev) =>
