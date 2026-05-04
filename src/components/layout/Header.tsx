@@ -104,7 +104,7 @@ export default function Header() {
 
         <nav
           aria-label="Ana navigasyon"
-          className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto whitespace-nowrap"
+          className="flex min-w-0 flex-1 items-center gap-1 overflow-visible whitespace-nowrap lg:overflow-visible"
         >
           {docsCategories.map((category, index) => {
             const Icon = getDocIcon(category.iconKey)

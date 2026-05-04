@@ -647,7 +647,8 @@ export default function TodoManager() {
                         </td>
                         <td className="pr-3 py-3 align-middle text-gray-600">
                           {rowIsEditing ? (
-                            <textarea
+                            <input
+                              type="text"
                               value={editingState.ayrinti}
                               onChange={(e) =>
                                 setEditingState((s) => ({
@@ -655,8 +656,7 @@ export default function TodoManager() {
                                   ayrinti: e.target.value,
                                 }))
                               }
-                              rows={3}
-                              className={`${INPUT_CLS} min-h-[132px] resize-y`}
+                              className={INPUT_CLS}
                             />
                           ) : (
                             <span className="block leading-5 text-gray-900">
@@ -793,12 +793,12 @@ export default function TodoManager() {
                   >
                     {rowIsEditing ? (
                       <div className="space-y-3">
-                        <textarea
+                        <input
+                          type="text"
                           value={editingState.ayrinti}
                           onChange={(e) =>
                             setEditingState((s) => ({ ...s, ayrinti: e.target.value }))
                           }
-                          rows={4}
                           className={INPUT_CLS}
                         />
                         <select
