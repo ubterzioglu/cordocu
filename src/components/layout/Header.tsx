@@ -16,6 +16,7 @@ export default function Header({
   isSidebarOpen,
   menuButtonRef,
 }: HeaderProps) {
+  const adminHref = 'https://corteqs.net/admin/'
   const router = useRouter()
   const searchHref = buildDocsHubHref()
   const updatesHref = buildDocItemHref({
@@ -75,6 +76,14 @@ export default function Header({
           </Link>
         </div>
         <div className="flex items-center gap-2">
+          <a
+            href={adminHref}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl bg-[rgba(66,133,244,0.12)] px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary-700 transition-all hover:bg-[rgba(66,133,244,0.18)] hover:text-primary-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          >
+            Admin Paneline Git
+          </a>
           <Link
             href={searchHref}
             className={`hidden rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] transition-all sm:inline-flex ${
