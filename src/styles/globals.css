@@ -66,6 +66,11 @@
     @apply min-h-full;
   }
 
+  .docs-main-column-wide {
+    max-width: 88rem;
+    margin-inline: auto;
+  }
+
   .docs-surface {
     position: relative;
     overflow: hidden;

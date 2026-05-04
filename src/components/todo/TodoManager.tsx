@@ -568,15 +568,15 @@ export default function TodoManager() {
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden overflow-hidden rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
-              <table className="w-full table-fixed divide-y divide-gray-100 text-[12px]">
+            <div className="hidden overflow-x-auto rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
+              <table className="w-full min-w-[1180px] table-fixed divide-y divide-gray-100 text-[12px]">
                 <colgroup>
                   <col className="w-[4%]" />
-                  <col className="w-[18%]" />
-                  <col className="w-[42%]" />
+                  <col className="w-[17%]" />
+                  <col className="w-[47%]" />
+                  <col className="w-[7%]" />
+                  <col className="w-[10%]" />
                   <col className="w-[8%]" />
-                  <col className="w-[12%]" />
-                  <col className="w-[9%]" />
                   <col className="w-[7%]" />
                 </colgroup>
                 <thead className="bg-gray-50/80">
@@ -655,8 +655,8 @@ export default function TodoManager() {
                                   ayrinti: e.target.value,
                                 }))
                               }
-                              rows={4}
-                              className={INPUT_CLS}
+                              rows={3}
+                              className={`${INPUT_CLS} min-h-[132px] resize-y`}
                             />
                           ) : (
                             <span className="block leading-5 text-gray-900">
@@ -978,16 +978,16 @@ function AssigneeAvatar({ assignee }: { assignee: string }) {
     <Image
       src={src}
       alt={assignee}
-      width={24}
-      height={24}
-      className="h-6 w-6 rounded-full border border-white/80 object-cover shadow-[0_6px_14px_rgba(60,64,67,0.18)]"
+      width={36}
+      height={36}
+      className="h-9 w-9 rounded-full border border-white/80 object-cover shadow-[0_10px_20px_rgba(60,64,67,0.2)]"
     />
   )
 }
 
 function AssigneeCell({ assignee }: { assignee: string }) {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex min-h-[40px] items-center justify-center">
       <AssigneeAvatar assignee={assignee} />
     </div>
   )
@@ -1058,7 +1058,7 @@ function MobileInfoPair({
         {label}
       </p>
       {label === 'Kim' ? (
-        <div className="flex items-center justify-center text-[13px] text-gray-800">
+        <div className="flex min-h-[40px] items-center justify-center text-[13px] text-gray-800">
           <AssigneeAvatar assignee={assignee ?? value} />
         </div>
       ) : (
