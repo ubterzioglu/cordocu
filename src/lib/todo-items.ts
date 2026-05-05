@@ -96,16 +96,19 @@ export function toTodoFormState(item: TodoItem): TodoFormState {
 
 export function sortTodoItems(items: TodoItem[]): TodoItem[] {
   return [...items].sort((left, right) => {
-    if (left.neZaman && right.neZaman) {
-      return left.neZaman.localeCompare(right.neZaman)
+    const leftCreatedAt = left.createdAt ? Date.parse(left.createdAt) : Number.NEGATIVE_INFINITY
+    const rightCreatedAt = right.createdAt ? Date.parse(right.createdAt) : Number.NEGATIVE_INFINITY
+
+    if (leftCreatedAt !== rightCreatedAt) {
+      return rightCreatedAt - leftCreatedAt
     }
 
-    if (left.neZaman) {
-      return -1
+    if (left.updatedAt && right.updatedAt && left.updatedAt !== right.updatedAt) {
+      return Date.parse(right.updatedAt) - Date.parse(left.updatedAt)
     }
 
-    if (right.neZaman) {
-      return 1
+    if (left.neZaman && right.neZaman && left.neZaman !== right.neZaman) {
+      return right.neZaman.localeCompare(left.neZaman)
     }
 
     const categoryCompare = left.konu.localeCompare(right.konu, 'tr')

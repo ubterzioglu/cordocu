@@ -20,7 +20,7 @@ import {
   type TodoItemRow,
 } from '@/lib/todo-items'
 
-const TODO_SELECT = 'id, konu, kim, ne_zaman, ayrinti, acil, durum'
+const TODO_SELECT = 'id, konu, kim, ne_zaman, ayrinti, acil, durum, created_at, updated_at'
 
 const ASSIGNEE_CARDS = [
   { assignee: 'UBT' as const, color: '#1A6DC2' },
@@ -143,7 +143,7 @@ export default function TodoManager() {
       const { data, error: fetchErr } = await supabase
         .from('todo_items')
         .select(TODO_SELECT)
-        .order('ne_zaman', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: false })
 
       if (fetchErr) {
         throw fetchErr
