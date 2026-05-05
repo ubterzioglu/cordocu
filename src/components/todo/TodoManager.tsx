@@ -52,6 +52,9 @@ const CATEGORY_COLORS: Record<string, string> = {
 const INPUT_CLS =
   'w-full rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2 text-[13px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 
+const TABLE_INPUT_CLS =
+  'w-full min-w-0 rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-2.5 py-2 text-[12px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+
 const BTN_CLS =
   'inline-flex items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-[11px] font-semibold transition-all disabled:opacity-60'
 
@@ -574,15 +577,15 @@ export default function TodoManager() {
           <>
             {/* Desktop table */}
             <div className="hidden overflow-hidden rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)] md:block">
-              <table className="w-full table-fixed divide-y divide-gray-100 text-[12px]">
+              <table className="w-full divide-y divide-gray-100 text-[12px]">
                 <colgroup>
-                  <col className="w-[3.5%]" />
-                  <col className="w-[14.5%]" />
-                  <col className="w-[52%]" />
-                  <col className="w-[5.5%]" />
-                  <col className="w-[9.5%]" />
-                  <col className="w-[7.5%]" />
-                  <col className="w-[7.5%]" />
+                  <col className="w-[52px]" />
+                  <col className="w-[240px]" />
+                  <col />
+                  <col className="w-[88px]" />
+                  <col className="w-[132px]" />
+                  <col className="w-[132px]" />
+                  <col className="w-[116px]" />
                 </colgroup>
                 <thead className="bg-gray-50/80">
                   <tr>
@@ -638,7 +641,7 @@ export default function TodoManager() {
                                   konu: e.target.value as TodoFormState['konu'],
                                 }))
                               }
-                              className={INPUT_CLS}
+                              className={TABLE_INPUT_CLS}
                             >
                               {TODO_CATEGORIES.map((category) => (
                                 <option key={category} value={category}>
@@ -661,7 +664,7 @@ export default function TodoManager() {
                                   ayrinti: e.target.value,
                                 }))
                               }
-                              className={INPUT_CLS}
+                              className={TABLE_INPUT_CLS}
                             />
                           ) : (
                             <span className="block leading-5 text-gray-900">
@@ -679,7 +682,7 @@ export default function TodoManager() {
                                   kim: e.target.value as TodoFormState['kim'],
                                 }))
                               }
-                              className={INPUT_CLS}
+                              className={TABLE_INPUT_CLS}
                             >
                               {TODO_ASSIGNEES.map((a) => (
                                 <option key={a} value={a}>
@@ -702,7 +705,7 @@ export default function TodoManager() {
                                   neZaman: e.target.value,
                                 }))
                               }
-                              className={INPUT_CLS}
+                              className={TABLE_INPUT_CLS}
                             />
                           ) : (
                             formatTodoDate(todo.neZaman)
@@ -718,7 +721,7 @@ export default function TodoManager() {
                                   durum: e.target.value as TodoFormState['durum'],
                                 }))
                               }
-                              className={INPUT_CLS}
+                              className={TABLE_INPUT_CLS}
                             >
                               {TODO_STATUSES.map((st) => (
                                 <option key={st} value={st}>
@@ -993,9 +996,8 @@ function AssigneeAvatar({ assignee }: { assignee: string }) {
 
 function AssigneeCell({ assignee }: { assignee: string }) {
   return (
-    <div className="flex min-h-[40px] items-center justify-center gap-2">
+    <div className="flex min-h-[40px] items-center justify-center">
       <AssigneeAvatar assignee={assignee} />
-      <span className="text-[12px] font-medium text-gray-700">{assignee}</span>
     </div>
   )
 }
@@ -1065,9 +1067,8 @@ function MobileInfoPair({
         {label}
       </p>
       {label === 'Kim' ? (
-        <div className="flex min-h-[40px] items-center justify-center gap-2 text-[13px] text-gray-800">
+        <div className="flex min-h-[40px] items-center justify-center">
           <AssigneeAvatar assignee={assignee ?? value} />
-          <span>{value}</span>
         </div>
       ) : (
         <p className="text-[13px] text-gray-800">{value}</p>
