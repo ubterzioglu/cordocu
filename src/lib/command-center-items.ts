@@ -291,6 +291,24 @@ function getMonthNumber(monthLabel: string): number | null {
   return monthMap[normalized] ?? null
 }
 
+const WA_BUCKET_YEAR = 2026
+
+function formatMonthDayLabel(date: Date): string {
+  return date.toLocaleDateString('tr-TR', {
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+  })
+}
+
+function getFirstMondayOfMonth(monthNumber: number): Date {
+  const firstDayOfMonth = new Date(Date.UTC(WA_BUCKET_YEAR, monthNumber - 1, 1))
+  const weekday = firstDayOfMonth.getUTCDay()
+  const daysUntilMonday = (8 - weekday) % 7
+
+  return new Date(Date.UTC(WA_BUCKET_YEAR, monthNumber - 1, 1 + daysUntilMonday))
+}
+
 function getWaWeekBucketLabel(rawLabel: string): string {
   const normalizedLabel = extractDateLabelWithoutWa(rawLabel)
   const match = normalizedLabel.match(/(\d{1,2})\s+([^\s]+)/)
@@ -305,40 +323,19 @@ function getWaWeekBucketLabel(rawLabel: string): string {
   }
 
   const monthNumber = getMonthNumber(month)
-
-  if (monthNumber === 4) {
-    if (day >= 27) {
-      return `27 ${month}`
-    }
-
-    if (day >= 20) {
-      return `20 ${month}`
-    }
-
-    return `13 ${month}`
+  if (!monthNumber) {
+    return normalizedLabel || 'WA'
   }
 
-  if (monthNumber === 5) {
-    if (day >= 25) {
-      return `25 ${month}`
-    }
+  const firstMonday = getFirstMondayOfMonth(monthNumber)
+  const firstMondayDay = firstMonday.getUTCDate()
+  const bucketDay =
+    day <= firstMondayDay
+      ? firstMondayDay
+      : firstMondayDay + Math.floor((day - firstMondayDay) / 7) * 7
+  const bucketDate = new Date(Date.UTC(WA_BUCKET_YEAR, monthNumber - 1, bucketDay))
 
-    if (day >= 18) {
-      return `18 ${month}`
-    }
-
-    if (day >= 11) {
-      return `11 ${month}`
-    }
-
-    if (day >= 4) {
-      return `4 ${month}`
-    }
-
-    return `1 ${month}`
-  }
-
-  return normalizedLabel || 'WA'
+  return formatMonthDayLabel(bucketDate)
 }
 
 function getDateGroupSortToken(label: string): string {
