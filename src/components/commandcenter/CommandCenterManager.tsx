@@ -39,7 +39,7 @@ const INPUT_CLS =
 const TABLE_INPUT_CLS =
   'w-full min-w-[84px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-2.5 py-2 text-[12px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 const BTN_CLS =
-  'inline-flex items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-[11px] font-semibold transition-all disabled:opacity-60'
+  'inline-flex items-center justify-center gap-1 rounded-lg px-1.5 py-1 text-[10px] font-semibold transition-all disabled:opacity-60'
 const FILTER_SELECT_CLS =
   'min-w-[170px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2 text-[13px] text-gray-700 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 const FILTER_INPUT_CLS =
@@ -708,7 +708,7 @@ export default function CommandCenterManager({
                   </colgroup>
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
-                      {['Acil', 'Konu Bazında Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
+                      {['Acil', 'Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
                         <th
                           key={column}
                           scope="col"
@@ -814,7 +814,7 @@ export default function CommandCenterManager({
                                 </span>
                               )
                             ) : (
-                              <span className="text-[11px] font-medium text-gray-600">
+                              <span className="text-[10px] font-medium text-gray-600">
                                 {dateGroupInfo.label}
                               </span>
                             )}
@@ -927,7 +927,7 @@ export default function CommandCenterManager({
                                     aria-label="Kaydet"
                                     title="Kaydet"
                                   >
-                                    <Save size={14} aria-hidden="true" />
+                                  <Save size={12} aria-hidden="true" />
                                   </button>
                                   <button
                                     type="button"
@@ -937,7 +937,7 @@ export default function CommandCenterManager({
                                     aria-label="İptal"
                                     title="İptal"
                                   >
-                                    <X size={14} aria-hidden="true" />
+                                  <X size={12} aria-hidden="true" />
                                   </button>
                                 </>
                               ) : (
@@ -949,7 +949,7 @@ export default function CommandCenterManager({
                                   aria-label="Düzenle"
                                   title="Düzenle"
                                 >
-                                  <Pencil size={14} aria-hidden="true" />
+                                  <Pencil size={12} aria-hidden="true" />
                                 </button>
                               )}
                               <button
@@ -960,7 +960,7 @@ export default function CommandCenterManager({
                                 aria-label="Sil"
                                 title="Sil"
                               >
-                                <Trash2 size={14} aria-hidden="true" />
+                                <Trash2 size={12} aria-hidden="true" />
                               </button>
                             </div>
                           </td>
@@ -1149,7 +1149,7 @@ export default function CommandCenterManager({
                           </div>
 
                           <div className="grid grid-cols-2 gap-3 text-sm">
-                            <MobileInfoPair label="Konu Bazında Kategori" value={getCommandCenterTopCategoryLabel(item)} />
+                            <MobileInfoPair label="Kategori" value={getCommandCenterTopCategoryLabel(item)} />
                             <MobileInfoPair label="Tarih" value={dateGroupInfo.label} />
                             <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
                             <MobileInfoPair label="Durum" value={getCommandCenterStatusLabel(item.status)} />
@@ -1169,7 +1169,7 @@ export default function CommandCenterManager({
                               aria-label="Kaydet"
                               title="Kaydet"
                             >
-                              <Save size={14} aria-hidden="true" />
+                              <Save size={12} aria-hidden="true" />
                             </button>
                             <button
                               type="button"
@@ -1179,7 +1179,7 @@ export default function CommandCenterManager({
                               aria-label="İptal"
                               title="İptal"
                             >
-                              <X size={14} aria-hidden="true" />
+                              <X size={12} aria-hidden="true" />
                             </button>
                           </>
                         ) : (
@@ -1191,7 +1191,7 @@ export default function CommandCenterManager({
                             aria-label="Düzenle"
                             title="Düzenle"
                           >
-                            <Pencil size={14} aria-hidden="true" />
+                            <Pencil size={12} aria-hidden="true" />
                           </button>
                         )}
                         <button
@@ -1202,7 +1202,7 @@ export default function CommandCenterManager({
                           aria-label="Sil"
                           title="Sil"
                         >
-                          <Trash2 size={14} aria-hidden="true" />
+                          <Trash2 size={12} aria-hidden="true" />
                         </button>
                       </div>
                     </div>

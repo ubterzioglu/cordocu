@@ -401,7 +401,7 @@ export function getCommandCenterDateGroupInfo(
 
   return {
     key: `TOP::${rawLabel}`,
-    label: `TOP ${rawLabel}`,
+    label: `T ${rawLabel}`,
     rawLabel,
     sortValue: `1-${rawLabel}`,
   }
