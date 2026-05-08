@@ -17,18 +17,14 @@ export default function CommandCenterPage() {
                 aria-hidden="true"
               />
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                Command Center
+                Birleşik Görev Merkezi Todo ve toplantı maddelerini tek tabloda filtreleyin, güncelleyin ve yönetin.
               </h1>
-              <p className="mt-3 max-w-3xl text-sm text-gray-600 sm:text-base">
-                Todo kayıtları ve toplantı maddeleri artık aynı merkezde. Yeni source of truth
-                bu ekrandaki command center verisi.
-              </p>
             </div>
           </div>
 
           <CommandCenterManager
-            title="Birleşik Görev Merkezi"
-            description="Todo ve toplantı maddelerini tek tabloda filtreleyin, güncelleyin ve yönetin."
+            title=""
+            description=""
           />
         </article>
       </div>

@@ -49,6 +49,7 @@ export interface DocCategoryDefinition {
   shortDescription: string
   iconKey: DocIconKey
   defaultExpanded: boolean
+  uiHidden?: boolean
   overview: DocCategoryOverview
   items: DocNavItem[]
 }
@@ -124,6 +125,7 @@ export const docsCategories: DocCategoryDefinition[] = [
     shortDescription: 'Tüm toplantı notları ve WA yazışmalarının birleştirilmiş, kategorize edilmiş özeti.',
     iconKey: 'calendar',
     defaultExpanded: false,
+    uiHidden: true,
     overview: {
       title: 'Birleştirilmiş Toplantı & WA Maddeleri',
       description:
@@ -147,6 +149,7 @@ export const docsCategories: DocCategoryDefinition[] = [
     shortDescription: 'Canlı görev takip tablosu — kategorik konu, görev ayrıntısı, sorumlu, zaman ve durum alanlarıyla DB\'ye bağlı.',
     iconKey: 'test-tube',
     defaultExpanded: false,
+    uiHidden: true,
     overview: {
       title: 'To Do List',
       description: 'Tüm görevler tek tabloda: kategori / görev ayrıntısı / sorumlu / zaman / durum. Supabase\'e bağlı, yeni görev eklenebilir.',
@@ -1015,7 +1018,9 @@ export const docsCategories: DocCategoryDefinition[] = [
   },
 ]
 
-export const docsOverviewCards: DocOverviewCard[] = docsCategories.map((category) => ({
+const visibleDocsCategories = docsCategories.filter((category) => !category.uiHidden)
+
+export const docsOverviewCards: DocOverviewCard[] = visibleDocsCategories.map((category) => ({
   id: `${category.slug}-overview-card`,
   title: category.overview.title,
   description: category.overview.description,
@@ -1026,7 +1031,7 @@ export const docsOverviewCards: DocOverviewCard[] = docsCategories.map((category
   href: `/${category.slug}`,
 }))
 
-export const docsQuickLinks: DocQuickLink[] = docsCategories
+export const docsQuickLinks: DocQuickLink[] = visibleDocsCategories
   .flatMap((category) =>
     category.items
       .filter((item) => item.featuredOrder !== undefined)
@@ -1040,7 +1045,7 @@ export const docsQuickLinks: DocQuickLink[] = docsCategories
   .sort((left, right) => left.featuredOrder - right.featuredOrder)
   .map(({ featuredOrder: _featuredOrder, ...quickLink }) => quickLink)
 
-export const docCategorySlugs = docsCategories.map((category) => category.slug)
+export const docCategorySlugs = visibleDocsCategories.map((category) => category.slug)
 
 export function isDocCategorySlug(value: string | null): value is DocCategorySlug {
   return value !== null && docsCategories.some((category) => category.slug === value)

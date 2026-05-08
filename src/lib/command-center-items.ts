@@ -68,11 +68,40 @@ export interface CommandCenterFormState {
 }
 
 export interface FetchCommandCenterItemsOptions {
+  page?: number
+  pageSize?: number
   itemType?: CommandCenterItemType
+  assignee?: string
+  categoryLabel?: string
+  status?: string
+  urgentOnly?: boolean
+  sourceCode?: string
+  searchTerm?: string
+}
+
+export interface CommandCenterItemsResult {
+  items: CommandCenterItem[]
+  totalCount: number
+  page: number
+  pageSize: number
+}
+
+export interface CommandCenterItemCounts {
+  todo: number
+  meetingNote: number
+}
+
+export interface CommandCenterCategoryOption {
+  value: string
+  itemType: CommandCenterItemType
 }
 
 export const COMMAND_CENTER_SELECT =
   'id, item_type, title, detail, category_label, assignee, status, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, created_at, updated_at'
+
+function escapeIlikeValue(value: string): string {
+  return value.replace(/[%_,()]/g, (char) => `\\${char}`).replace(/,/g, '\\,')
+}
 
 export function mapCommandCenterRow(row: CommandCenterItemRow): CommandCenterItem {
   return {
@@ -136,6 +165,51 @@ export function getCommandCenterItemLabel(itemType: CommandCenterItemType): stri
   return itemType === 'meeting_note' ? 'Toplanti Notu' : 'Todo'
 }
 
+function isWaMeetingCategory(label: string): boolean {
+  return /\bWA\b/i.test(label)
+}
+
+export function formatCommandCenterCategoryLabel(
+  label: string,
+  itemType: CommandCenterItemType
+): string {
+  const normalizedLabel = label.trim()
+  if (!normalizedLabel || itemType !== 'meeting_note') {
+    return normalizedLabel
+  }
+
+  if (isWaMeetingCategory(normalizedLabel)) {
+    const withoutWa = normalizedLabel.replace(/\bWA\b/gi, '').replace(/\s+/g, ' ').trim()
+    return withoutWa ? `WA ${withoutWa}` : 'WA'
+  }
+
+  return `TOP ${normalizedLabel}`
+}
+
+function getCategorySortRank(option: CommandCenterCategoryOption): number {
+  if (option.itemType !== 'meeting_note') {
+    return 2
+  }
+
+  return isWaMeetingCategory(option.value) ? 0 : 1
+}
+
+export function sortCommandCenterCategoryOptions(
+  options: CommandCenterCategoryOption[]
+): CommandCenterCategoryOption[] {
+  return [...options].sort((left, right) => {
+    const rankDiff = getCategorySortRank(left) - getCategorySortRank(right)
+    if (rankDiff !== 0) {
+      return rankDiff
+    }
+
+    return formatCommandCenterCategoryLabel(left.value, left.itemType).localeCompare(
+      formatCommandCenterCategoryLabel(right.value, right.itemType),
+      'tr'
+    )
+  })
+}
+
 export function sortCommandCenterItems(items: CommandCenterItem[]): CommandCenterItem[] {
   return [...items].sort((left, right) => {
     if (left.itemType !== right.itemType) {
@@ -172,24 +246,132 @@ export function sortCommandCenterItems(items: CommandCenterItem[]): CommandCente
 
 export async function fetchCommandCenterItems(
   options?: FetchCommandCenterItemsOptions
-): Promise<CommandCenterItem[]> {
+): Promise<CommandCenterItemsResult> {
   const supabase = getSupabaseBrowserClient()
-  if (!supabase) return []
+  const page = Math.max(1, options?.page ?? 1)
+  const pageSize = Math.max(1, options?.pageSize ?? 50)
+
+  if (!supabase) {
+    return {
+      items: [],
+      totalCount: 0,
+      page,
+      pageSize,
+    }
+  }
+
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
 
   let query = supabase
     .from('command_center_items')
-    .select(COMMAND_CENTER_SELECT)
+    .select(COMMAND_CENTER_SELECT, { count: 'exact' })
     .order('item_type', { ascending: true })
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
+    .range(from, to)
 
   if (options?.itemType) {
     query = query.eq('item_type', options.itemType)
   }
 
+  if (options?.assignee && options.assignee !== 'Tümü') {
+    query = query.eq('assignee', options.assignee)
+  }
+
+  if (options?.categoryLabel?.trim()) {
+    query = query.ilike('category_label', `%${escapeIlikeValue(options.categoryLabel.trim())}%`)
+  }
+
+  if (options?.status && options.status !== 'Tümü') {
+    query = query.eq('status', options.status)
+  }
+
+  if (options?.urgentOnly) {
+    query = query.eq('urgent', true)
+  }
+
+  if (options?.sourceCode && options.sourceCode !== 'Tümü') {
+    query = query.eq('legacy_source_code', options.sourceCode)
+  }
+
+  if (options?.searchTerm?.trim()) {
+    const searchValue = `%${escapeIlikeValue(options.searchTerm.trim())}%`
+    query = query.or(
+      [
+        `title.ilike.${searchValue}`,
+        `detail.ilike.${searchValue}`,
+        `category_label.ilike.${searchValue}`,
+        `legacy_source_date_label.ilike.${searchValue}`,
+        `legacy_source_category.ilike.${searchValue}`,
+        `legacy_source_title.ilike.${searchValue}`,
+      ].join(',')
+    )
+  }
+
+  const { data, error, count } = await query
+  if (error || !data) {
+    return {
+      items: [],
+      totalCount: 0,
+      page,
+      pageSize,
+    }
+  }
+
+  return {
+    items: sortCommandCenterItems((data as CommandCenterItemRow[]).map(mapCommandCenterRow)),
+    totalCount: count ?? 0,
+    page,
+    pageSize,
+  }
+}
+
+export async function fetchCommandCenterCategoryOptions(options?: {
+  itemType?: CommandCenterItemType
+  sourceCode?: string
+}): Promise<CommandCenterCategoryOption[]> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) {
+    return []
+  }
+
+  let query = supabase
+    .from('command_center_items')
+    .select('category_label, item_type')
+    .order('item_type', { ascending: true })
+    .order('category_label', { ascending: true })
+
+  if (options?.itemType) {
+    query = query.eq('item_type', options.itemType)
+  }
+
+  if (options?.sourceCode && options.sourceCode !== 'Tümü') {
+    query = query.eq('legacy_source_code', options.sourceCode)
+  }
+
   const { data, error } = await query
-  if (error || !data) return []
-  return sortCommandCenterItems((data as CommandCenterItemRow[]).map(mapCommandCenterRow))
+  if (error || !data) {
+    return []
+  }
+
+  const uniqueOptions = new Map<string, CommandCenterCategoryOption>()
+  for (const row of data as Pick<CommandCenterItemRow, 'category_label' | 'item_type'>[]) {
+    const value = row.category_label?.trim()
+    if (!value) {
+      continue
+    }
+
+    const key = `${row.item_type}:${value}`
+    if (!uniqueOptions.has(key)) {
+      uniqueOptions.set(key, {
+        value,
+        itemType: row.item_type,
+      })
+    }
+  }
+
+  return sortCommandCenterCategoryOptions(Array.from(uniqueOptions.values()))
 }
 
 function buildTitle(state: CommandCenterFormState): string {
@@ -313,4 +495,30 @@ export async function deleteCommandCenterItem(id: string): Promise<boolean> {
 
   const { error } = await supabase.from('command_center_items').delete().eq('id', id)
   return !error
+}
+
+export async function fetchCommandCenterItemCounts(): Promise<CommandCenterItemCounts> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) {
+    return {
+      todo: 0,
+      meetingNote: 0,
+    }
+  }
+
+  const [todoResult, meetingNoteResult] = await Promise.all([
+    supabase
+      .from('command_center_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('item_type', 'todo'),
+    supabase
+      .from('command_center_items')
+      .select('id', { count: 'exact', head: true })
+      .eq('item_type', 'meeting_note'),
+  ])
+
+  return {
+    todo: todoResult.count ?? 0,
+    meetingNote: meetingNoteResult.count ?? 0,
+  }
 }

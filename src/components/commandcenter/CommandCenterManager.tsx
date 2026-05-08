@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { AlertTriangle, Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '@/components/ui/AccordionCard'
@@ -9,12 +9,15 @@ import {
   createCommandCenterItem,
   createEmptyCommandCenterFormState,
   deleteCommandCenterItem,
+  fetchCommandCenterCategoryOptions,
+  fetchCommandCenterItemCounts,
   fetchCommandCenterItems,
+  formatCommandCenterCategoryLabel,
   getCommandCenterItemLabel,
-  sortCommandCenterItems,
   toCommandCenterFormState,
   updateCommandCenterItem,
   validateCommandCenterFormState,
+  type CommandCenterCategoryOption,
   type CommandCenterFormState,
   type CommandCenterItem,
   type CommandCenterItemType,
@@ -76,19 +79,25 @@ export default function CommandCenterManager({
   defaultItemTypeFilter = 'all',
   lockedItemType,
 }: CommandCenterManagerProps) {
+  const PAGE_SIZE = 50
   const [items, setItems] = useState<CommandCenterItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isPageLoading, setIsPageLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedItemType, setSelectedItemType] = useState<CommandCenterItemType | 'all'>(
     lockedItemType ?? defaultItemTypeFilter
   )
   const [selectedAssignee, setSelectedAssignee] = useState<string>('Tümü')
-  const [selectedCategory, setSelectedCategory] = useState<string>('Tümü')
+  const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<string>('Tümü')
   const [selectedSource, setSelectedSource] = useState<string>('Tümü')
   const [searchTerm, setSearchTerm] = useState('')
   const [urgentOnly, setUrgentOnly] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const [categoryOptions, setCategoryOptions] = useState<CommandCenterCategoryOption[]>([])
+  const [itemCounts, setItemCounts] = useState({ todo: 0, meetingNote: 0 })
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formState, setFormState] = useState<CommandCenterFormState>(() =>
     createEmptyCommandCenterFormState(
@@ -107,6 +116,8 @@ export default function CommandCenterManager({
   const [editingState, setEditingState] = useState<CommandCenterFormState>(() =>
     createEmptyCommandCenterFormState()
   )
+  const activeItemType =
+    lockedItemType ?? (selectedItemType === 'all' ? undefined : selectedItemType)
 
   useEffect(() => {
     if (lockedItemType) {
@@ -122,17 +133,25 @@ export default function CommandCenterManager({
     }
   }, [lockedItemType])
 
-  useEffect(() => {
-    void loadItems()
-  }, [])
-
-  async function loadItems() {
-    setIsLoading(true)
+  const loadItems = useCallback(async function loadItems() {
+    setIsLoading((current) => current && items.length === 0)
+    setIsPageLoading(items.length > 0)
     setError(null)
 
     try {
-      const data = await fetchCommandCenterItems()
-      setItems(data)
+      const result = await fetchCommandCenterItems({
+        page: currentPage,
+        pageSize: PAGE_SIZE,
+        itemType: activeItemType,
+        assignee: selectedAssignee,
+        categoryLabel: selectedCategory,
+        status: selectedStatus,
+        urgentOnly,
+        sourceCode: selectedSource,
+        searchTerm,
+      })
+      setItems(result.items)
+      setTotalCount(result.totalCount)
     } catch (loadError) {
       setError(
         loadError instanceof Error
@@ -141,8 +160,45 @@ export default function CommandCenterManager({
       )
     } finally {
       setIsLoading(false)
+      setIsPageLoading(false)
     }
-  }
+  }, [
+    PAGE_SIZE,
+    activeItemType,
+    currentPage,
+    items.length,
+    searchTerm,
+    selectedAssignee,
+    selectedCategory,
+    selectedSource,
+    selectedStatus,
+    urgentOnly,
+  ])
+
+  useEffect(() => {
+    void loadItems()
+  }, [loadItems])
+
+  useEffect(() => {
+    async function loadCounts() {
+      const counts = await fetchCommandCenterItemCounts()
+      setItemCounts(counts)
+    }
+
+    void loadCounts()
+  }, [])
+
+  useEffect(() => {
+    async function loadCategoryOptions() {
+      const options = await fetchCommandCenterCategoryOptions({
+        itemType: activeItemType,
+        sourceCode: selectedSource,
+      })
+      setCategoryOptions(options)
+    }
+
+    void loadCategoryOptions()
+  }, [activeItemType, selectedSource])
 
   function resetCreateForm(itemType?: CommandCenterItemType) {
     setFormState(
@@ -189,8 +245,18 @@ export default function CommandCenterManager({
         throw new Error('Kayıt eklenemedi.')
       }
 
-      setItems((current) => sortCommandCenterItems([created, ...current]))
       resetCreateForm(lockedItemType ?? formState.itemType)
+      setItemCounts((current) => ({
+        ...current,
+        todo: current.todo + (created.itemType === 'todo' ? 1 : 0),
+        meetingNote: current.meetingNote + (created.itemType === 'meeting_note' ? 1 : 0),
+      }))
+
+      if (currentPage !== 1) {
+        setCurrentPage(1)
+      } else {
+        await loadItems()
+      }
     } catch (createError) {
       setError(createError instanceof Error ? createError.message : 'Kayıt eklenemedi.')
     } finally {
@@ -214,12 +280,8 @@ export default function CommandCenterManager({
         throw new Error('Kayıt güncellenemedi.')
       }
 
-      setItems((current) =>
-        sortCommandCenterItems(
-          current.map((item) => (item.id === itemId ? updated : item))
-        )
-      )
       cancelEdit()
+      await loadItems()
     } catch (updateError) {
       setError(updateError instanceof Error ? updateError.message : 'Kayıt güncellenemedi.')
     } finally {
@@ -241,9 +303,25 @@ export default function CommandCenterManager({
         throw new Error('Kayıt silinemedi.')
       }
 
-      setItems((current) => current.filter((item) => item.id !== itemId))
+      const deletedItem = items.find((item) => item.id === itemId)
+      if (deletedItem) {
+        setItemCounts((current) => ({
+          ...current,
+          todo: current.todo - (deletedItem.itemType === 'todo' ? 1 : 0),
+          meetingNote: current.meetingNote - (deletedItem.itemType === 'meeting_note' ? 1 : 0),
+        }))
+      }
+
       if (editingId === itemId) {
         cancelEdit()
+      }
+
+      const nextPage = items.length === 1 && currentPage > 1 ? currentPage - 1 : currentPage
+
+      if (nextPage !== currentPage) {
+        setCurrentPage(nextPage)
+      } else {
+        await loadItems()
       }
     } catch (deleteError) {
       setError(deleteError instanceof Error ? deleteError.message : 'Kayıt silinemedi.')
@@ -252,93 +330,31 @@ export default function CommandCenterManager({
     }
   }
 
-  const categoryOptions = useMemo(() => {
-    const seen = new Set<string>()
-    return items
-      .map((item) => item.categoryLabel.trim())
-      .filter((value) => {
-        if (!value || seen.has(value)) return false
-        seen.add(value)
-        return true
-      })
-      .sort((left, right) => left.localeCompare(right, 'tr'))
-  }, [items])
-
-  const sourceOptions = useMemo(() => {
-    const seen = new Set<string>()
-    return items
-      .map((item) => item.legacySourceCode?.trim() ?? '')
-      .filter((value) => {
-        if (!value || seen.has(value)) return false
-        seen.add(value)
-        return true
-      })
-      .sort((left, right) => left.localeCompare(right, 'tr'))
-  }, [items])
-
-  const filteredItems = useMemo(() => {
-    const normalizedSearch = searchTerm.trim().toLocaleLowerCase('tr-TR')
-    const normalizedSelectedAssignee = normalizeTodoAssignee(selectedAssignee)
-
-    return items.filter((item) => {
-      const matchesType =
-        (lockedItemType ?? selectedItemType) === 'all' ||
-        item.itemType === (lockedItemType ?? selectedItemType)
-      const matchesAssignee =
-        selectedAssignee === 'Tümü' ||
-        normalizeTodoAssignee(item.assignee) === normalizedSelectedAssignee
-      const matchesCategory =
-        selectedCategory === 'Tümü' || item.categoryLabel === selectedCategory
-      const matchesStatus = selectedStatus === 'Tümü' || item.status === selectedStatus
-      const matchesUrgent = !urgentOnly || item.urgent
-      const matchesSource =
-        selectedSource === 'Tümü' || (item.legacySourceCode ?? '') === selectedSource
-      const haystack = [
-        item.title,
-        item.detail,
-        item.categoryLabel,
-        item.legacySourceDateLabel ?? '',
-        item.legacySourceCategory ?? '',
-        item.legacySourceTitle ?? '',
-      ]
-        .join(' ')
-        .toLocaleLowerCase('tr-TR')
-      const matchesSearch = normalizedSearch.length === 0 || haystack.includes(normalizedSearch)
-
-      return (
-        matchesType &&
-        matchesAssignee &&
-        matchesCategory &&
-        matchesStatus &&
-        matchesUrgent &&
-        matchesSource &&
-        matchesSearch
-      )
-    })
-  }, [
-    items,
-    lockedItemType,
-    searchTerm,
-    selectedAssignee,
-    selectedCategory,
-    selectedItemType,
-    selectedSource,
-    selectedStatus,
-    urgentOnly,
-  ])
-
   const showSourceFilter =
     lockedItemType === 'meeting_note' ||
     selectedItemType === 'meeting_note' ||
     selectedItemType === 'all'
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
+  const rangeStart = totalCount === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
+  const rangeEnd = Math.min(currentPage * PAGE_SIZE, totalCount)
 
   return (
     <section className="space-y-6" aria-labelledby="command-center-heading">
-      <div className="space-y-2">
-        <h2 id="command-center-heading" className="text-xl font-semibold text-gray-900">
-          {title}
-        </h2>
-        <p className="text-sm text-gray-500">{description}</p>
+      <div className="space-y-3">
+        {title ? (
+          <h2 id="command-center-heading" className="text-xl font-semibold text-gray-900">
+            {title}
+          </h2>
+        ) : null}
+        {description ? <p className="text-sm text-gray-500">{description}</p> : null}
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
+          <span className="rounded-full bg-[rgba(26,109,194,0.12)] px-3 py-1 text-[#1A6DC2]">
+            Todo: {itemCounts.todo}
+          </span>
+          <span className="rounded-full bg-[rgba(139,92,246,0.12)] px-3 py-1 text-[#8B5CF6]">
+            Toplantı Notu: {itemCounts.meetingNote}
+          </span>
+        </div>
       </div>
 
       {compatibilityMessage && (
@@ -409,7 +425,6 @@ export default function CommandCenterManager({
                   </span>
                   <input
                     type="text"
-                    list="command-center-category-options"
                     value={formState.categoryLabel}
                     onChange={(event) =>
                       setFormState((current) => ({
@@ -418,7 +433,9 @@ export default function CommandCenterManager({
                       }))
                     }
                     placeholder={
-                      formState.itemType === 'meeting_note' ? 'örn. 17 Nisan' : 'örn. Bot & Otomasyon'
+                      formState.itemType === 'meeting_note'
+                        ? 'örn. 17 Nisan'
+                        : 'örn. Bot & Otomasyon'
                     }
                     className={INPUT_CLS}
                     required
@@ -565,12 +582,6 @@ export default function CommandCenterManager({
                     {isSubmitting ? 'Kaydediliyor...' : 'Yeni ekle'}
                   </button>
                 </div>
-
-                <datalist id="command-center-category-options">
-                  {categoryOptions.map((category) => (
-                    <option key={category} value={category} />
-                  ))}
-                </datalist>
               </form>
             ),
           },
@@ -588,9 +599,10 @@ export default function CommandCenterManager({
           {!lockedItemType && (
             <select
               value={selectedItemType}
-              onChange={(event) =>
+              onChange={(event) => {
                 setSelectedItemType(event.target.value as CommandCenterItemType | 'all')
-              }
+                setCurrentPage(1)
+              }}
               className={FILTER_SELECT_CLS}
               aria-label="Tip filtresi"
             >
@@ -605,7 +617,10 @@ export default function CommandCenterManager({
 
           <select
             value={selectedAssignee}
-            onChange={(event) => setSelectedAssignee(event.target.value)}
+            onChange={(event) => {
+              setSelectedAssignee(event.target.value)
+              setCurrentPage(1)
+            }}
             className={FILTER_SELECT_CLS}
             aria-label="Kim filtresi"
           >
@@ -619,21 +634,27 @@ export default function CommandCenterManager({
 
           <select
             value={selectedCategory}
-            onChange={(event) => setSelectedCategory(event.target.value)}
+            onChange={(event) => {
+              setSelectedCategory(event.target.value)
+              setCurrentPage(1)
+            }}
             className={FILTER_SELECT_CLS}
             aria-label="Kategori filtresi"
           >
-            <option value="Tümü">Tümü - Kategori</option>
-            {categoryOptions.map((category) => (
-              <option key={category} value={category}>
-                {category}
+            <option value="">Tümü - Kategori</option>
+            {categoryOptions.map((option) => (
+              <option key={`${option.itemType}:${option.value}`} value={option.value}>
+                {formatCommandCenterCategoryLabel(option.value, option.itemType)}
               </option>
             ))}
           </select>
 
           <select
             value={selectedStatus}
-            onChange={(event) => setSelectedStatus(event.target.value)}
+            onChange={(event) => {
+              setSelectedStatus(event.target.value)
+              setCurrentPage(1)
+            }}
             className={FILTER_SELECT_CLS}
             aria-label="Durum filtresi"
           >
@@ -648,14 +669,17 @@ export default function CommandCenterManager({
           {showSourceFilter && (
             <select
               value={selectedSource}
-              onChange={(event) => setSelectedSource(event.target.value)}
+              onChange={(event) => {
+                setSelectedSource(event.target.value)
+                setCurrentPage(1)
+              }}
               className={FILTER_SELECT_CLS}
               aria-label="Kaynak filtresi"
             >
               <option value="Tümü">Tümü - Kaynak</option>
-              {sourceOptions.map((source) => (
-                <option key={source} value={source}>
-                  {getSourceLabel(source)}
+              {MEETING_SOURCES.map((source) => (
+                <option key={source.key} value={source.key}>
+                  {source.label}
                 </option>
               ))}
             </select>
@@ -665,7 +689,10 @@ export default function CommandCenterManager({
             <input
               type="checkbox"
               checked={urgentOnly}
-              onChange={(event) => setUrgentOnly(event.target.checked)}
+              onChange={(event) => {
+                setUrgentOnly(event.target.checked)
+                setCurrentPage(1)
+              }}
               className={CHECKBOX_CLS}
             />
             Sadece acil
@@ -680,7 +707,10 @@ export default function CommandCenterManager({
             <input
               type="search"
               value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
+              onChange={(event) => {
+                setSearchTerm(event.target.value)
+                setCurrentPage(1)
+              }}
               placeholder="Kayıt ara..."
               className={FILTER_INPUT_CLS}
               aria-label="Kayıt arama"
@@ -694,22 +724,26 @@ export default function CommandCenterManager({
           <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/80 p-8 text-center text-sm text-gray-400">
             Yükleniyor…
           </div>
-        ) : items.length === 0 ? (
+        ) : totalCount === 0 ? (
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
-            Henüz kayıt yok. Yukarıdaki formu kullanarak ilk kaydı ekleyin.
-          </div>
-        ) : filteredItems.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
-            Filtreye uygun kayıt bulunamadı.
+            {searchTerm || selectedCategory || selectedAssignee !== 'Tümü' || selectedStatus !== 'Tümü' || selectedSource !== 'Tümü' || urgentOnly
+              ? 'Filtreye uygun kayıt bulunamadı.'
+              : 'Henüz kayıt yok. Yukarıdaki formu kullanarak ilk kaydı ekleyin.'}
           </div>
         ) : (
           <>
+            {isPageLoading && (
+              <div className="rounded-2xl border border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.03)] px-4 py-3 text-sm text-gray-500">
+                Sayfa verileri yenileniyor…
+              </div>
+            )}
+
             <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)]">
               <div className="hidden overflow-x-auto md:block">
                 <table className="min-w-full table-fixed">
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
-                      {['Acil', 'Tip', 'Kategori / Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'Kaynak', 'İşlem'].map((column) => (
+                      {['Acil', 'Tip', 'Kategori / Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
                         <th
                           key={column}
                           scope="col"
@@ -721,7 +755,7 @@ export default function CommandCenterManager({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {filteredItems.map((item) => {
+                    {items.map((item) => {
                       const rowIsEditing = editingId === item.id
                       const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
 
@@ -818,8 +852,8 @@ export default function CommandCenterManager({
                               </div>
                             ) : (
                               <div className="space-y-1">
-                                <p className="font-medium text-gray-900">{item.title}</p>
-                                <p className="leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
+                                <p className="text-[13px] font-medium text-gray-900">{item.title}</p>
+                                <p className="text-[12px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
                               </div>
                             )}
                           </td>
@@ -885,45 +919,6 @@ export default function CommandCenterManager({
                               formatTodoDate(item.dueDate)
                             )}
                           </td>
-                          <td className="px-2.5 py-3 align-middle">
-                            {rowIsEditing && rowState.itemType === 'meeting_note' ? (
-                              <div className="space-y-2">
-                                <select
-                                  value={rowState.legacySourceCode}
-                                  onChange={(event) =>
-                                    setEditingState((current) => ({
-                                      ...current,
-                                      legacySourceCode: event.target.value,
-                                    }))
-                                  }
-                                  className={TABLE_INPUT_CLS}
-                                >
-                                  <option value="">Kaynak seç</option>
-                                  {MEETING_SOURCES.map((source) => (
-                                    <option key={source.key} value={source.key}>
-                                      {source.label}
-                                    </option>
-                                  ))}
-                                </select>
-                                <input
-                                  type="text"
-                                  value={rowState.legacySourceDateLabel}
-                                  onChange={(event) =>
-                                    setEditingState((current) => ({
-                                      ...current,
-                                      legacySourceDateLabel: event.target.value,
-                                    }))
-                                  }
-                                  className={TABLE_INPUT_CLS}
-                                  placeholder="Kaynak tarihi"
-                                />
-                              </div>
-                            ) : item.itemType === 'meeting_note' ? (
-                              <SourceBadge sourceCode={item.legacySourceCode} dateLabel={item.legacySourceDateLabel} />
-                            ) : (
-                              <span className="text-xs text-gray-400">-</span>
-                            )}
-                          </td>
                           <td className="whitespace-nowrap px-1.5 py-3 align-middle pr-4">
                             <div className="flex flex-nowrap items-center justify-center gap-1.5">
                               {rowIsEditing ? (
@@ -981,7 +976,7 @@ export default function CommandCenterManager({
               </div>
 
               <div className="space-y-3 p-4 md:hidden">
-                {filteredItems.map((item) => {
+                {items.map((item) => {
                   const rowIsEditing = editingId === item.id
                   const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
 
@@ -1132,22 +1127,14 @@ export default function CommandCenterManager({
                               <ItemTypeBadge itemType={item.itemType} />
                               <CategoryBadge label={item.categoryLabel} itemType={item.itemType} />
                             </div>
-                            <h3 className="text-base font-semibold text-gray-900">{item.title}</h3>
-                            <p className="text-sm leading-6 text-gray-700">{getItemDetail(item.detail)}</p>
+                            <h3 className="text-[15px] font-semibold text-gray-900">{item.title}</h3>
+                            <p className="text-[13px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
                           </div>
 
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
                             <MobileInfoPair label="Durum" value={item.status} />
                             <MobileInfoPair label="Termin" value={formatTodoDate(item.dueDate)} />
-                            <MobileInfoPair
-                              label="Kaynak"
-                              value={
-                                item.itemType === 'meeting_note'
-                                  ? `${getSourceLabel(item.legacySourceCode)} / ${item.legacySourceDateLabel ?? '-'}`
-                                  : '-'
-                              }
-                            />
                           </div>
                         </>
                       )}
@@ -1204,6 +1191,33 @@ export default function CommandCenterManager({
                 })}
               </div>
             </div>
+
+            <div className="flex flex-col gap-3 rounded-2xl border border-[rgba(66,133,244,0.08)] bg-white px-4 py-3 text-sm text-gray-600 shadow-[0_10px_20px_rgba(60,64,67,0.04)] sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                {rangeStart}-{rangeEnd} / {totalCount} kayıt
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                  disabled={currentPage === 1 || isPageLoading}
+                  className="rounded-xl border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
+                >
+                  Önceki
+                </button>
+                <span className="min-w-[90px] text-center text-xs font-semibold text-gray-500">
+                  Sayfa {currentPage} / {totalPages}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+                  disabled={currentPage >= totalPages || isPageLoading}
+                  className="rounded-xl border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
+                >
+                  Sonraki
+                </button>
+              </div>
+            </div>
           </>
         )}
       </div>
@@ -1238,7 +1252,7 @@ function CategoryBadge({
       className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
       style={{ color, background: `${color}14` }}
     >
-      {label}
+      {formatCommandCenterCategoryLabel(label, itemType)}
     </span>
   )
 }

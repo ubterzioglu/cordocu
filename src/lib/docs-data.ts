@@ -50,7 +50,7 @@ export function getDocsDataSourceInfo(): DocsDataSourceInfo {
 }
 
 export function getDocsCategories(): DocCategoryDefinition[] {
-  return docsCategories
+  return docsCategories.filter((category) => !category.uiHidden)
 }
 
 export function getDocsCategorySlugs(): DocCategorySlug[] {
