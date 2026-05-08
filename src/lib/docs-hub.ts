@@ -1,5 +1,6 @@
 export type DocCategorySlug =
   | 'general'
+  | 'commandcenter'
   | 'toplantiozet'
   | 'todolist'
   | 'insankaynaklari'
@@ -91,6 +92,29 @@ export const docsCategories: DocCategoryDefinition[] = [
         description: 'Son iki günde yapılan güncellemeler ve eklenen başlıca geliştirmeler.',
         href: '#general-updates',
         categorySlug: 'general',
+      },
+    ],
+  },
+  {
+    slug: 'commandcenter',
+    label: 'COMMAND CENTER',
+    shortDescription: 'Todo ve toplantı maddelerini tek tabloda yöneten yeni birleşik merkez.',
+    iconKey: 'layers',
+    defaultExpanded: false,
+    overview: {
+      title: 'Birleşik Görev Merkezi',
+      description:
+        'Yeni source of truth: todo kayıtları ve toplantı maddeleri tek command center tablosunda birleşik olarak yönetilir.',
+      ctaLabel: 'Command Center’a Git',
+    },
+    items: [
+      {
+        id: 'commandcenter-main',
+        label: 'Command Center',
+        description: 'Birleşik tablo, filtreler ve tam CRUD akışı.',
+        href: '/commandcenter',
+        categorySlug: 'commandcenter',
+        featuredOrder: 1,
       },
     ],
   },

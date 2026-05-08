@@ -1,7 +1,7 @@
 import DocsShell from '@/components/layout/DocsShell'
-import MeetingNotesManager from '@/components/meetingnotes/MeetingNotesManager'
+import CommandCenterManager from '@/components/commandcenter/CommandCenterManager'
 
-export default function ToplantiOzetPage() {
+export default function CommandCenterPage() {
   return (
     <DocsShell>
       <div className="docs-main-column docs-main-column-wide">
@@ -13,19 +13,23 @@ export default function ToplantiOzetPage() {
                 aria-hidden="true"
               />
               <div
-                className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(234,67,53,0.14)_0%,_rgba(234,67,53,0)_74%)]"
+                className="pointer-events-none absolute bottom-0 left-0 h-32 w-40 bg-[radial-gradient(circle,_rgba(139,92,246,0.14)_0%,_rgba(139,92,246,0)_74%)]"
                 aria-hidden="true"
               />
               <h1 className="mt-4 max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                Toplantı Özetleri ve WA Konuşma Özetleri
+                Command Center
               </h1>
               <p className="mt-3 max-w-3xl text-sm text-gray-600 sm:text-base">
-                Bu görünüm command center verisinin toplantı maddeleri filtresidir.
+                Todo kayıtları ve toplantı maddeleri artık aynı merkezde. Yeni source of truth
+                bu ekrandaki command center verisi.
               </p>
             </div>
           </div>
 
-          <MeetingNotesManager />
+          <CommandCenterManager
+            title="Birleşik Görev Merkezi"
+            description="Todo ve toplantı maddelerini tek tabloda filtreleyin, güncelleyin ve yönetin."
+          />
         </article>
       </div>
     </DocsShell>
