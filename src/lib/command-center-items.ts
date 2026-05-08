@@ -327,6 +327,10 @@ function getWaWeekBucketLabel(rawLabel: string): string {
     return normalizedLabel || 'WA'
   }
 
+  if (monthNumber === 5) {
+    return '4 Mayıs'
+  }
+
   const firstMonday = getFirstMondayOfMonth(monthNumber)
   const firstMondayDay = firstMonday.getUTCDate()
   const bucketDay =
