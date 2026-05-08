@@ -1,6 +1,8 @@
 import { getSupabaseBrowserClient } from './supabase'
 import { sanitizeError, validateContent, validateTitle } from './security'
+import { MEETING_CATEGORIES } from './meeting-notes-data'
 import {
+  TODO_CATEGORIES,
   TODO_ASSIGNEES,
   TODO_STATUSES,
   type TodoAssignee,
@@ -72,10 +74,11 @@ export interface FetchCommandCenterItemsOptions {
   pageSize?: number
   itemType?: CommandCenterItemType
   assignee?: string
-  categoryLabel?: string
+  topCategory?: string
   status?: string
   urgentOnly?: boolean
   sourceCode?: string
+  dateGroup?: string
   searchTerm?: string
 }
 
@@ -93,14 +96,85 @@ export interface CommandCenterItemCounts {
 
 export interface CommandCenterCategoryOption {
   value: string
-  itemType: CommandCenterItemType
+  label: string
+}
+
+export interface CommandCenterDateGroupOption {
+  value: string
+  label: string
+}
+
+export interface CommandCenterDateGroupInfo {
+  key: string
+  label: string
+  rawLabel: string
+  sortValue: string
+}
+
+export interface CommandCenterDateGroup {
+  key: string
+  label: string
+  items: CommandCenterItem[]
+}
+
+export interface CommandCenterItemTypeGroup {
+  key: CommandCenterItemType
+  label: string
+  items: CommandCenterItem[]
+  dateGroups: CommandCenterDateGroup[]
+}
+
+export interface CommandCenterTopCategoryGroup {
+  key: string
+  label: string
+  items: CommandCenterItem[]
+  itemTypeGroups: CommandCenterItemTypeGroup[]
 }
 
 export const COMMAND_CENTER_SELECT =
   'id, item_type, title, detail, category_label, assignee, status, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, created_at, updated_at'
 
+const STATUS_LABELS: Record<string, string> = {
+  Baslanmadi: 'Başlanmadı',
+  Beklemede: 'Beklemede',
+  'Devam ediyor': 'Devam ediyor',
+  Tamamlandi: 'Tamamlandı',
+}
+
+const ASSIGNEE_LABELS: Record<string, string> = {
+  Atanmadi: 'Atanmadı',
+  UBT: 'UBT',
+  Burak: 'Burak',
+}
+
+const ITEM_TYPE_LABELS: Record<CommandCenterItemType, string> = {
+  todo: 'Todo',
+  meeting_note: 'Toplantı Notu',
+}
+
+const TODO_DATE_GROUP_LABEL = 'TODO'
+const MEETING_CATEGORY_LABEL_BY_ID = new Map(
+  MEETING_CATEGORIES.map((category) => [category.id, category.label] as const)
+)
+const MEETING_CATEGORY_ID_BY_LABEL = new Map(
+  MEETING_CATEGORIES.map((category) => [category.label, category.id] as const)
+)
+const TODO_CATEGORY_SET = new Set<string>(TODO_CATEGORIES)
+
 function escapeIlikeValue(value: string): string {
   return value.replace(/[%_,()]/g, (char) => `\\${char}`).replace(/,/g, '\\,')
+}
+
+function quoteFilterValue(value: string): string {
+  return JSON.stringify(value)
+}
+
+function humanizeMeetingCategorySlug(value: string): string {
+  return value
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toLocaleUpperCase('tr-TR') + part.slice(1))
+    .join(' ')
 }
 
 export function mapCommandCenterRow(row: CommandCenterItemRow): CommandCenterItem {
@@ -162,36 +236,116 @@ export function toCommandCenterFormState(item: CommandCenterItem): CommandCenter
 }
 
 export function getCommandCenterItemLabel(itemType: CommandCenterItemType): string {
-  return itemType === 'meeting_note' ? 'Toplanti Notu' : 'Todo'
+  return ITEM_TYPE_LABELS[itemType]
+}
+
+export function getCommandCenterStatusLabel(status: string): string {
+  return STATUS_LABELS[status] ?? status
+}
+
+export function getCommandCenterAssigneeLabel(assignee: string): string {
+  return ASSIGNEE_LABELS[assignee] ?? assignee
+}
+
+function getMeetingCategoryLabel(categoryId: string | null | undefined): string {
+  if (!categoryId) {
+    return 'Diğer Toplantı Maddeleri'
+  }
+
+  return MEETING_CATEGORY_LABEL_BY_ID.get(categoryId) ?? humanizeMeetingCategorySlug(categoryId)
+}
+
+function getMeetingCategoryIdByLabel(label: string): string | null {
+  return MEETING_CATEGORY_ID_BY_LABEL.get(label) ?? null
 }
 
 function isWaMeetingCategory(label: string): boolean {
   return /\bWA\b/i.test(label)
 }
 
+function extractDateLabelWithoutWa(label: string): string {
+  return label.replace(/\bWA\b/gi, '').replace(/\s+/g, ' ').trim()
+}
+
+function getWaWeekBucketLabel(rawLabel: string): string {
+  const normalizedLabel = extractDateLabelWithoutWa(rawLabel)
+  const match = normalizedLabel.match(/(\d{1,2})\s+([^\s]+)/)
+  if (!match) {
+    return normalizedLabel || 'WA'
+  }
+
+  const day = Number(match[1])
+  const month = match[2]
+  if (!Number.isFinite(day)) {
+    return normalizedLabel || 'WA'
+  }
+
+  if (day >= 27) {
+    return `27 ${month}`
+  }
+
+  if (day >= 20) {
+    return `20 ${month}`
+  }
+
+  return `13 ${month}`
+}
+
+export function getCommandCenterTopCategoryLabel(item: CommandCenterItem): string {
+  if (item.itemType === 'todo') {
+    return item.categoryLabel.trim() || 'Genel'
+  }
+
+  return getMeetingCategoryLabel(item.legacySourceCategory)
+}
+
+export function getCommandCenterDateGroupInfo(
+  item: Pick<
+    CommandCenterItem,
+    'itemType' | 'categoryLabel' | 'legacySourceCode' | 'legacySourceDateLabel'
+  >
+): CommandCenterDateGroupInfo {
+  if (item.itemType === 'todo') {
+    return {
+      key: 'TODO',
+      label: TODO_DATE_GROUP_LABEL,
+      rawLabel: TODO_DATE_GROUP_LABEL,
+      sortValue: '0-TODO',
+    }
+  }
+
+  const rawLabel = (item.legacySourceDateLabel ?? item.categoryLabel).trim() || 'Tarihsiz'
+  if (item.legacySourceCode === 'WA' || isWaMeetingCategory(rawLabel)) {
+    const bucketLabel = getWaWeekBucketLabel(rawLabel)
+    return {
+      key: `WA::${bucketLabel}`,
+      label: `WA ${bucketLabel}`,
+      rawLabel,
+      sortValue: `2-${bucketLabel}`,
+    }
+  }
+
+  return {
+    key: `TOP::${rawLabel}`,
+    label: `TOP ${rawLabel}`,
+    rawLabel,
+    sortValue: `1-${rawLabel}`,
+  }
+}
+
 export function formatCommandCenterCategoryLabel(
   label: string,
   itemType: CommandCenterItemType
 ): string {
-  const normalizedLabel = label.trim()
-  if (!normalizedLabel || itemType !== 'meeting_note') {
-    return normalizedLabel
+  if (itemType === 'todo') {
+    return label.trim()
   }
 
-  if (isWaMeetingCategory(normalizedLabel)) {
-    const withoutWa = normalizedLabel.replace(/\bWA\b/gi, '').replace(/\s+/g, ' ').trim()
-    return withoutWa ? `WA ${withoutWa}` : 'WA'
-  }
-
-  return `TOP ${normalizedLabel}`
+  return getMeetingCategoryLabel(label)
 }
 
 function getCategorySortRank(option: CommandCenterCategoryOption): number {
-  if (option.itemType !== 'meeting_note') {
-    return 2
-  }
-
-  return isWaMeetingCategory(option.value) ? 0 : 1
+  return TODO_CATEGORY_SET.has(option.label) ? 0 : 1
 }
 
 export function sortCommandCenterCategoryOptions(
@@ -203,10 +357,24 @@ export function sortCommandCenterCategoryOptions(
       return rankDiff
     }
 
-    return formatCommandCenterCategoryLabel(left.value, left.itemType).localeCompare(
-      formatCommandCenterCategoryLabel(right.value, right.itemType),
-      'tr'
-    )
+    return left.label.localeCompare(right.label, 'tr')
+  })
+}
+
+export function sortCommandCenterDateGroupOptions(
+  options: CommandCenterDateGroupOption[]
+): CommandCenterDateGroupOption[] {
+  return [...options].sort((left, right) => {
+    if (left.label === TODO_DATE_GROUP_LABEL) return -1
+    if (right.label === TODO_DATE_GROUP_LABEL) return 1
+
+    const leftIsTop = left.label.startsWith('TOP ')
+    const rightIsTop = right.label.startsWith('TOP ')
+    if (leftIsTop !== rightIsTop) {
+      return leftIsTop ? -1 : 1
+    }
+
+    return left.label.localeCompare(right.label, 'tr')
   })
 }
 
@@ -279,8 +447,32 @@ export async function fetchCommandCenterItems(
     query = query.eq('assignee', options.assignee)
   }
 
-  if (options?.categoryLabel?.trim()) {
-    query = query.ilike('category_label', `%${escapeIlikeValue(options.categoryLabel.trim())}%`)
+  if (options?.topCategory?.trim()) {
+    const topCategory = options.topCategory.trim()
+    const meetingCategoryId = getMeetingCategoryIdByLabel(topCategory)
+    const categoryConditions: string[] = []
+
+    if (!options.itemType || options.itemType === 'todo') {
+      categoryConditions.push(
+        `and(item_type.eq.todo,category_label.eq.${quoteFilterValue(topCategory)})`
+      )
+    }
+
+    if (!options.itemType || options.itemType === 'meeting_note') {
+      if (meetingCategoryId) {
+        categoryConditions.push(
+          `and(item_type.eq.meeting_note,legacy_source_category.eq.${quoteFilterValue(
+            meetingCategoryId
+          )})`
+        )
+      } else if (topCategory === 'Diğer Toplantı Maddeleri') {
+        categoryConditions.push('and(item_type.eq.meeting_note,legacy_source_category.is.null)')
+      }
+    }
+
+    if (categoryConditions.length > 0) {
+      query = query.or(categoryConditions.join(','))
+    }
   }
 
   if (options?.status && options.status !== 'Tümü') {
@@ -293,6 +485,31 @@ export async function fetchCommandCenterItems(
 
   if (options?.sourceCode && options.sourceCode !== 'Tümü') {
     query = query.eq('legacy_source_code', options.sourceCode)
+  }
+
+  if (options?.dateGroup?.trim()) {
+    const [kind, payload] = options.dateGroup.split('::')
+
+    if (kind === 'TODO') {
+      query = query.eq('item_type', 'todo')
+    } else if (kind === 'TOP' && payload) {
+      query = query.eq('item_type', 'meeting_note')
+      query = query.neq('legacy_source_code', 'WA')
+      query = query.eq('category_label', payload)
+    } else if (kind === 'WA' && payload) {
+      const rawLabels = payload.split('||').filter(Boolean)
+      query = query.eq('item_type', 'meeting_note')
+      query = query.eq('legacy_source_code', 'WA')
+      if (rawLabels.length === 1) {
+        query = query.eq('category_label', rawLabels[0])
+      } else if (rawLabels.length > 1) {
+        query = query.or(
+          rawLabels
+            .map((rawLabel) => `category_label.eq.${quoteFilterValue(rawLabel)}`)
+            .join(',')
+        )
+      }
+    }
   }
 
   if (options?.searchTerm?.trim()) {
@@ -338,7 +555,7 @@ export async function fetchCommandCenterCategoryOptions(options?: {
 
   let query = supabase
     .from('command_center_items')
-    .select('category_label, item_type')
+    .select('category_label, item_type, legacy_source_category')
     .order('item_type', { ascending: true })
     .order('category_label', { ascending: true })
 
@@ -356,17 +573,24 @@ export async function fetchCommandCenterCategoryOptions(options?: {
   }
 
   const uniqueOptions = new Map<string, CommandCenterCategoryOption>()
-  for (const row of data as Pick<CommandCenterItemRow, 'category_label' | 'item_type'>[]) {
-    const value = row.category_label?.trim()
-    if (!value) {
+  for (const row of data as Pick<
+    CommandCenterItemRow,
+    'category_label' | 'item_type' | 'legacy_source_category'
+  >[]) {
+    const label =
+      row.item_type === 'todo'
+        ? row.category_label?.trim()
+        : getMeetingCategoryLabel(row.legacy_source_category)
+
+    if (!label) {
       continue
     }
 
-    const key = `${row.item_type}:${value}`
+    const key = label
     if (!uniqueOptions.has(key)) {
       uniqueOptions.set(key, {
-        value,
-        itemType: row.item_type,
+        value: label,
+        label,
       })
     }
   }
@@ -374,8 +598,154 @@ export async function fetchCommandCenterCategoryOptions(options?: {
   return sortCommandCenterCategoryOptions(Array.from(uniqueOptions.values()))
 }
 
+export async function fetchCommandCenterDateGroupOptions(options?: {
+  itemType?: CommandCenterItemType
+  sourceCode?: string
+  topCategory?: string
+}): Promise<CommandCenterDateGroupOption[]> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) {
+    return []
+  }
+
+  let query = supabase
+    .from('command_center_items')
+    .select(
+      'item_type, category_label, legacy_source_code, legacy_source_date_label, legacy_source_category'
+    )
+    .order('item_type', { ascending: true })
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: false })
+
+  if (options?.itemType) {
+    query = query.eq('item_type', options.itemType)
+  }
+
+  if (options?.sourceCode && options.sourceCode !== 'Tümü') {
+    query = query.eq('legacy_source_code', options.sourceCode)
+  }
+
+  const { data, error } = await query
+  if (error || !data) {
+    return []
+  }
+
+  const optionsMap = new Map<string, CommandCenterDateGroupOption>()
+  for (const row of data as Pick<
+    CommandCenterItemRow,
+    | 'item_type'
+    | 'category_label'
+    | 'legacy_source_code'
+    | 'legacy_source_date_label'
+    | 'legacy_source_category'
+  >[]) {
+    const item = mapCommandCenterRow({
+      id: '',
+      item_type: row.item_type,
+      title: '',
+      detail: '',
+      category_label: row.category_label,
+      assignee: 'Atanmadi',
+      status: 'Baslanmadi',
+      due_date: null,
+      urgent: false,
+      legacy_source_type: null,
+      legacy_source_code: row.legacy_source_code,
+      legacy_source_date_label: row.legacy_source_date_label,
+      legacy_source_category: row.legacy_source_category,
+      legacy_source_title: null,
+      sort_order: 0,
+      created_at: undefined,
+      updated_at: undefined,
+    })
+
+    if (
+      options?.topCategory?.trim() &&
+      getCommandCenterTopCategoryLabel(item) !== options.topCategory.trim()
+    ) {
+      continue
+    }
+
+    const dateGroup = getCommandCenterDateGroupInfo(item)
+    const value =
+      item.itemType === 'todo'
+        ? 'TODO'
+        : dateGroup.label.startsWith('WA ')
+          ? `WA::${dateGroup.rawLabel}`
+          : `TOP::${dateGroup.rawLabel}`
+
+    if (!optionsMap.has(dateGroup.key)) {
+      optionsMap.set(dateGroup.key, {
+        value,
+        label: dateGroup.label,
+      })
+    } else if (dateGroup.label.startsWith('WA ')) {
+      const current = optionsMap.get(dateGroup.key)
+      if (current) {
+        const existingRaw = current.value.replace(/^WA::/, '')
+        if (!existingRaw.split('||').includes(dateGroup.rawLabel)) {
+          current.value = `WA::${[existingRaw, dateGroup.rawLabel].filter(Boolean).join('||')}`
+        }
+      }
+    }
+  }
+
+  return sortCommandCenterDateGroupOptions(Array.from(optionsMap.values()))
+}
+
+export function groupCommandCenterItems(
+  items: CommandCenterItem[]
+): CommandCenterTopCategoryGroup[] {
+  const topCategoryMap = new Map<string, CommandCenterTopCategoryGroup>()
+
+  for (const item of items) {
+    const topCategoryLabel = getCommandCenterTopCategoryLabel(item)
+    const itemTypeLabel = getCommandCenterItemLabel(item.itemType)
+    const dateGroupInfo = getCommandCenterDateGroupInfo(item)
+
+    let topCategoryGroup = topCategoryMap.get(topCategoryLabel)
+    if (!topCategoryGroup) {
+      topCategoryGroup = {
+        key: topCategoryLabel,
+        label: topCategoryLabel,
+        items: [],
+        itemTypeGroups: [],
+      }
+      topCategoryMap.set(topCategoryLabel, topCategoryGroup)
+    }
+    topCategoryGroup.items.push(item)
+
+    let itemTypeGroup = topCategoryGroup.itemTypeGroups.find((group) => group.key === item.itemType)
+    if (!itemTypeGroup) {
+      itemTypeGroup = {
+        key: item.itemType,
+        label: itemTypeLabel,
+        items: [],
+        dateGroups: [],
+      }
+      topCategoryGroup.itemTypeGroups.push(itemTypeGroup)
+    }
+    itemTypeGroup.items.push(item)
+
+    let dateGroup = itemTypeGroup.dateGroups.find((group) => group.key === dateGroupInfo.key)
+    if (!dateGroup) {
+      dateGroup = {
+        key: dateGroupInfo.key,
+        label: dateGroupInfo.label,
+        items: [],
+      }
+      itemTypeGroup.dateGroups.push(dateGroup)
+    }
+    dateGroup.items.push(item)
+  }
+
+  return Array.from(topCategoryMap.values()).sort((left, right) =>
+    left.label.localeCompare(right.label, 'tr')
+  )
+}
+
 function buildTitle(state: CommandCenterFormState): string {
-  const fallback = state.detail.trim().slice(0, 80) || 'Yeni kayit'
+  const fallback = state.detail.trim().slice(0, 80) || 'Yeni kayıt'
   return (state.title.trim() || fallback).slice(0, 160)
 }
 
@@ -454,7 +824,7 @@ export async function createCommandCenterItem(
     .single()
 
   if (error || !data) {
-    console.error(sanitizeError(error, 'Command center kaydi eklenemedi.'))
+    console.error(sanitizeError(error, 'Command center kaydı eklenemedi.'))
     return null
   }
 
@@ -482,7 +852,7 @@ export async function updateCommandCenterItem(
     .single()
 
   if (error || !data) {
-    console.error(sanitizeError(error, 'Command center kaydi guncellenemedi.'))
+    console.error(sanitizeError(error, 'Command center kaydı güncellenemedi.'))
     return null
   }
 

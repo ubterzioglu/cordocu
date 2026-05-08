@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { AlertTriangle, Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '@/components/ui/AccordionCard'
@@ -10,14 +10,20 @@ import {
   createEmptyCommandCenterFormState,
   deleteCommandCenterItem,
   fetchCommandCenterCategoryOptions,
+  fetchCommandCenterDateGroupOptions,
   fetchCommandCenterItemCounts,
   fetchCommandCenterItems,
-  formatCommandCenterCategoryLabel,
+  getCommandCenterAssigneeLabel,
   getCommandCenterItemLabel,
+  getCommandCenterStatusLabel,
+  getCommandCenterTopCategoryLabel,
+  getCommandCenterDateGroupInfo,
+  groupCommandCenterItems,
   toCommandCenterFormState,
   updateCommandCenterItem,
   validateCommandCenterFormState,
   type CommandCenterCategoryOption,
+  type CommandCenterDateGroupOption,
   type CommandCenterFormState,
   type CommandCenterItem,
   type CommandCenterItemType,
@@ -90,6 +96,7 @@ export default function CommandCenterManager({
   )
   const [selectedAssignee, setSelectedAssignee] = useState<string>('Tümü')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedDateGroup, setSelectedDateGroup] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<string>('Tümü')
   const [selectedSource, setSelectedSource] = useState<string>('Tümü')
   const [searchTerm, setSearchTerm] = useState('')
@@ -97,6 +104,7 @@ export default function CommandCenterManager({
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const [categoryOptions, setCategoryOptions] = useState<CommandCenterCategoryOption[]>([])
+  const [dateGroupOptions, setDateGroupOptions] = useState<CommandCenterDateGroupOption[]>([])
   const [itemCounts, setItemCounts] = useState({ todo: 0, meetingNote: 0 })
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formState, setFormState] = useState<CommandCenterFormState>(() =>
@@ -144,10 +152,11 @@ export default function CommandCenterManager({
         pageSize: PAGE_SIZE,
         itemType: activeItemType,
         assignee: selectedAssignee,
-        categoryLabel: selectedCategory,
+        topCategory: selectedCategory,
         status: selectedStatus,
         urgentOnly,
         sourceCode: selectedSource,
+        dateGroup: selectedDateGroup,
         searchTerm,
       })
       setItems(result.items)
@@ -170,6 +179,7 @@ export default function CommandCenterManager({
     searchTerm,
     selectedAssignee,
     selectedCategory,
+    selectedDateGroup,
     selectedSource,
     selectedStatus,
     urgentOnly,
@@ -199,6 +209,19 @@ export default function CommandCenterManager({
 
     void loadCategoryOptions()
   }, [activeItemType, selectedSource])
+
+  useEffect(() => {
+    async function loadDateGroupOptions() {
+      const options = await fetchCommandCenterDateGroupOptions({
+        itemType: activeItemType,
+        sourceCode: selectedSource,
+        topCategory: selectedCategory,
+      })
+      setDateGroupOptions(options)
+    }
+
+    void loadDateGroupOptions()
+  }, [activeItemType, selectedCategory, selectedSource])
 
   function resetCreateForm(itemType?: CommandCenterItemType) {
     setFormState(
@@ -337,6 +360,7 @@ export default function CommandCenterManager({
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const rangeStart = totalCount === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
   const rangeEnd = Math.min(currentPage * PAGE_SIZE, totalCount)
+  const groupedItems = groupCommandCenterItems(items)
 
   return (
     <section className="space-y-6" aria-labelledby="command-center-heading">
@@ -458,7 +482,7 @@ export default function CommandCenterManager({
                   >
                     {TODO_ASSIGNEES.map((assignee) => (
                       <option key={assignee} value={assignee}>
-                        {assignee}
+                        {getCommandCenterAssigneeLabel(assignee)}
                       </option>
                     ))}
                   </select>
@@ -480,7 +504,7 @@ export default function CommandCenterManager({
                   >
                     {TODO_STATUSES.map((status) => (
                       <option key={status} value={status}>
-                        {status}
+                        {getCommandCenterStatusLabel(status)}
                       </option>
                     ))}
                   </select>
@@ -643,8 +667,25 @@ export default function CommandCenterManager({
           >
             <option value="">Tümü - Kategori</option>
             {categoryOptions.map((option) => (
-              <option key={`${option.itemType}:${option.value}`} value={option.value}>
-                {formatCommandCenterCategoryLabel(option.value, option.itemType)}
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={selectedDateGroup}
+            onChange={(event) => {
+              setSelectedDateGroup(event.target.value)
+              setCurrentPage(1)
+            }}
+            className={FILTER_SELECT_CLS}
+            aria-label="Tarih filtresi"
+          >
+            <option value="">Tümü - Tarih</option>
+            {dateGroupOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
@@ -726,7 +767,7 @@ export default function CommandCenterManager({
           </div>
         ) : totalCount === 0 ? (
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
-            {searchTerm || selectedCategory || selectedAssignee !== 'Tümü' || selectedStatus !== 'Tümü' || selectedSource !== 'Tümü' || urgentOnly
+            {searchTerm || selectedCategory || selectedDateGroup || selectedAssignee !== 'Tümü' || selectedStatus !== 'Tümü' || selectedSource !== 'Tümü' || urgentOnly
               ? 'Filtreye uygun kayıt bulunamadı.'
               : 'Henüz kayıt yok. Yukarıdaki formu kullanarak ilk kaydı ekleyin.'}
           </div>
@@ -755,440 +796,508 @@ export default function CommandCenterManager({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {items.map((item) => {
-                      const rowIsEditing = editingId === item.id
-                      const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
-
-                      return (
-                        <tr
-                          key={item.id}
-                          className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
-                        >
-                          <td className="pl-4 pr-2 py-3 align-middle">
-                            {rowIsEditing ? (
-                              <label className="flex items-center justify-center">
-                                <input
-                                  type="checkbox"
-                                  checked={rowState.urgent}
-                                  onChange={(event) =>
-                                    setEditingState((current) => ({
-                                      ...current,
-                                      urgent: event.target.checked,
-                                    }))
-                                  }
-                                  className={CHECKBOX_CLS}
-                                  aria-label="Acil"
-                                />
-                              </label>
-                            ) : (
-                              <UrgentIndicator urgent={item.urgent} />
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle">
-                            {rowIsEditing && !lockedItemType ? (
-                              <select
-                                value={rowState.itemType}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    itemType: event.target.value as CommandCenterItemType,
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                              >
-                                {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                                  <option key={itemType} value={itemType}>
-                                    {getCommandCenterItemLabel(itemType)}
-                                  </option>
-                                ))}
-                              </select>
-                            ) : (
-                              <ItemTypeBadge itemType={item.itemType} />
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle">
-                            {rowIsEditing ? (
-                              <input
-                                type="text"
-                                value={rowState.categoryLabel}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    categoryLabel: event.target.value,
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                              />
-                            ) : (
-                              <CategoryBadge label={item.categoryLabel} itemType={item.itemType} />
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle text-gray-600">
-                            {rowIsEditing ? (
-                              <div className="space-y-2">
-                                <input
-                                  type="text"
-                                  value={rowState.title}
-                                  onChange={(event) =>
-                                    setEditingState((current) => ({
-                                      ...current,
-                                      title: event.target.value,
-                                    }))
-                                  }
-                                  className={TABLE_INPUT_CLS}
-                                  placeholder="Başlık"
-                                />
-                                <textarea
-                                  value={rowState.detail}
-                                  onChange={(event) =>
-                                    setEditingState((current) => ({
-                                      ...current,
-                                      detail: event.target.value,
-                                    }))
-                                  }
-                                  className={TABLE_INPUT_CLS}
-                                  rows={3}
-                                />
-                              </div>
-                            ) : (
-                              <div className="space-y-1">
-                                <p className="text-[13px] font-medium text-gray-900">{item.title}</p>
-                                <p className="text-[12px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
-                              </div>
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle text-gray-600">
-                            {rowIsEditing ? (
-                              <select
-                                value={rowState.assignee}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    assignee: event.target.value as CommandCenterFormState['assignee'],
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                              >
-                                {TODO_ASSIGNEES.map((assignee) => (
-                                  <option key={assignee} value={assignee}>
-                                    {assignee}
-                                  </option>
-                                ))}
-                              </select>
-                            ) : (
-                              <AssigneeCell assignee={item.assignee} />
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle">
-                            {rowIsEditing ? (
-                              <select
-                                value={rowState.status}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    status: event.target.value as CommandCenterFormState['status'],
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                              >
-                                {TODO_STATUSES.map((status) => (
-                                  <option key={status} value={status}>
-                                    {status}
-                                  </option>
-                                ))}
-                              </select>
-                            ) : (
-                              <StatusBadge status={item.status} />
-                            )}
-                          </td>
-                          <td className="whitespace-nowrap px-2.5 py-3 align-middle text-gray-600">
-                            {rowIsEditing ? (
-                              <input
-                                type="date"
-                                value={rowState.dueDate}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    dueDate: event.target.value,
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                                disabled={rowState.itemType === 'meeting_note'}
-                              />
-                            ) : (
-                              formatTodoDate(item.dueDate)
-                            )}
-                          </td>
-                          <td className="whitespace-nowrap px-1.5 py-3 align-middle pr-4">
-                            <div className="flex flex-nowrap items-center justify-center gap-1.5">
-                              {rowIsEditing ? (
-                                <>
-                                  <button
-                                    type="button"
-                                    onClick={() => void handleUpdate(item.id)}
-                                    disabled={isSubmitting}
-                                    className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
-                                    aria-label="Kaydet"
-                                    title="Kaydet"
-                                  >
-                                    <Save size={14} aria-hidden="true" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={cancelEdit}
-                                    disabled={isSubmitting}
-                                    className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
-                                    aria-label="İptal"
-                                    title="İptal"
-                                  >
-                                    <X size={14} aria-hidden="true" />
-                                  </button>
-                                </>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => startEdit(item)}
-                                  disabled={isSubmitting || editingId !== null}
-                                  className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
-                                  aria-label="Düzenle"
-                                  title="Düzenle"
-                                >
-                                  <Pencil size={14} aria-hidden="true" />
-                                </button>
-                              )}
-                              <button
-                                type="button"
-                                onClick={() => void handleDelete(item.id)}
-                                disabled={isSubmitting}
-                                className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
-                                aria-label="Sil"
-                                title="Sil"
-                              >
-                                <Trash2 size={14} aria-hidden="true" />
-                              </button>
+                    {groupedItems.map((topCategoryGroup) => (
+                      <Fragment key={topCategoryGroup.key}>
+                        <tr className="bg-[rgba(26,109,194,0.04)]">
+                          <td colSpan={8} className="px-4 py-3">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-600">
+                                Konu Bazında Kategori
+                              </span>
+                              <span className="rounded-full bg-[rgba(26,109,194,0.12)] px-3 py-1 text-xs font-semibold text-primary-700">
+                                {topCategoryGroup.label}
+                              </span>
                             </div>
                           </td>
                         </tr>
-                      )
-                    })}
+                        {topCategoryGroup.itemTypeGroups.map((itemTypeGroup) => (
+                          <Fragment key={`${topCategoryGroup.key}-${itemTypeGroup.key}`}>
+                            <tr className="bg-[rgba(139,92,246,0.03)]">
+                              <td colSpan={8} className="px-4 py-2.5">
+                                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+                                  Tip: {itemTypeGroup.label}
+                                </span>
+                              </td>
+                            </tr>
+                            {itemTypeGroup.dateGroups.map((dateGroup) => (
+                              <Fragment key={dateGroup.key}>
+                                <tr className="bg-[rgba(66,133,244,0.025)]">
+                                  <td colSpan={8} className="px-4 py-2">
+                                    <span className="text-[11px] font-medium text-gray-500">
+                                      Tarih: {dateGroup.label}
+                                    </span>
+                                  </td>
+                                </tr>
+                                {dateGroup.items.map((item) => {
+                                  const rowIsEditing = editingId === item.id
+                                  const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
+                                  const dateGroupInfo = getCommandCenterDateGroupInfo(item)
+
+                                  return (
+                                    <tr
+                                      key={item.id}
+                                      className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
+                                    >
+                                      <td className="pl-4 pr-2 py-3 align-middle">
+                                        {rowIsEditing ? (
+                                          <label className="flex items-center justify-center">
+                                            <input
+                                              type="checkbox"
+                                              checked={rowState.urgent}
+                                              onChange={(event) =>
+                                                setEditingState((current) => ({
+                                                  ...current,
+                                                  urgent: event.target.checked,
+                                                }))
+                                              }
+                                              className={CHECKBOX_CLS}
+                                              aria-label="Acil"
+                                            />
+                                          </label>
+                                        ) : (
+                                          <UrgentIndicator urgent={item.urgent} />
+                                        )}
+                                      </td>
+                                      <td className="px-2.5 py-3 align-middle">
+                                        {rowIsEditing && !lockedItemType ? (
+                                          <select
+                                            value={rowState.itemType}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                itemType: event.target.value as CommandCenterItemType,
+                                              }))
+                                            }
+                                            className={TABLE_INPUT_CLS}
+                                          >
+                                            {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
+                                              <option key={itemType} value={itemType}>
+                                                {getCommandCenterItemLabel(itemType)}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        ) : (
+                                          <ItemTypeBadge itemType={item.itemType} />
+                                        )}
+                                      </td>
+                                      <td className="px-2.5 py-3 align-middle">
+                                        {rowIsEditing ? (
+                                          <input
+                                            type="text"
+                                            value={rowState.categoryLabel}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                categoryLabel: event.target.value,
+                                              }))
+                                            }
+                                            className={TABLE_INPUT_CLS}
+                                          />
+                                        ) : (
+                                          <div className="space-y-1">
+                                            <CategoryBadge item={item} />
+                                            <p className="text-[11px] text-gray-500">{dateGroupInfo.label}</p>
+                                          </div>
+                                        )}
+                                      </td>
+                                      <td className="px-2.5 py-3 align-middle text-gray-600">
+                                        {rowIsEditing ? (
+                                          <div className="space-y-2">
+                                            <input
+                                              type="text"
+                                              value={rowState.title}
+                                              onChange={(event) =>
+                                                setEditingState((current) => ({
+                                                  ...current,
+                                                  title: event.target.value,
+                                                }))
+                                              }
+                                              className={TABLE_INPUT_CLS}
+                                              placeholder="Başlık"
+                                            />
+                                            <textarea
+                                              value={rowState.detail}
+                                              onChange={(event) =>
+                                                setEditingState((current) => ({
+                                                  ...current,
+                                                  detail: event.target.value,
+                                                }))
+                                              }
+                                              className={TABLE_INPUT_CLS}
+                                              rows={3}
+                                            />
+                                          </div>
+                                        ) : (
+                                          <div className="space-y-1">
+                                            <p className="text-[13px] font-medium text-gray-900">{item.title}</p>
+                                            <p className="text-[12px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
+                                          </div>
+                                        )}
+                                      </td>
+                                      <td className="px-2.5 py-3 align-middle text-gray-600">
+                                        {rowIsEditing ? (
+                                          <select
+                                            value={rowState.assignee}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                assignee: event.target.value as CommandCenterFormState['assignee'],
+                                              }))
+                                            }
+                                            className={TABLE_INPUT_CLS}
+                                          >
+                                            {TODO_ASSIGNEES.map((assignee) => (
+                                              <option key={assignee} value={assignee}>
+                                                {getCommandCenterAssigneeLabel(assignee)}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        ) : (
+                                          <AssigneeCell assignee={item.assignee} />
+                                        )}
+                                      </td>
+                                      <td className="px-2.5 py-3 align-middle">
+                                        {rowIsEditing ? (
+                                          <select
+                                            value={rowState.status}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                status: event.target.value as CommandCenterFormState['status'],
+                                              }))
+                                            }
+                                            className={TABLE_INPUT_CLS}
+                                          >
+                                            {TODO_STATUSES.map((status) => (
+                                              <option key={status} value={status}>
+                                                {getCommandCenterStatusLabel(status)}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        ) : (
+                                          <StatusBadge status={item.status} />
+                                        )}
+                                      </td>
+                                      <td className="whitespace-nowrap px-2.5 py-3 align-middle text-gray-600">
+                                        {rowIsEditing ? (
+                                          <input
+                                            type="date"
+                                            value={rowState.dueDate}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                dueDate: event.target.value,
+                                              }))
+                                            }
+                                            className={TABLE_INPUT_CLS}
+                                            disabled={rowState.itemType === 'meeting_note'}
+                                          />
+                                        ) : (
+                                          formatTodoDate(item.dueDate)
+                                        )}
+                                      </td>
+                                      <td className="whitespace-nowrap px-1.5 py-3 align-middle pr-4">
+                                        <div className="flex flex-nowrap items-center justify-center gap-1.5">
+                                          {rowIsEditing ? (
+                                            <>
+                                              <button
+                                                type="button"
+                                                onClick={() => void handleUpdate(item.id)}
+                                                disabled={isSubmitting}
+                                                className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
+                                                aria-label="Kaydet"
+                                                title="Kaydet"
+                                              >
+                                                <Save size={14} aria-hidden="true" />
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={cancelEdit}
+                                                disabled={isSubmitting}
+                                                className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                                aria-label="İptal"
+                                                title="İptal"
+                                              >
+                                                <X size={14} aria-hidden="true" />
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <button
+                                              type="button"
+                                              onClick={() => startEdit(item)}
+                                              disabled={isSubmitting || editingId !== null}
+                                              className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                              aria-label="Düzenle"
+                                              title="Düzenle"
+                                            >
+                                              <Pencil size={14} aria-hidden="true" />
+                                            </button>
+                                          )}
+                                          <button
+                                            type="button"
+                                            onClick={() => void handleDelete(item.id)}
+                                            disabled={isSubmitting}
+                                            className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
+                                            aria-label="Sil"
+                                            title="Sil"
+                                          >
+                                            <Trash2 size={14} aria-hidden="true" />
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )
+                                })}
+                              </Fragment>
+                            ))}
+                          </Fragment>
+                        ))}
+                      </Fragment>
+                    ))}
                   </tbody>
                 </table>
               </div>
 
               <div className="space-y-3 p-4 md:hidden">
-                {items.map((item) => {
-                  const rowIsEditing = editingId === item.id
-                  const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="space-y-3 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white p-4 shadow-[0_10px_20px_rgba(60,64,67,0.04)]"
-                    >
-                      {rowIsEditing ? (
-                        <div className="space-y-3">
-                          {!lockedItemType && (
-                            <select
-                              value={rowState.itemType}
-                              onChange={(event) =>
-                                setEditingState((current) => ({
-                                  ...current,
-                                  itemType: event.target.value as CommandCenterItemType,
-                                }))
-                              }
-                              className={INPUT_CLS}
-                            >
-                              {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                                <option key={itemType} value={itemType}>
-                                  {getCommandCenterItemLabel(itemType)}
-                                </option>
-                              ))}
-                            </select>
-                          )}
-                          <input
-                            type="text"
-                            value={rowState.title}
-                            onChange={(event) =>
-                              setEditingState((current) => ({
-                                ...current,
-                                title: event.target.value,
-                              }))
-                            }
-                            className={INPUT_CLS}
-                            placeholder="Başlık"
-                          />
-                          <textarea
-                            value={rowState.detail}
-                            onChange={(event) =>
-                              setEditingState((current) => ({
-                                ...current,
-                                detail: event.target.value,
-                              }))
-                            }
-                            className={INPUT_CLS}
-                            rows={4}
-                          />
-                          <input
-                            type="text"
-                            value={rowState.categoryLabel}
-                            onChange={(event) =>
-                              setEditingState((current) => ({
-                                ...current,
-                                categoryLabel: event.target.value,
-                              }))
-                            }
-                            className={INPUT_CLS}
-                          />
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            <select
-                              value={rowState.assignee}
-                              onChange={(event) =>
-                                setEditingState((current) => ({
-                                  ...current,
-                                  assignee: event.target.value as CommandCenterFormState['assignee'],
-                                }))
-                              }
-                              className={INPUT_CLS}
-                            >
-                              {TODO_ASSIGNEES.map((assignee) => (
-                                <option key={assignee} value={assignee}>
-                                  {assignee}
-                                </option>
-                              ))}
-                            </select>
-                            <select
-                              value={rowState.status}
-                              onChange={(event) =>
-                                setEditingState((current) => ({
-                                  ...current,
-                                  status: event.target.value as CommandCenterFormState['status'],
-                                }))
-                              }
-                              className={INPUT_CLS}
-                            >
-                              {TODO_STATUSES.map((status) => (
-                                <option key={status} value={status}>
-                                  {status}
-                                </option>
-                              ))}
-                            </select>
-                            <input
-                              type="date"
-                              value={rowState.dueDate}
-                              onChange={(event) =>
-                                setEditingState((current) => ({
-                                  ...current,
-                                  dueDate: event.target.value,
-                                }))
-                              }
-                              className={INPUT_CLS}
-                              disabled={rowState.itemType === 'meeting_note'}
-                            />
-                            {rowState.itemType === 'meeting_note' && (
-                              <select
-                                value={rowState.legacySourceCode}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    legacySourceCode: event.target.value,
-                                  }))
-                                }
-                                className={INPUT_CLS}
-                              >
-                                <option value="">Kaynak seç</option>
-                                {MEETING_SOURCES.map((source) => (
-                                  <option key={source.key} value={source.key}>
-                                    {source.label}
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                            <label className="flex items-center gap-3 rounded-xl border border-red-100 bg-red-50/70 px-3.5 py-3 text-sm font-semibold text-red-700 sm:col-span-2">
-                              <input
-                                type="checkbox"
-                                checked={rowState.urgent}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    urgent: event.target.checked,
-                                  }))
-                                }
-                                className={CHECKBOX_CLS}
-                              />
-                              Acil!
-                            </label>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              <UrgentIndicator urgent={item.urgent} mobile />
-                              <ItemTypeBadge itemType={item.itemType} />
-                              <CategoryBadge label={item.categoryLabel} itemType={item.itemType} />
-                            </div>
-                            <h3 className="text-[15px] font-semibold text-gray-900">{item.title}</h3>
-                            <p className="text-[13px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-3 text-sm">
-                            <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
-                            <MobileInfoPair label="Durum" value={item.status} />
-                            <MobileInfoPair label="Termin" value={formatTodoDate(item.dueDate)} />
-                          </div>
-                        </>
-                      )}
-
-                      <div className="flex flex-wrap items-center gap-2">
-                        {rowIsEditing ? (
-                          <>
-                            <button
-                              type="button"
-                              onClick={() => void handleUpdate(item.id)}
-                              disabled={isSubmitting}
-                              className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
-                              aria-label="Kaydet"
-                              title="Kaydet"
-                            >
-                              <Save size={14} aria-hidden="true" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={cancelEdit}
-                              disabled={isSubmitting}
-                              className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
-                              aria-label="İptal"
-                              title="İptal"
-                            >
-                              <X size={14} aria-hidden="true" />
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => startEdit(item)}
-                            disabled={isSubmitting || editingId !== null}
-                            className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
-                            aria-label="Düzenle"
-                            title="Düzenle"
-                          >
-                            <Pencil size={14} aria-hidden="true" />
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => void handleDelete(item.id)}
-                          disabled={isSubmitting}
-                          className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
-                          aria-label="Sil"
-                          title="Sil"
-                        >
-                          <Trash2 size={14} aria-hidden="true" />
-                        </button>
-                      </div>
+                {groupedItems.map((topCategoryGroup) => (
+                  <div key={topCategoryGroup.key} className="space-y-3">
+                    <div className="rounded-2xl border border-[rgba(26,109,194,0.1)] bg-[rgba(26,109,194,0.04)] px-4 py-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary-600">
+                        Konu Bazında Kategori
+                      </p>
+                      <p className="mt-1 text-sm font-semibold text-primary-800">{topCategoryGroup.label}</p>
                     </div>
-                  )
-                })}
+                    {topCategoryGroup.itemTypeGroups.map((itemTypeGroup) => (
+                      <div key={`${topCategoryGroup.key}-${itemTypeGroup.key}`} className="space-y-3">
+                        <div className="rounded-xl border border-[rgba(139,92,246,0.08)] bg-[rgba(139,92,246,0.04)] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+                          Tip: {itemTypeGroup.label}
+                        </div>
+                        {itemTypeGroup.dateGroups.map((dateGroup) => (
+                          <div key={dateGroup.key} className="space-y-3">
+                            <div className="rounded-xl border border-[rgba(66,133,244,0.06)] bg-[rgba(66,133,244,0.025)] px-4 py-2 text-[12px] font-medium text-gray-500">
+                              Tarih: {dateGroup.label}
+                            </div>
+                            {dateGroup.items.map((item) => {
+                              const rowIsEditing = editingId === item.id
+                              const rowState = rowIsEditing ? editingState : toCommandCenterFormState(item)
+                              const dateGroupInfo = getCommandCenterDateGroupInfo(item)
+
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="space-y-3 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white p-4 shadow-[0_10px_20px_rgba(60,64,67,0.04)]"
+                                >
+                                  {rowIsEditing ? (
+                                    <div className="space-y-3">
+                                      {!lockedItemType && (
+                                        <select
+                                          value={rowState.itemType}
+                                          onChange={(event) =>
+                                            setEditingState((current) => ({
+                                              ...current,
+                                              itemType: event.target.value as CommandCenterItemType,
+                                            }))
+                                          }
+                                          className={INPUT_CLS}
+                                        >
+                                          {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
+                                            <option key={itemType} value={itemType}>
+                                              {getCommandCenterItemLabel(itemType)}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      )}
+                                      <input
+                                        type="text"
+                                        value={rowState.title}
+                                        onChange={(event) =>
+                                          setEditingState((current) => ({
+                                            ...current,
+                                            title: event.target.value,
+                                          }))
+                                        }
+                                        className={INPUT_CLS}
+                                        placeholder="Başlık"
+                                      />
+                                      <textarea
+                                        value={rowState.detail}
+                                        onChange={(event) =>
+                                          setEditingState((current) => ({
+                                            ...current,
+                                            detail: event.target.value,
+                                          }))
+                                        }
+                                        className={INPUT_CLS}
+                                        rows={4}
+                                      />
+                                      <input
+                                        type="text"
+                                        value={rowState.categoryLabel}
+                                        onChange={(event) =>
+                                          setEditingState((current) => ({
+                                            ...current,
+                                            categoryLabel: event.target.value,
+                                          }))
+                                        }
+                                        className={INPUT_CLS}
+                                      />
+                                      <div className="grid gap-3 sm:grid-cols-2">
+                                        <select
+                                          value={rowState.assignee}
+                                          onChange={(event) =>
+                                            setEditingState((current) => ({
+                                              ...current,
+                                              assignee: event.target.value as CommandCenterFormState['assignee'],
+                                            }))
+                                          }
+                                          className={INPUT_CLS}
+                                        >
+                                          {TODO_ASSIGNEES.map((assignee) => (
+                                            <option key={assignee} value={assignee}>
+                                              {getCommandCenterAssigneeLabel(assignee)}
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <select
+                                          value={rowState.status}
+                                          onChange={(event) =>
+                                            setEditingState((current) => ({
+                                              ...current,
+                                              status: event.target.value as CommandCenterFormState['status'],
+                                            }))
+                                          }
+                                          className={INPUT_CLS}
+                                        >
+                                          {TODO_STATUSES.map((status) => (
+                                            <option key={status} value={status}>
+                                              {getCommandCenterStatusLabel(status)}
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <input
+                                          type="date"
+                                          value={rowState.dueDate}
+                                          onChange={(event) =>
+                                            setEditingState((current) => ({
+                                              ...current,
+                                              dueDate: event.target.value,
+                                            }))
+                                          }
+                                          className={INPUT_CLS}
+                                          disabled={rowState.itemType === 'meeting_note'}
+                                        />
+                                        {rowState.itemType === 'meeting_note' && (
+                                          <select
+                                            value={rowState.legacySourceCode}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                legacySourceCode: event.target.value,
+                                              }))
+                                            }
+                                            className={INPUT_CLS}
+                                          >
+                                            <option value="">Kaynak seç</option>
+                                            {MEETING_SOURCES.map((source) => (
+                                              <option key={source.key} value={source.key}>
+                                                {source.label}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        )}
+                                        <label className="flex items-center gap-3 rounded-xl border border-red-100 bg-red-50/70 px-3.5 py-3 text-sm font-semibold text-red-700 sm:col-span-2">
+                                          <input
+                                            type="checkbox"
+                                            checked={rowState.urgent}
+                                            onChange={(event) =>
+                                              setEditingState((current) => ({
+                                                ...current,
+                                                urgent: event.target.checked,
+                                              }))
+                                            }
+                                            className={CHECKBOX_CLS}
+                                          />
+                                          Acil!
+                                        </label>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <div className="space-y-2">
+                                        <div className="flex items-center gap-2">
+                                          <UrgentIndicator urgent={item.urgent} mobile />
+                                          <ItemTypeBadge itemType={item.itemType} />
+                                          <CategoryBadge item={item} />
+                                        </div>
+                                        <p className="text-[11px] font-medium text-gray-500">{dateGroupInfo.label}</p>
+                                        <h3 className="text-[15px] font-semibold text-gray-900">{item.title}</h3>
+                                        <p className="text-[13px] leading-5 text-gray-700">{getItemDetail(item.detail)}</p>
+                                      </div>
+
+                                      <div className="grid grid-cols-2 gap-3 text-sm">
+                                        <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
+                                        <MobileInfoPair label="Durum" value={getCommandCenterStatusLabel(item.status)} />
+                                        <MobileInfoPair label="Termin" value={formatTodoDate(item.dueDate)} />
+                                      </div>
+                                    </>
+                                  )}
+
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    {rowIsEditing ? (
+                                      <>
+                                        <button
+                                          type="button"
+                                          onClick={() => void handleUpdate(item.id)}
+                                          disabled={isSubmitting}
+                                          className={`${BTN_CLS} border border-green-200 bg-green-50 text-green-700 hover:bg-green-100`}
+                                          aria-label="Kaydet"
+                                          title="Kaydet"
+                                        >
+                                          <Save size={14} aria-hidden="true" />
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={cancelEdit}
+                                          disabled={isSubmitting}
+                                          className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                          aria-label="İptal"
+                                          title="İptal"
+                                        >
+                                          <X size={14} aria-hidden="true" />
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        onClick={() => startEdit(item)}
+                                        disabled={isSubmitting || editingId !== null}
+                                        className={`${BTN_CLS} border border-gray-200 text-gray-500 hover:text-gray-700`}
+                                        aria-label="Düzenle"
+                                        title="Düzenle"
+                                      >
+                                        <Pencil size={14} aria-hidden="true" />
+                                      </button>
+                                    )}
+                                    <button
+                                      type="button"
+                                      onClick={() => void handleDelete(item.id)}
+                                      disabled={isSubmitting}
+                                      className={`${BTN_CLS} border border-red-200 bg-red-50 text-red-600 hover:bg-red-100`}
+                                      aria-label="Sil"
+                                      title="Sil"
+                                    >
+                                      <Trash2 size={14} aria-hidden="true" />
+                                    </button>
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -1238,21 +1347,15 @@ function ItemTypeBadge({ itemType }: { itemType: CommandCenterItemType }) {
   )
 }
 
-function CategoryBadge({
-  label,
-  itemType,
-}: {
-  label: string
-  itemType: CommandCenterItemType
-}) {
-  const color = ITEM_TYPE_COLORS[itemType]
+function CategoryBadge({ item }: { item: CommandCenterItem }) {
+  const color = ITEM_TYPE_COLORS[item.itemType]
 
   return (
     <span
       className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
       style={{ color, background: `${color}14` }}
     >
-      {formatCommandCenterCategoryLabel(label, itemType)}
+      {getCommandCenterTopCategoryLabel(item)}
     </span>
   )
 }
@@ -1265,7 +1368,7 @@ function StatusBadge({ status }: { status: string }) {
       className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
       style={{ color, background: `${color}18` }}
     >
-      {status}
+      {getCommandCenterStatusLabel(status)}
     </span>
   )
 }
