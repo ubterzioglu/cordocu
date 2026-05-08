@@ -8,7 +8,6 @@ export default function TodoManager() {
       title="Todo Listesi"
       description="Command center kaynağından sadece todo kayıtları gösterilir."
       compatibilityMessage="Bu içerik artık /commandcenter üzerinden yönetiliyor. Bu sayfa geçiş sürecinde yalnız todo filtresiyle yeni kaynağı gösterir."
-      defaultItemTypeFilter="todo"
       lockedItemType="todo"
     />
   )

@@ -8,7 +8,6 @@ export default function MeetingNotesManager() {
       title="Toplantı Özetleri ve WA Konuşma Özetleri"
       description="Command center kaynağından sadece toplantı maddeleri gösterilir."
       compatibilityMessage="Bu içerik artık /commandcenter üzerinden yönetiliyor. Bu sayfa geçiş sürecinde yalnız toplantı maddelerini yeni kaynaktan gösterir."
-      defaultItemTypeFilter="meeting_note"
       lockedItemType="meeting_note"
     />
   )

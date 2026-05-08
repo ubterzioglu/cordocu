@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { AlertTriangle, Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '@/components/ui/AccordionCard'
 import {
-  COMMAND_CENTER_ITEM_TYPES,
   createCommandCenterItem,
   createEmptyCommandCenterFormState,
   deleteCommandCenterItem,
@@ -14,7 +13,6 @@ import {
   fetchCommandCenterItemCounts,
   fetchCommandCenterItems,
   getCommandCenterAssigneeLabel,
-  getCommandCenterItemLabel,
   getCommandCenterStatusLabel,
   getCommandCenterTopCategoryLabel,
   getCommandCenterDateGroupInfo,
@@ -49,10 +47,8 @@ const FILTER_INPUT_CLS =
 const CHECKBOX_CLS =
   'h-4 w-4 rounded border border-[rgba(66,133,244,0.25)] text-red-500 focus:ring-2 focus:ring-red-200'
 
-const ITEM_TYPE_COLORS: Record<CommandCenterItemType, string> = {
-  todo: '#1A6DC2',
-  meeting_note: '#8B5CF6',
-}
+const TODO_COLOR = '#1A6DC2'
+const MEETING_NOTE_COLOR = '#8B5CF6'
 
 const STATUS_COLORS: Record<string, string> = {
   Baslanmadi: '#888888',
@@ -65,7 +61,6 @@ interface CommandCenterManagerProps {
   title?: string
   description?: string
   compatibilityMessage?: string
-  defaultItemTypeFilter?: CommandCenterItemType | 'all'
   lockedItemType?: CommandCenterItemType
 }
 
@@ -73,11 +68,30 @@ function getItemDetail(value: string): string {
   return value.trim() || 'Detay yok'
 }
 
+function createDefaultFormState(
+  lockedItemType?: CommandCenterItemType,
+  itemTypeOverride?: CommandCenterItemType
+): CommandCenterFormState {
+  const itemType = itemTypeOverride ?? lockedItemType ?? 'todo'
+
+  return createEmptyCommandCenterFormState(
+    itemType === 'meeting_note'
+      ? {
+          itemType: 'meeting_note',
+          assignee: 'UBT',
+          status: 'Beklemede',
+          legacySourceCode: 'MAN',
+        }
+      : {
+          itemType: 'todo',
+        }
+  )
+}
+
 export default function CommandCenterManager({
   title = 'Command Center',
   description = 'Todo ve toplantı kayıtlarını tek merkezden yönetin.',
   compatibilityMessage,
-  defaultItemTypeFilter = 'all',
   lockedItemType,
 }: CommandCenterManagerProps) {
   const PAGE_SIZE = 50
@@ -86,9 +100,6 @@ export default function CommandCenterManager({
   const [isPageLoading, setIsPageLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [selectedItemType, setSelectedItemType] = useState<CommandCenterItemType | 'all'>(
-    lockedItemType ?? defaultItemTypeFilter
-  )
   const [selectedAssignee, setSelectedAssignee] = useState<string>('Tümü')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedDateGroup, setSelectedDateGroup] = useState('')
@@ -103,36 +114,16 @@ export default function CommandCenterManager({
   const [itemCounts, setItemCounts] = useState({ todo: 0, meetingNote: 0 })
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formState, setFormState] = useState<CommandCenterFormState>(() =>
-    createEmptyCommandCenterFormState(
-      lockedItemType === 'meeting_note'
-        ? {
-            itemType: 'meeting_note',
-            assignee: 'UBT',
-            status: 'Beklemede',
-            legacySourceCode: 'MAN',
-          }
-        : lockedItemType === 'todo'
-          ? { itemType: 'todo' }
-          : undefined
-    )
+    createDefaultFormState(lockedItemType)
   )
   const [editingState, setEditingState] = useState<CommandCenterFormState>(() =>
     createEmptyCommandCenterFormState()
   )
-  const activeItemType =
-    lockedItemType ?? (selectedItemType === 'all' ? undefined : selectedItemType)
+  const activeItemType = lockedItemType
 
   useEffect(() => {
     if (lockedItemType) {
-      setSelectedItemType(lockedItemType)
-      setFormState((current) => ({
-        ...current,
-        itemType: lockedItemType,
-        assignee: lockedItemType === 'meeting_note' ? 'UBT' : current.assignee,
-        status: lockedItemType === 'meeting_note' ? 'Beklemede' : current.status,
-        legacySourceCode:
-          lockedItemType === 'meeting_note' ? current.legacySourceCode || 'MAN' : '',
-      }))
+      setFormState(createDefaultFormState(lockedItemType, lockedItemType))
     }
   }, [lockedItemType])
 
@@ -219,20 +210,7 @@ export default function CommandCenterManager({
   }, [activeItemType, selectedCategory, selectedSource])
 
   function resetCreateForm(itemType?: CommandCenterItemType) {
-    setFormState(
-      createEmptyCommandCenterFormState(
-        itemType === 'meeting_note'
-          ? {
-              itemType: 'meeting_note',
-              assignee: 'UBT',
-              status: 'Beklemede',
-              legacySourceCode: 'MAN',
-            }
-          : itemType === 'todo'
-            ? { itemType: 'todo' }
-            : undefined
-      )
-    )
+    setFormState(createDefaultFormState(lockedItemType, itemType))
   }
 
   function startEdit(item: CommandCenterItem) {
@@ -348,10 +326,7 @@ export default function CommandCenterManager({
     }
   }
 
-  const showSourceFilter =
-    lockedItemType === 'meeting_note' ||
-    selectedItemType === 'meeting_note' ||
-    selectedItemType === 'all'
+  const showSourceFilter = activeItemType !== 'todo'
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const rangeStart = totalCount === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
   const rangeEnd = Math.min(currentPage * PAGE_SIZE, totalCount)
@@ -389,38 +364,6 @@ export default function CommandCenterManager({
             accentColor: '#1A6DC2',
             children: (
               <form onSubmit={handleCreate} className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {!lockedItemType && (
-                  <label className="space-y-2">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
-                      Tip
-                    </span>
-                    <select
-                      value={formState.itemType}
-                      onChange={(event) => {
-                        const nextType = event.target.value as CommandCenterItemType
-                        setFormState((current) => ({
-                          ...current,
-                          itemType: nextType,
-                          assignee: nextType === 'meeting_note' ? 'UBT' : current.assignee,
-                          status: nextType === 'meeting_note' ? 'Beklemede' : current.status,
-                          dueDate: nextType === 'meeting_note' ? '' : current.dueDate,
-                          legacySourceCode:
-                            nextType === 'meeting_note'
-                              ? current.legacySourceCode || 'MAN'
-                              : '',
-                        }))
-                      }}
-                      className={INPUT_CLS}
-                    >
-                      {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                        <option key={itemType} value={itemType}>
-                          {getCommandCenterItemLabel(itemType)}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                )}
-
                 <label className="space-y-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
                     Başlık
@@ -635,25 +578,6 @@ export default function CommandCenterManager({
 
       <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white p-4 shadow-[0_10px_20px_rgba(60,64,67,0.04)]">
         <div className="flex flex-wrap items-center gap-3">
-          {!lockedItemType && (
-            <select
-              value={selectedItemType}
-              onChange={(event) => {
-                setSelectedItemType(event.target.value as CommandCenterItemType | 'all')
-                setCurrentPage(1)
-              }}
-              className={FILTER_SELECT_CLS}
-              aria-label="Tip filtresi"
-            >
-              <option value="all">Tümü - Tip</option>
-              {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                <option key={itemType} value={itemType}>
-                  {getCommandCenterItemLabel(itemType)}
-                </option>
-              ))}
-            </select>
-          )}
-
           <select
             value={selectedAssignee}
             onChange={(event) => {
@@ -695,9 +619,9 @@ export default function CommandCenterManager({
               setCurrentPage(1)
             }}
             className={FILTER_SELECT_CLS}
-            aria-label="Tarih filtresi"
+            aria-label="Tip filtresi"
           >
-            <option value="">Tümü - Tarih</option>
+            <option value="">Tümü - Tip</option>
             {dateGroupOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -799,7 +723,7 @@ export default function CommandCenterManager({
                 <table className="min-w-full table-fixed">
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
-                      {['Acil', 'Konu Bazında Kategori', 'Tip', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
+                      {['Acil', 'Konu Bazında Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
                         <th
                           key={column}
                           scope="col"
@@ -881,28 +805,6 @@ export default function CommandCenterManager({
                               )
                             ) : (
                               <CategoryBadge item={item} />
-                            )}
-                          </td>
-                          <td className="px-2.5 py-3 align-middle">
-                            {rowIsEditing && !lockedItemType ? (
-                              <select
-                                value={rowState.itemType}
-                                onChange={(event) =>
-                                  setEditingState((current) => ({
-                                    ...current,
-                                    itemType: event.target.value as CommandCenterItemType,
-                                  }))
-                                }
-                                className={TABLE_INPUT_CLS}
-                              >
-                                {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                                  <option key={itemType} value={itemType}>
-                                    {getCommandCenterItemLabel(itemType)}
-                                  </option>
-                                ))}
-                              </select>
-                            ) : (
-                              <ItemTypeBadge itemType={item.itemType} />
                             )}
                           </td>
                           <td className="px-2.5 py-3 align-middle">
@@ -1097,24 +999,6 @@ export default function CommandCenterManager({
                     >
                       {rowIsEditing ? (
                         <div className="space-y-3">
-                          {!lockedItemType && (
-                            <select
-                              value={rowState.itemType}
-                              onChange={(event) =>
-                                setEditingState((current) => ({
-                                  ...current,
-                                  itemType: event.target.value as CommandCenterItemType,
-                                }))
-                              }
-                              className={INPUT_CLS}
-                            >
-                              {COMMAND_CENTER_ITEM_TYPES.map((itemType) => (
-                                <option key={itemType} value={itemType}>
-                                  {getCommandCenterItemLabel(itemType)}
-                                </option>
-                              ))}
-                            </select>
-                          )}
                           <input
                             type="text"
                             value={rowState.title}
@@ -1281,7 +1165,6 @@ export default function CommandCenterManager({
 
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <MobileInfoPair label="Konu Bazında Kategori" value={getCommandCenterTopCategoryLabel(item)} />
-                            <MobileInfoPair label="Tip" value={getCommandCenterItemLabel(item.itemType)} />
                             <MobileInfoPair label="Tarih" value={dateGroupInfo.label} />
                             <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
                             <MobileInfoPair label="Durum" value={getCommandCenterStatusLabel(item.status)} />
@@ -1376,21 +1259,8 @@ export default function CommandCenterManager({
   )
 }
 
-function ItemTypeBadge({ itemType }: { itemType: CommandCenterItemType }) {
-  const color = ITEM_TYPE_COLORS[itemType]
-
-  return (
-    <span
-      className="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium leading-none"
-      style={{ color, background: `${color}18` }}
-    >
-      {getCommandCenterItemLabel(itemType)}
-    </span>
-  )
-}
-
 function CategoryBadge({ item }: { item: CommandCenterItem }) {
-  const color = ITEM_TYPE_COLORS[item.itemType]
+  const color = item.itemType === 'todo' ? TODO_COLOR : MEETING_NOTE_COLOR
 
   return (
     <span

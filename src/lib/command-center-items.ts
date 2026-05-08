@@ -267,6 +267,30 @@ function extractDateLabelWithoutWa(label: string): string {
   return label.replace(/\bWA\b/gi, '').replace(/\s+/g, ' ').trim()
 }
 
+function getMonthNumber(monthLabel: string): number | null {
+  const normalized = monthLabel
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+
+  const monthMap: Record<string, number> = {
+    ocak: 1,
+    subat: 2,
+    mart: 3,
+    nisan: 4,
+    mayis: 5,
+    haziran: 6,
+    temmuz: 7,
+    agustos: 8,
+    eylul: 9,
+    ekim: 10,
+    kasim: 11,
+    aralik: 12,
+  }
+
+  return monthMap[normalized] ?? null
+}
+
 function getWaWeekBucketLabel(rawLabel: string): string {
   const normalizedLabel = extractDateLabelWithoutWa(rawLabel)
   const match = normalizedLabel.match(/(\d{1,2})\s+([^\s]+)/)
@@ -280,15 +304,63 @@ function getWaWeekBucketLabel(rawLabel: string): string {
     return normalizedLabel || 'WA'
   }
 
-  if (day >= 27) {
-    return `27 ${month}`
+  const monthNumber = getMonthNumber(month)
+
+  if (monthNumber === 4) {
+    if (day >= 27) {
+      return `27 ${month}`
+    }
+
+    if (day >= 20) {
+      return `20 ${month}`
+    }
+
+    return `13 ${month}`
   }
 
-  if (day >= 20) {
-    return `20 ${month}`
+  if (monthNumber === 5) {
+    if (day >= 25) {
+      return `25 ${month}`
+    }
+
+    if (day >= 18) {
+      return `18 ${month}`
+    }
+
+    if (day >= 11) {
+      return `11 ${month}`
+    }
+
+    if (day >= 4) {
+      return `4 ${month}`
+    }
+
+    return `1 ${month}`
   }
 
-  return `13 ${month}`
+  return normalizedLabel || 'WA'
+}
+
+function getDateGroupSortToken(label: string): string {
+  if (label === TODO_DATE_GROUP_LABEL) {
+    return '0-0000-00-00'
+  }
+
+  const isTop = label.startsWith('TOP ')
+  const isWa = label.startsWith('WA ')
+  const rawLabel = label.replace(/^(TOP|WA)\s+/, '')
+  const match = rawLabel.match(/(\d{1,2})\s+([^\s]+)/)
+
+  if (!match) {
+    return `${isTop ? '1' : isWa ? '2' : '9'}-${rawLabel}`
+  }
+
+  const day = Number(match[1])
+  const monthNumber = getMonthNumber(match[2]) ?? 99
+  const paddedMonth = String(monthNumber).padStart(2, '0')
+  const paddedDay = String(day).padStart(2, '0')
+
+  return `${isTop ? '1' : isWa ? '2' : '9'}-2026-${paddedMonth}-${paddedDay}`
 }
 
 export function getCommandCenterTopCategoryLabel(item: CommandCenterItem): string {
@@ -365,13 +437,12 @@ export function sortCommandCenterDateGroupOptions(
   options: CommandCenterDateGroupOption[]
 ): CommandCenterDateGroupOption[] {
   return [...options].sort((left, right) => {
-    if (left.label === TODO_DATE_GROUP_LABEL) return -1
-    if (right.label === TODO_DATE_GROUP_LABEL) return 1
-
-    const leftIsTop = left.label.startsWith('TOP ')
-    const rightIsTop = right.label.startsWith('TOP ')
-    if (leftIsTop !== rightIsTop) {
-      return leftIsTop ? -1 : 1
+    const sortTokenDiff = getDateGroupSortToken(left.label).localeCompare(
+      getDateGroupSortToken(right.label),
+      'tr'
+    )
+    if (sortTokenDiff !== 0) {
+      return sortTokenDiff
     }
 
     return left.label.localeCompare(right.label, 'tr')
