@@ -37,7 +37,7 @@ import {
 const INPUT_CLS =
   'w-full rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-3 py-2 text-[13px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 const TABLE_INPUT_CLS =
-  'w-full min-w-[110px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-2.5 py-2 text-[12px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
+  'w-full min-w-[84px] rounded-xl border border-[rgba(66,133,244,0.15)] bg-white px-2.5 py-2 text-[12px] text-gray-800 placeholder-gray-400 shadow-sm outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-200'
 const BTN_CLS =
   'inline-flex items-center justify-center gap-1.5 rounded-xl px-2.5 py-2 text-[11px] font-semibold transition-all disabled:opacity-60'
 const FILTER_SELECT_CLS =
@@ -694,8 +694,18 @@ export default function CommandCenterManager({
             )}
 
             <div className="rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white shadow-[0_10px_20px_rgba(60,64,67,0.04)]">
-              <div className="hidden overflow-x-auto md:block">
-                <table className="min-w-[1280px] w-full">
+              <div className="hidden md:block">
+                <table className="w-full table-fixed">
+                  <colgroup>
+                    <col className="w-[4%]" />
+                    <col className="w-[15%]" />
+                    <col className="w-[8%]" />
+                    <col className="w-[42%]" />
+                    <col className="w-[9%]" />
+                    <col className="w-[9%]" />
+                    <col className="w-[7%]" />
+                    <col className="w-[6%]" />
+                  </colgroup>
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
                       {['Acil', 'Konu Bazında Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
