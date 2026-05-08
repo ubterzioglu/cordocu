@@ -7,7 +7,10 @@
       "mcp__plugin_serena_serena__read_file",
       "mcp__plugin_serena_serena__execute_shell_command",
       "mcp__plugin_serena_serena__create_text_file",
-      "mcp__plugin_serena_serena__replace_content"
+      "mcp__plugin_serena_serena__replace_content",
+      "Bash(Get-ChildItem -Path \"C:\\\\temp_private\\\\corteqs\\\\corteqs_dashboard\\\\supabase\\\\migrations\" -Filter \"*.sql\")",
+      "Bash(Select-String -Pattern \"Mayıs\" -List)",
+      "Bash(Select Path)"
     ]
   }
 }

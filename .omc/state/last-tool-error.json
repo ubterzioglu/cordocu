@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"Get-ChildItem -Path \\\"C:\\\\temp_private\\\\corteqs\\\\corteqs_dashboard\\\\supabase\\\\migrations\\\" -Filter \\\"*.sql\\\" | Select-String -Pattern \\\"Mayıs\\\" -List | Select Path\",\"description\":\"Find all...",
+  "error": "Exit code 127\n/usr/bin/bash: line 1: Get-ChildItem: command not found\n/usr/bin/bash: line 1: Select-String: command not found\n/usr/bin/bash: line 1: Select: command not found",
+  "timestamp": "2026-05-08T11:40:55.444Z",
+  "retry_count": 1
+}

@@ -272,6 +272,7 @@ function getMonthNumber(monthLabel: string): number | null {
     .toLocaleLowerCase('tr-TR')
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
 
   const monthMap: Record<string, number> = {
     ocak: 1,
@@ -328,7 +329,7 @@ function getWaWeekBucketLabel(rawLabel: string): string {
   }
 
   if (monthNumber === 5) {
-    return '4 Mayıs'
+    return '8 Mayıs'
   }
 
   const firstMonday = getFirstMondayOfMonth(monthNumber)
