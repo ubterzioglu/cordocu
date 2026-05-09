@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { AlertTriangle, Pencil, Plus, Save, Search, Trash2, X } from 'lucide-react'
 import AccordionCard from '@/components/ui/AccordionCard'
 import {
+  COMMAND_CENTER_PRIORITY_OPTIONS,
   createCommandCenterItem,
   createEmptyCommandCenterFormState,
   deleteCommandCenterItem,
@@ -104,6 +105,7 @@ export default function CommandCenterManager({
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedDateGroup, setSelectedDateGroup] = useState('')
   const [selectedStatus, setSelectedStatus] = useState<string>('Tümü')
+  const [selectedPriority, setSelectedPriority] = useState<string>('Tümü')
   const [searchTerm, setSearchTerm] = useState('')
   const [urgentOnly, setUrgentOnly] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -139,6 +141,7 @@ export default function CommandCenterManager({
         assignee: selectedAssignee,
         topCategory: selectedCategory,
         status: selectedStatus,
+        priority: selectedPriority === 'Tümü' ? undefined : Number(selectedPriority),
         urgentOnly,
         dateGroup: selectedDateGroup,
         searchTerm,
@@ -164,6 +167,7 @@ export default function CommandCenterManager({
     selectedAssignee,
     selectedCategory,
     selectedDateGroup,
+    selectedPriority,
     selectedStatus,
     urgentOnly,
   ])
@@ -464,6 +468,28 @@ export default function CommandCenterManager({
 
                 <label className="space-y-2">
                   <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+                    Prio
+                  </span>
+                  <select
+                    value={formState.priority}
+                    onChange={(event) =>
+                      setFormState((current) => ({
+                        ...current,
+                        priority: Number(event.target.value) as CommandCenterFormState['priority'],
+                      }))
+                    }
+                    className={INPUT_CLS}
+                  >
+                    {COMMAND_CENTER_PRIORITY_OPTIONS.map((priority) => (
+                      <option key={priority} value={priority}>
+                        {priority}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="space-y-2">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">
                     Termin
                   </span>
                   <input
@@ -640,6 +666,23 @@ export default function CommandCenterManager({
             ))}
           </select>
 
+          <select
+            value={selectedPriority}
+            onChange={(event) => {
+              setSelectedPriority(event.target.value)
+              setCurrentPage(1)
+            }}
+            className={FILTER_SELECT_CLS}
+            aria-label="Prio filtresi"
+          >
+            <option value="Tümü">Tümü - Prio</option>
+            {COMMAND_CENTER_PRIORITY_OPTIONS.map((priority) => (
+              <option key={priority} value={priority}>
+                {priority}
+              </option>
+            ))}
+          </select>
+
           <label className="inline-flex items-center gap-2 rounded-xl border border-red-100 bg-red-50/70 px-3 py-2 text-[12px] font-semibold text-red-700">
             <input
               type="checkbox"
@@ -681,7 +724,7 @@ export default function CommandCenterManager({
           </div>
         ) : totalCount === 0 ? (
           <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
-            {searchTerm || selectedCategory || selectedDateGroup || selectedAssignee !== 'Tümü' || selectedStatus !== 'Tümü' || urgentOnly
+            {searchTerm || selectedCategory || selectedDateGroup || selectedAssignee !== 'Tümü' || selectedStatus !== 'Tümü' || selectedPriority !== 'Tümü' || urgentOnly
               ? 'Filtreye uygun kayıt bulunamadı.'
               : 'Henüz kayıt yok. Yukarıdaki formu kullanarak ilk kaydı ekleyin.'}
           </div>
@@ -697,18 +740,20 @@ export default function CommandCenterManager({
               <div className="hidden md:block">
                 <table className="w-full table-fixed">
                   <colgroup>
-                    <col className="w-[4%]" />
-                    <col className="w-[15%]" />
-                    <col className="w-[8%]" />
-                    <col className="w-[42%]" />
-                    <col className="w-[9%]" />
-                    <col className="w-[9%]" />
-                    <col className="w-[7%]" />
                     <col className="w-[6%]" />
+                    <col className="w-[4%]" />
+                    <col className="w-[14%]" />
+                    <col className="w-[8%]" />
+                    <col className="w-[36%]" />
+                    <col className="w-[9%]" />
+                    <col className="w-[9%]" />
+                    <col className="w-[8%]" />
+                    <col className="w-[6%]" />
+                    <col className="w-[9%]" />
                   </colgroup>
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
-                      {['Acil', 'Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
+                      {['Prio', 'Acil', 'Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
                         <th
                           key={column}
                           scope="col"
@@ -730,6 +775,30 @@ export default function CommandCenterManager({
                           key={item.id}
                           className="align-middle transition-colors hover:bg-[rgba(66,133,244,0.03)]"
                         >
+                          <td className="pl-4 pr-2 py-3 align-middle">
+                            {rowIsEditing ? (
+                              <select
+                                value={rowState.priority}
+                                onChange={(event) =>
+                                  setEditingState((current) => ({
+                                    ...current,
+                                    priority: Number(event.target.value) as CommandCenterFormState['priority'],
+                                  }))
+                                }
+                                className={TABLE_INPUT_CLS}
+                              >
+                                {COMMAND_CENTER_PRIORITY_OPTIONS.map((priority) => (
+                                  <option key={priority} value={priority}>
+                                    {priority}
+                                  </option>
+                                ))}
+                              </select>
+                            ) : (
+                              <span className="inline-flex min-w-[28px] items-center justify-center rounded-full bg-[rgba(26,109,194,0.1)] px-2 py-1 text-[10px] font-semibold leading-none text-[#1A6DC2]">
+                                {item.priority}
+                              </span>
+                            )}
+                          </td>
                           <td className="pl-4 pr-2 py-3 align-middle">
                             {rowIsEditing ? (
                               <label className="flex items-center justify-center">
@@ -984,6 +1053,22 @@ export default function CommandCenterManager({
                     >
                       {rowIsEditing ? (
                         <div className="space-y-3">
+                          <select
+                            value={rowState.priority}
+                            onChange={(event) =>
+                              setEditingState((current) => ({
+                                ...current,
+                                priority: Number(event.target.value) as CommandCenterFormState['priority'],
+                              }))
+                            }
+                            className={INPUT_CLS}
+                          >
+                            {COMMAND_CENTER_PRIORITY_OPTIONS.map((priority) => (
+                              <option key={priority} value={priority}>
+                                {priority}
+                              </option>
+                            ))}
+                          </select>
                           <input
                             type="text"
                             value={rowState.title}
@@ -1149,6 +1234,7 @@ export default function CommandCenterManager({
                           </div>
 
                           <div className="grid grid-cols-2 gap-3 text-sm">
+                            <MobileInfoPair label="Prio" value={String(item.priority)} />
                             <MobileInfoPair label="Kategori" value={getCommandCenterTopCategoryLabel(item)} />
                             <MobileInfoPair label="Tarih" value={dateGroupInfo.label} />
                             <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />

@@ -13,6 +13,8 @@ export const COMMAND_CENTER_ITEM_TYPES = ['todo', 'meeting_note'] as const
 export type CommandCenterItemType = (typeof COMMAND_CENTER_ITEM_TYPES)[number]
 export type CommandCenterAssignee = (typeof TODO_ASSIGNEES)[number]
 export type CommandCenterStatus = (typeof TODO_STATUSES)[number]
+export const COMMAND_CENTER_PRIORITY_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const
+export type CommandCenterPriority = (typeof COMMAND_CENTER_PRIORITY_OPTIONS)[number]
 
 export interface CommandCenterItemRow {
   id: string
@@ -22,6 +24,7 @@ export interface CommandCenterItemRow {
   category_label: string
   assignee: CommandCenterAssignee
   status: CommandCenterStatus
+  priority: CommandCenterPriority
   due_date: string | null
   urgent: boolean
   legacy_source_type: string | null
@@ -42,6 +45,7 @@ export interface CommandCenterItem {
   categoryLabel: string
   assignee: CommandCenterAssignee
   status: CommandCenterStatus
+  priority: CommandCenterPriority
   dueDate: string | null
   urgent: boolean
   legacySourceType: string | null
@@ -61,6 +65,7 @@ export interface CommandCenterFormState {
   categoryLabel: string
   assignee: CommandCenterAssignee
   status: CommandCenterStatus
+  priority: CommandCenterPriority
   dueDate: string
   urgent: boolean
   legacySourceCode: string
@@ -76,6 +81,7 @@ export interface FetchCommandCenterItemsOptions {
   assignee?: string
   topCategory?: string
   status?: string
+  priority?: number
   urgentOnly?: boolean
   sourceCode?: string
   dateGroup?: string
@@ -132,7 +138,7 @@ export interface CommandCenterTopCategoryGroup {
 }
 
 export const COMMAND_CENTER_SELECT =
-  'id, item_type, title, detail, category_label, assignee, status, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, created_at, updated_at'
+  'id, item_type, title, detail, category_label, assignee, status, priority, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, created_at, updated_at'
 
 const STATUS_LABELS: Record<string, string> = {
   Baslanmadi: 'Başlanmadı',
@@ -186,6 +192,7 @@ export function mapCommandCenterRow(row: CommandCenterItemRow): CommandCenterIte
     categoryLabel: row.category_label,
     assignee: row.assignee,
     status: row.status,
+    priority: row.priority,
     dueDate: row.due_date,
     urgent: row.urgent,
     legacySourceType: row.legacy_source_type,
@@ -209,6 +216,7 @@ export function createEmptyCommandCenterFormState(
     categoryLabel: defaults?.categoryLabel ?? '',
     assignee: defaults?.assignee ?? 'Atanmadi',
     status: defaults?.status ?? 'Baslanmadi',
+    priority: defaults?.priority ?? 5,
     dueDate: defaults?.dueDate ?? '',
     urgent: defaults?.urgent ?? false,
     legacySourceCode: defaults?.legacySourceCode ?? '',
@@ -226,6 +234,7 @@ export function toCommandCenterFormState(item: CommandCenterItem): CommandCenter
     categoryLabel: item.categoryLabel,
     assignee: item.assignee,
     status: item.status,
+    priority: item.priority,
     dueDate: item.dueDate ?? '',
     urgent: item.urgent,
     legacySourceCode: item.legacySourceCode ?? '',
@@ -453,6 +462,10 @@ export function sortCommandCenterDateGroupOptions(
 
 export function sortCommandCenterItems(items: CommandCenterItem[]): CommandCenterItem[] {
   return [...items].sort((left, right) => {
+    if (left.priority !== right.priority) {
+      return right.priority - left.priority
+    }
+
     if (left.itemType !== right.itemType) {
       return left.itemType.localeCompare(right.itemType, 'tr')
     }
@@ -507,6 +520,7 @@ export async function fetchCommandCenterItems(
   let query = supabase
     .from('command_center_items')
     .select(COMMAND_CENTER_SELECT, { count: 'exact' })
+    .order('priority', { ascending: false })
     .order('item_type', { ascending: true })
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
@@ -550,6 +564,10 @@ export async function fetchCommandCenterItems(
 
   if (options?.status && options.status !== 'Tümü') {
     query = query.eq('status', options.status)
+  }
+
+  if (options?.priority && Number.isInteger(options.priority)) {
+    query = query.eq('priority', options.priority)
   }
 
   if (options?.urgentOnly) {
@@ -720,6 +738,7 @@ export async function fetchCommandCenterDateGroupOptions(options?: {
       category_label: row.category_label,
       assignee: 'Atanmadi',
       status: 'Baslanmadi',
+      priority: 5,
       due_date: null,
       urgent: false,
       legacy_source_type: null,
@@ -848,6 +867,14 @@ export function validateCommandCenterFormState(state: CommandCenterFormState): s
     return 'Geçersiz atama veya durum.'
   }
 
+  if (
+    !Number.isInteger(state.priority) ||
+    state.priority < COMMAND_CENTER_PRIORITY_OPTIONS[0] ||
+    state.priority > COMMAND_CENTER_PRIORITY_OPTIONS[COMMAND_CENTER_PRIORITY_OPTIONS.length - 1]
+  ) {
+    return 'Geçersiz prio değeri.'
+  }
+
   return null
 }
 
@@ -862,6 +889,7 @@ function buildCommandCenterPayload(state: CommandCenterFormState) {
     category_label: categoryLabel,
     assignee: state.assignee,
     status: state.status,
+    priority: state.priority,
     due_date: state.itemType === 'meeting_note' ? null : state.dueDate || null,
     urgent: state.urgent,
     legacy_source_type: state.itemType === 'meeting_note' ? 'meeting_notes' : 'todo_items',
