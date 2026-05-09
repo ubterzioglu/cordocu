@@ -3,7 +3,7 @@ import DocsShell from '@/components/layout/DocsShell'
 import LinkManager from '@/components/links/LinkManager'
 
 const DRIVE_FOLDER_URL =
-  'https://drive.google.com/drive/folders/1WAvBnJvh9E2jEt23aohe8P4UpbVBjVGi?usp=drive_link'
+  'https://drive.google.com/drive/u/3/folders/1TYFEdjDPOLOMWAf_MScs6XJXRW9FHh-r'
 
 export default function LinksPage() {
   return (
