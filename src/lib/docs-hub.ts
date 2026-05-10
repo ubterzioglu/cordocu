@@ -197,52 +197,6 @@ export const docsCategories: DocCategoryDefinition[] = [
     ],
   },
   {
-    slug: 'insankaynaklari',
-    label: 'İNSAN KAYNAKLARI',
-    shortDescription: 'CV yükleme ve yönetim sistemi.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    uiHidden: true,
-    overview: {
-      title: 'CV Yönetimi',
-      description: 'CV yükleyin, görüntüleyin ve yönetin. Supabase Storage mimarisi.',
-      ctaLabel: 'HR Modülüne Git',
-    },
-    items: [
-      {
-        id: 'insankaynaklari-main',
-        label: 'CV Yönetimi',
-        description: 'CV yükleme ve listeleme.',
-        href: '/insankaynaklari',
-        categorySlug: 'insankaynaklari',
-        featuredOrder: 46,
-      },
-    ],
-  },
-  {
-    slug: 'arge',
-    label: 'ARGE',
-    shortDescription: 'Araştırma, doküman ve fikir içeriklerinin yönetildiği modül.',
-    iconKey: 'layers',
-    defaultExpanded: false,
-    uiHidden: true,
-    overview: {
-      title: 'ARGE Modülü',
-      description: 'Linkler, açıklama kartları ve dosya upload ile ARGE içerik yönetimi.',
-      ctaLabel: 'ARGE\'ye Git',
-    },
-    items: [
-      {
-        id: 'arge-main',
-        label: 'ARGE Yönetimi',
-        description: 'Linkler, kartlar ve dosyalar.',
-        href: '/arge',
-        categorySlug: 'arge',
-        featuredOrder: 47,
-      },
-    ],
-  },
-  {
     slug: 'links',
     label: 'DOSYALAR VE LİNKLER',
     shortDescription: 'Genel kaynaklar, CV kayıtları ve ARGE materyalleri için birleşik yönetim merkezi.',
