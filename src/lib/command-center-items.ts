@@ -33,6 +33,7 @@ export interface CommandCenterItemRow {
   legacy_source_category: string | null
   legacy_source_title: string | null
   sort_order: number
+  deleted_at: string | null
   created_at?: string
   updated_at?: string
 }
@@ -54,6 +55,7 @@ export interface CommandCenterItem {
   legacySourceCategory: string | null
   legacySourceTitle: string | null
   sortOrder: number
+  deletedAt: string | null
   createdAt: string | null
   updatedAt: string | null
 }
@@ -138,7 +140,7 @@ export interface CommandCenterTopCategoryGroup {
 }
 
 export const COMMAND_CENTER_SELECT =
-  'id, item_type, title, detail, category_label, assignee, status, priority, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, created_at, updated_at'
+  'id, item_type, title, detail, category_label, assignee, status, priority, due_date, urgent, legacy_source_type, legacy_source_code, legacy_source_date_label, legacy_source_category, legacy_source_title, sort_order, deleted_at, created_at, updated_at'
 
 const STATUS_LABELS: Record<string, string> = {
   Baslanmadi: 'Başlanmadı',
@@ -201,6 +203,7 @@ export function mapCommandCenterRow(row: CommandCenterItemRow): CommandCenterIte
     legacySourceCategory: row.legacy_source_category,
     legacySourceTitle: row.legacy_source_title,
     sortOrder: row.sort_order,
+    deletedAt: row.deleted_at,
     createdAt: row.created_at ?? null,
     updatedAt: row.updated_at ?? null,
   }
@@ -498,34 +501,13 @@ export function sortCommandCenterItems(items: CommandCenterItem[]): CommandCente
   })
 }
 
-export async function fetchCommandCenterItems(
-  options?: FetchCommandCenterItemsOptions
-): Promise<CommandCenterItemsResult> {
-  const supabase = getSupabaseBrowserClient()
-  const page = Math.max(1, options?.page ?? 1)
-  const pageSize = Math.max(1, options?.pageSize ?? 50)
-
-  if (!supabase) {
-    return {
-      items: [],
-      totalCount: 0,
-      page,
-      pageSize,
-    }
-  }
-
-  const from = (page - 1) * pageSize
-  const to = from + pageSize - 1
-
-  let query = supabase
-    .from('command_center_items')
-    .select(COMMAND_CENTER_SELECT, { count: 'exact' })
-    .order('priority', { ascending: false })
-    .order('item_type', { ascending: true })
-    .order('sort_order', { ascending: true })
-    .order('created_at', { ascending: false })
-    .range(from, to)
-
+function applyCommandCenterFilters<
+  TQuery extends {
+    eq: (column: string, value: unknown) => TQuery
+    neq: (column: string, value: unknown) => TQuery
+    or: (filters: string) => TQuery
+  },
+>(query: TQuery, options?: FetchCommandCenterItemsOptions): TQuery {
   if (options?.itemType) {
     query = query.eq('item_type', options.itemType)
   }
@@ -617,6 +599,40 @@ export async function fetchCommandCenterItems(
     )
   }
 
+  return query
+}
+
+export async function fetchCommandCenterItems(
+  options?: FetchCommandCenterItemsOptions
+): Promise<CommandCenterItemsResult> {
+  const supabase = getSupabaseBrowserClient()
+  const page = Math.max(1, options?.page ?? 1)
+  const pageSize = Math.max(1, options?.pageSize ?? 50)
+
+  if (!supabase) {
+    return {
+      items: [],
+      totalCount: 0,
+      page,
+      pageSize,
+    }
+  }
+
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
+  let query = supabase
+    .from('command_center_items')
+    .select(COMMAND_CENTER_SELECT, { count: 'exact' })
+    .is('deleted_at', null)
+    .order('priority', { ascending: false })
+    .order('item_type', { ascending: true })
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  query = applyCommandCenterFilters(query, options)
+
   const { data, error, count } = await query
   if (error || !data) {
     return {
@@ -635,6 +651,34 @@ export async function fetchCommandCenterItems(
   }
 }
 
+export async function fetchDeletedCommandCenterItems(
+  options?: FetchCommandCenterItemsOptions
+): Promise<CommandCenterItem[]> {
+  const supabase = getSupabaseBrowserClient()
+  if (!supabase) {
+    return []
+  }
+
+  let query = supabase
+    .from('command_center_items')
+    .select(COMMAND_CENTER_SELECT)
+    .not('deleted_at', 'is', null)
+    .order('deleted_at', { ascending: false })
+    .order('priority', { ascending: false })
+    .order('item_type', { ascending: true })
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: false })
+
+  query = applyCommandCenterFilters(query, options)
+
+  const { data, error } = await query
+  if (error || !data) {
+    return []
+  }
+
+  return (data as CommandCenterItemRow[]).map(mapCommandCenterRow)
+}
+
 export async function fetchCommandCenterCategoryOptions(options?: {
   itemType?: CommandCenterItemType
   sourceCode?: string
@@ -647,6 +691,7 @@ export async function fetchCommandCenterCategoryOptions(options?: {
   let query = supabase
     .from('command_center_items')
     .select('category_label, item_type, legacy_source_category')
+    .is('deleted_at', null)
     .order('item_type', { ascending: true })
     .order('category_label', { ascending: true })
 
@@ -704,6 +749,7 @@ export async function fetchCommandCenterDateGroupOptions(options?: {
     .select(
       'item_type, category_label, legacy_source_code, legacy_source_date_label, legacy_source_category'
     )
+    .is('deleted_at', null)
     .order('item_type', { ascending: true })
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
@@ -747,6 +793,7 @@ export async function fetchCommandCenterDateGroupOptions(options?: {
       legacy_source_category: row.legacy_source_category,
       legacy_source_title: null,
       sort_order: 0,
+      deleted_at: null,
       created_at: undefined,
       updated_at: undefined,
     })
@@ -964,7 +1011,11 @@ export async function deleteCommandCenterItem(id: string): Promise<boolean> {
   const supabase = getSupabaseBrowserClient()
   if (!supabase) return false
 
-  const { error } = await supabase.from('command_center_items').delete().eq('id', id)
+  const { error } = await supabase
+    .from('command_center_items')
+    .update({ deleted_at: new Date().toISOString() })
+    .eq('id', id)
+    .is('deleted_at', null)
   return !error
 }
 
@@ -981,11 +1032,13 @@ export async function fetchCommandCenterItemCounts(): Promise<CommandCenterItemC
     supabase
       .from('command_center_items')
       .select('id', { count: 'exact', head: true })
-      .eq('item_type', 'todo'),
+      .eq('item_type', 'todo')
+      .is('deleted_at', null),
     supabase
       .from('command_center_items')
       .select('id', { count: 'exact', head: true })
-      .eq('item_type', 'meeting_note'),
+      .eq('item_type', 'meeting_note')
+      .is('deleted_at', null),
   ])
 
   return {
