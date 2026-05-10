@@ -202,6 +202,7 @@ export const docsCategories: DocCategoryDefinition[] = [
     shortDescription: 'CV yükleme ve yönetim sistemi.',
     iconKey: 'layers',
     defaultExpanded: false,
+    uiHidden: true,
     overview: {
       title: 'CV Yönetimi',
       description: 'CV yükleyin, görüntüleyin ve yönetin. Supabase Storage mimarisi.',
@@ -224,6 +225,7 @@ export const docsCategories: DocCategoryDefinition[] = [
     shortDescription: 'Araştırma, doküman ve fikir içeriklerinin yönetildiği modül.',
     iconKey: 'layers',
     defaultExpanded: false,
+    uiHidden: true,
     overview: {
       title: 'ARGE Modülü',
       description: 'Linkler, açıklama kartları ve dosya upload ile ARGE içerik yönetimi.',
@@ -243,19 +245,19 @@ export const docsCategories: DocCategoryDefinition[] = [
   {
     slug: 'links',
     label: 'DOSYALAR VE LİNKLER',
-    shortDescription: 'Departman bazlı dosya ve linklerin merkezi yönetim tablosu.',
+    shortDescription: 'Genel kaynaklar, CV kayıtları ve ARGE materyalleri için birleşik yönetim merkezi.',
     iconKey: 'book',
     defaultExpanded: false,
     overview: {
-      title: 'Dosyalar ve Linkler',
-      description: 'Departman bazlı dosya ve linkleri tek yerde görüntüleyin ve yönetin.',
+      title: 'Birleşik Dosyalar ve Linkler',
+      description: 'Genel, İnsan Kaynakları ve ARGE kayıtlarını bölüm + kayıt türü filtreleriyle tek yerde yönetin.',
       ctaLabel: 'Dosya ve Linklere Git',
     },
     items: [
       {
         id: 'links-main',
-        label: 'Dosya ve Link Listesi',
-        description: 'Tüm dosya ve linklerin merkezi CRUD tablosu.',
+        label: 'Birleşik Kaynak Listesi',
+        description: 'Genel linkler, CV kayıtları ve ARGE dosya-linklerinin merkezi CRUD tablosu.',
         href: '/links',
         categorySlug: 'links',
         featuredOrder: 43,

@@ -22,8 +22,11 @@ export default function LinksPage() {
               />
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <h1 className="max-w-4xl text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
-                  Dosyalar ve Linkler
+                  Birleşik Dosyalar ve Linkler
                 </h1>
+                <p className="max-w-2xl text-sm leading-6 text-gray-600 sm:text-base">
+                  Genel kaynaklar, İnsan Kaynakları CV kayıtları ve ARGE dosya-linkleri tek merkezde.
+                </p>
                 <a
                   href={DRIVE_FOLDER_URL}
                   target="_blank"
