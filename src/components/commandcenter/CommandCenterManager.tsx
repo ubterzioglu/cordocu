@@ -755,7 +755,7 @@ export default function CommandCenterManager({
                   </colgroup>
                   <thead className="border-b border-[rgba(66,133,244,0.08)] bg-[rgba(66,133,244,0.02)]">
                     <tr>
-                      {['Prio', 'Acil', 'Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Termin', 'İşlem'].map((column) => (
+                      {['Prio', 'Acil', 'Kategori', 'Tarih', 'Başlık & Detay', 'Kim', 'Durum', 'Tarih', 'İşlem'].map((column) => (
                         <th
                           key={column}
                           scope="col"
@@ -986,7 +986,7 @@ export default function CommandCenterManager({
                                     </div>
 
                                     <div className="space-y-1.5 rounded-2xl border border-[rgba(66,133,244,0.1)] bg-white/90 p-3 sm:col-span-2">
-                                      <label className={INLINE_EDITOR_LABEL_CLS}>Termin</label>
+                                      <label className={INLINE_EDITOR_LABEL_CLS}>Tarih</label>
                                       <input
                                         type="date"
                                         value={rowState.dueDate}
@@ -997,7 +997,6 @@ export default function CommandCenterManager({
                                           }))
                                         }
                                         className={TABLE_INPUT_CLS}
-                                        disabled={rowState.itemType === 'meeting_note'}
                                       />
                                     </div>
                                   </div>
@@ -1221,7 +1220,6 @@ export default function CommandCenterManager({
                                 }))
                               }
                               className={INPUT_CLS}
-                              disabled={rowState.itemType === 'meeting_note'}
                             />
                             {rowState.itemType === 'meeting_note' && (
                               <select
@@ -1274,7 +1272,7 @@ export default function CommandCenterManager({
                             <MobileInfoPair label="Tarih" value={dateGroupInfo.label} />
                             <MobileInfoPair label="Kim" value={item.assignee} assignee={item.assignee} />
                             <MobileInfoPair label="Durum" value={getCommandCenterStatusLabel(item.status)} />
-                            <MobileInfoPair label="Termin" value={formatTodoDate(item.dueDate)} />
+                            <MobileInfoPair label="Tarih" value={formatTodoDate(item.dueDate)} />
                           </div>
                         </>
                       )}
